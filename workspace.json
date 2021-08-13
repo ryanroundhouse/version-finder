@@ -1,7 +1,215 @@
 {
   "version": 2,
-  "projects": {},
+  "projects": {
+    "version-finder-app": {
+      "projectType": "application",
+      "root": "apps/version-finder-app",
+      "sourceRoot": "apps/version-finder-app/src",
+      "prefix": "version-finder",
+      "targets": {
+        "build": {
+          "executor": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/version-finder-app",
+            "index": "apps/version-finder-app/src/index.html",
+            "main": "apps/version-finder-app/src/main.ts",
+            "polyfills": "apps/version-finder-app/src/polyfills.ts",
+            "tsConfig": "apps/version-finder-app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/version-finder-app/src/favicon.ico",
+              "apps/version-finder-app/src/assets"
+            ],
+            "styles": ["apps/version-finder-app/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/version-finder-app/src/environments/environment.ts",
+                  "with": "apps/version-finder-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "executor": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "version-finder-app:build:production"
+            },
+            "development": {
+              "browserTarget": "version-finder-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "executor": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "version-finder-app:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/version-finder-app/src/**/*.ts",
+              "apps/version-finder-app/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/version-finder-app"],
+          "options": {
+            "jestConfig": "apps/version-finder-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "version-finder-app-e2e": {
+      "root": "apps/version-finder-app-e2e",
+      "sourceRoot": "apps/version-finder-app-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/version-finder-app-e2e/cypress.json",
+            "tsConfig": "apps/version-finder-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "version-finder-app:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "version-finder-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/version-finder-app-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "version-finder-back": {
+      "root": "apps/version-finder-back",
+      "sourceRoot": "apps/version-finder-back/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/version-finder-back",
+            "main": "apps/version-finder-back/src/main.ts",
+            "tsConfig": "apps/version-finder-back/tsconfig.app.json",
+            "assets": ["apps/version-finder-back/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/version-finder-back/src/environments/environment.ts",
+                  "with": "apps/version-finder-back/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "version-finder-back:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/version-finder-back/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/version-finder-back"],
+          "options": {
+            "jestConfig": "apps/version-finder-back/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "version-finder-lib": {
+      "root": "libs/version-finder-lib",
+      "sourceRoot": "libs/version-finder-lib/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/version-finder-lib/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/version-finder-lib"],
+          "options": {
+            "jestConfig": "libs/version-finder-lib/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "version-finder-app"
 }
