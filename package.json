@@ -24,7 +24,8 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "postinstall": "ngcc --properties es2015 browser module main"
+    "postinstall": "ngcc --properties es2015 browser module main",
+    "debug:version-finder-back": "node --inspect=localhost:7777 ./node_modules/.bin/nx serve version-finder-back"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +37,7 @@
     "@angular/platform-browser": "^12.1.0",
     "@angular/platform-browser-dynamic": "^12.1.0",
     "@angular/router": "^12.1.0",
+    "body-parser": "^1.19.0",
     "express": "4.17.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
