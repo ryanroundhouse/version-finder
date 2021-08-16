@@ -9,6 +9,12 @@ export class VersionFinder {
     this.versionManager = versionManager;
   }
 
+  findDependencyById(id: number) {
+    return this.versionManager.dependencies.find((dep) => {
+      return dep.id === id;
+    });
+  }
+
   whatProductsCanIRunWithDependency(
     productsToQuery: Dependency[]
   ): Dependency[] {
@@ -26,7 +32,9 @@ export class VersionFinder {
       familyReleases.forEach((familyRelease) => {
         if (
           familyRelease.dependencies.some((dependency) => {
-            return searchFamilies.includes(dependency.family);
+            return searchFamilies.includes(
+              this.findDependencyById(dependency).family
+            );
           })
         ) {
           if (
@@ -51,10 +59,11 @@ export class VersionFinder {
   isTooNew(familyRelease: Dependency, productsToQuery: Dependency[]): boolean {
     let isTooNew = false;
     familyRelease.dependencies.forEach((familyDependency) => {
+      const resolvedDependency = this.findDependencyById(familyDependency);
       const productToQuery = productsToQuery.find((productToQuery) => {
-        return familyDependency.family === productToQuery.family;
+        return resolvedDependency.family === productToQuery.family;
       });
-      if (Dependency.isGreaterThan(productToQuery, familyDependency)) {
+      if (Dependency.isGreaterThan(productToQuery, resolvedDependency)) {
         isTooNew = true;
       }
     });
@@ -67,8 +76,9 @@ export class VersionFinder {
   ): Dependency[] {
     dependencies.forEach((dependency) => {
       dependency.dependencies.forEach((subDependency) => {
-        if (subDependency.supported) {
-          dependencies.push(subDependency);
+        const resolvedDependency = this.findDependencyById(subDependency);
+        if (resolvedDependency.supported) {
+          dependencies.push(resolvedDependency);
         }
       });
     });

@@ -61,7 +61,7 @@ describe('get pre-reqs for releases', () => {
       dependencyFamily,
       '',
       true,
-      [relatedDependency]
+      [relatedDependency.id]
     );
     const versionManager = new VersionManager(
       [relatedDependencyFamily, dependencyFamily],
@@ -87,7 +87,7 @@ describe('get pre-reqs for releases', () => {
       firstLevelDependencyFamily,
       '',
       true,
-      [secondLevelDependency]
+      [secondLevelDependency.id]
     );
     const dependencyFamily = new Family();
     const dependency = new Dependency(
@@ -95,7 +95,7 @@ describe('get pre-reqs for releases', () => {
       dependencyFamily,
       '',
       true,
-      [firstLevelDependency]
+      [firstLevelDependency.id]
     );
     const versionManager = new VersionManager(
       [
@@ -129,7 +129,7 @@ describe('get pre-reqs for releases', () => {
       bottomFamily,
       '',
       true,
-      [superBottomDependency]
+      [superBottomDependency.id]
     );
     const middleFamily = new Family();
     const middleDependency = new Dependency(
@@ -137,11 +137,11 @@ describe('get pre-reqs for releases', () => {
       middleFamily,
       '',
       true,
-      [bottomDependency]
+      [bottomDependency.id]
     );
     const topFamily = new Family();
     const topDependency = new Dependency(Math.random(), topFamily, '', true, [
-      middleDependency,
+      middleDependency.id,
     ]);
 
     const versionManager = new VersionManager(
@@ -180,7 +180,7 @@ describe('get pre-reqs for releases', () => {
       searchDependencyWithFirstDependencyFamily,
       '',
       true,
-      [firstDependencyFromFamilyX]
+      [firstDependencyFromFamilyX.id]
     );
     const searchDependencyWithSecondDependencyFamily = new Family();
     const searchDependencyWithSecondDependency = new Dependency(
@@ -188,7 +188,7 @@ describe('get pre-reqs for releases', () => {
       searchDependencyWithSecondDependencyFamily,
       '',
       true,
-      [secondDependencyFromFamilyX]
+      [secondDependencyFromFamilyX.id]
     );
 
     const versionManager = new VersionManager(
@@ -238,7 +238,7 @@ describe('get pre-reqs for releases', () => {
       searchDependencyWithFirstDependencyFamily,
       '',
       true,
-      [olderDependencyFromFamilyX]
+      [olderDependencyFromFamilyX.id]
     );
     const searchDependencyWithSecondDependencyFamily = new Family();
     const searchDependencyWithSecondDependency = new Dependency(
@@ -246,7 +246,7 @@ describe('get pre-reqs for releases', () => {
       searchDependencyWithSecondDependencyFamily,
       '',
       true,
-      [newerDependencyFromFamilyX]
+      [newerDependencyFromFamilyX.id]
     );
 
     const versionManager = new VersionManager(
@@ -285,7 +285,7 @@ describe('get pre-reqs for releases', () => {
       searchDependencyFamily,
       '',
       true,
-      [unsupportedDependency]
+      [unsupportedDependency.id]
     );
 
     const versionManager = new VersionManager(
@@ -315,7 +315,7 @@ describe('get releases for pre-req', () => {
       singleReleaseFamily,
       '',
       true,
-      [productToQuery]
+      [productToQuery.id]
     );
     const versionManager = new VersionManager(
       [productToQueryFamily, singleReleaseFamily],
@@ -351,21 +351,21 @@ describe('get releases for pre-req', () => {
       dependencyFamily,
       '1.0',
       true,
-      [queryProduct]
+      [queryProduct.id]
     );
     const justRightDependency = new Dependency(
       Math.random(),
       dependencyFamily,
       '2.0',
       true,
-      [queryProduct]
+      [queryProduct.id]
     );
     const tooNewDependency = new Dependency(
       Math.random(),
       dependencyFamily,
       '3.0',
       true,
-      [tooNewQueryProduct]
+      [tooNewQueryProduct.id]
     );
 
     const versionManager = new VersionManager(
@@ -400,7 +400,7 @@ describe('get releases for pre-req', () => {
       unsupportedReleaseFamily,
       '',
       false,
-      [productToQuery]
+      [productToQuery.id]
     );
     const versionManager = new VersionManager(
       [productToQueryFamily, unsupportedReleaseFamily],
@@ -435,7 +435,7 @@ describe('get releases for pre-req', () => {
       productFamily,
       '8.0',
       true,
-      [olderRelease]
+      [olderRelease.id]
     );
 
     const versionManager = new VersionManager(

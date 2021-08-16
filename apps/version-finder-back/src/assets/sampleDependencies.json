@@ -11,14 +11,6 @@
     "family": { "id": 1 },
     "version": "1.0",
     "supported": true,
-    "dependencies": [
-      {
-        "id": 0,
-        "family": { "id": 0 },
-        "version": "1.0",
-        "supported": true,
-        "dependencies": []
-      }
-    ]
+    "dependencies": [0]
   }
 ]
