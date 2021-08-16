@@ -34,6 +34,9 @@ export class VersionManager {
 
   addDependency(dependency: Dependency): boolean {
     let result = false;
+    if (dependency.dependencies.includes(dependency.id)) {
+      return false;
+    }
     const matchingDependency = this.dependencies.find((dep) => {
       return (
         dep.family === dependency.family && dep.version === dependency.version

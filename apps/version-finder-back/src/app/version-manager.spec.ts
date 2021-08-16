@@ -114,4 +114,16 @@ describe('version manager dependency tests', () => {
     expect(result).to.be.false;
     expect(versionManager.dependencies).has.same.members([dependency]);
   });
+  it('add dependency cant depend on itself', () => {
+    const family = new Family();
+    const dependencyId = Math.random();
+    const dependency = new Dependency(dependencyId, family, '1.0', true, [
+      dependencyId,
+    ]);
+    const versionManager = new VersionManager([family], []);
+
+    const result = versionManager.addDependency(dependency);
+    expect(result).to.be.false;
+    expect(versionManager.dependencies).has.same.members([]);
+  });
 });
