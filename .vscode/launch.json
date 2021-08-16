@@ -9,6 +9,21 @@
       "type": "node",
       "request": "attach",
       "port": 7777
+    },
+    {
+      "name": "TestBreak",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npx",
+      "console": "integratedTerminal",
+      "runtimeArgs": [
+        "nx",
+        "run-many",
+        "--all",
+        "--target=test",
+        "--inspect-brk"
+      ]
     }
   ]
 }
