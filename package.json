@@ -13,7 +13,7 @@
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",
     "affected:e2e": "nx affected:e2e",
-    "affected:test": "nx affected:test",
+    "affected:test": "nx affected:test --base=main --head=HEAD",
     "affected:lint": "nx affected:lint",
     "affected:dep-graph": "nx affected:dep-graph",
     "affected": "nx affected",
@@ -25,7 +25,8 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "debug:version-finder-back": "node --inspect=localhost:7777 ./node_modules/.bin/nx serve version-finder-back"
+    "debug:version-finder-back": "node --inspect=localhost:7777 ./node_modules/.bin/nx serve version-finder-back",
+    "test:version-finder-back": "nx test version-finder-back"
   },
   "private": true,
   "dependencies": {

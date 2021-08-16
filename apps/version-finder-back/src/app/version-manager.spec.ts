@@ -98,4 +98,20 @@ describe('version manager dependency tests', () => {
     expect(result).to.be.false;
     expect(versionManager.dependencies).has.same.members([dependency]);
   });
+  it('add dependency fails when the same version already exists for that dependency', () => {
+    const family = new Family();
+    const dependency = new Dependency(Math.random(), family, '1.0', true, []);
+    const versionManager = new VersionManager([family], [dependency]);
+    const duplicateDependency = new Dependency(
+      Math.random(),
+      family,
+      '1.0',
+      true,
+      []
+    );
+
+    const result = versionManager.addDependency(duplicateDependency);
+    expect(result).to.be.false;
+    expect(versionManager.dependencies).has.same.members([dependency]);
+  });
 });
