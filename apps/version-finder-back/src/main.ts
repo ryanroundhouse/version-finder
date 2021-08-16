@@ -16,16 +16,14 @@ app.get('/api', (req, res) => {
 
 // [{"id":1,"family":{"id":0.5835383464402961},"version":"1.0","supported":true,"dependencies":[]}]
 
-app.post('/supported-products', (req, res) => {
+app.post('/find-dependencies', (req, res) => {
   console.log(req.body);
   const dependencies: Dependency[] = JSON.parse(req.body.dependencies);
-  res.send(versionFinderApi.whatProductsCanIRunWithDependency(dependencies));
+  res.send(versionFinderApi.versionFinder.findDependenciesFor(dependencies));
 });
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
-  console.log(
-    `Listening at http://localhost:${port}/api and http://localhost:${port}/supported-products`
-  );
+  console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);

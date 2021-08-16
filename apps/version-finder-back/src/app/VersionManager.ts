@@ -1,4 +1,5 @@
 import { Dependency, Family } from '@version-finder/version-finder-lib';
+import * as fs from 'fs';
 
 export class VersionManager {
   dependencies: Dependency[];
@@ -40,5 +41,29 @@ export class VersionManager {
       }
     }
     return result;
+  }
+
+  loadDependenciesFromFile(filePath: string) {
+    console.log(__dirname);
+    fs.readFile(filePath, 'utf8', (err, jsonString) => {
+      if (err) {
+        console.log('File read failed:', err);
+        return;
+      }
+      console.log('File data:', jsonString);
+      this.dependencies = JSON.parse(jsonString);
+    });
+  }
+
+  loadFamiliesFromFile(filePath: string) {
+    console.log(__dirname);
+    fs.readFile(filePath, 'utf8', (err, jsonString) => {
+      if (err) {
+        console.log('File read failed:', err);
+        return;
+      }
+      console.log('File data:', jsonString);
+      this.families = JSON.parse(jsonString);
+    });
   }
 }
