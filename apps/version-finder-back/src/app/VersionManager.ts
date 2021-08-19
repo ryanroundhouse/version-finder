@@ -52,7 +52,6 @@ export class VersionManager {
   }
 
   loadDependenciesFromFile(filePath: string) {
-    console.log(__dirname);
     fs.readFile(filePath, 'utf8', (err, jsonString) => {
       if (err) {
         console.log('File read failed:', err);
@@ -64,7 +63,6 @@ export class VersionManager {
   }
 
   loadFamiliesFromFile(filePath: string) {
-    console.log(__dirname);
     fs.readFile(filePath, 'utf8', (err, jsonString) => {
       if (err) {
         console.log('File read failed:', err);
