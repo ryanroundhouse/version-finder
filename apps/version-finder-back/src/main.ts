@@ -17,9 +17,24 @@ app.get('/api', (req, res) => {
 // [{"id":1,"family":{"id":0.5835383464402961},"version":"1.0","supported":true,"dependencies":[]}]
 
 app.post('/find-dependencies', (req, res) => {
-  console.log(req.body);
   const dependencies: Dependency[] = JSON.parse(req.body.dependencies);
   res.send(versionFinderApi.versionFinder.findDependenciesFor(dependencies));
+});
+
+app.get('/families/get', (req, res) => {
+  res.send(versionFinderApi.getAllFamilies());
+});
+
+app.get('/dependencies/get', (req, res) => {
+  const ids = req.query.id
+    .toString()
+    .split(',')
+    .map((x) => +x);
+  if (ids) {
+    res.send(versionFinderApi.getDependenciesForProductIdList(ids));
+  } else {
+    res.send(versionFinderApi.getAllDependencies());
+  }
 });
 
 const port = process.env.port || 3333;

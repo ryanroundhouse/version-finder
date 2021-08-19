@@ -72,4 +72,22 @@ export class VersionManager {
       this.families = JSON.parse(jsonString);
     });
   }
+
+  writeDependenciesToFile(filePath: string) {
+    fs.writeFile(filePath, JSON.stringify(this.dependencies), (err) => {
+      if (err) {
+        console.log('File write failed:', err);
+        return;
+      }
+    });
+  }
+
+  writeFamiliesToFile(filePath: string) {
+    fs.writeFile(filePath, JSON.stringify(this.families), (err) => {
+      if (err) {
+        console.log('File write failed:', err);
+        return;
+      }
+    });
+  }
 }

@@ -25,7 +25,7 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "debug:version-finder-back": "node --inspect=localhost:7777 ./node_modules/.bin/nx serve version-finder-back",
+    "version-finder-back": "nx run version-finder-back:serve",
     "test:version-finder-back": "nx test version-finder-back"
   },
   "private": true,
@@ -62,7 +62,7 @@
     "@nrwl/workspace": "12.7.1",
     "@types/express": "4.17.0",
     "@types/jest": "26.0.24",
-    "@types/node": "14.14.33",
+    "@types/node": "^14.17.10",
     "@typescript-eslint/eslint-plugin": "~4.28.3",
     "@typescript-eslint/parser": "~4.28.3",
     "chai": "^4.3.4",
