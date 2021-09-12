@@ -1,12 +1,14 @@
 import { Dependency, Family } from '@version-finder/version-finder-lib';
 import * as express from 'express';
 import { VersionFinderApi } from './app/version-finder-api';
+import * as cors from 'cors';
 
 const app = express();
 const versionFinderApi = new VersionFinderApi();
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors());
 
 app.get('/api', (req, res) => {
   const deps: Dependency[] = [];
@@ -26,10 +28,13 @@ app.get('/families/get', (req, res) => {
 });
 
 app.get('/dependencies/get', (req, res) => {
-  const ids = req.query.id
-    .toString()
-    .split(',')
-    .map((x) => +x);
+  let ids: number[];
+  if (req.query.id) {
+    ids = req.query.id
+      .toString()
+      .split(',')
+      .map((x) => +x);
+  }
   if (ids) {
     res.send(versionFinderApi.getDependenciesForProductIdList(ids));
   } else {

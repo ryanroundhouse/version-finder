@@ -1,14 +1,14 @@
 [
   {
     "id": 0,
-    "family": { "id": 0 },
+    "family": { "id": 0, "name": "CIS" },
     "version": "1.0",
     "supported": true,
     "dependencies": []
   },
   {
     "id": 1,
-    "family": { "id": 1 },
+    "family": { "id": 1, "name": "mCare" },
     "version": "1.0",
     "supported": true,
     "dependencies": [0]
