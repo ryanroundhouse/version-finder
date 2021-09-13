@@ -5,9 +5,26 @@
       <p class="mx-3">{{ dependency.version }}</p>
     </li>
   </ul>
-  <select>
-    <option *ngFor="let family of families" [value]="family">
+
+  <select
+    [(ngModel)]="selectedFamily"
+    (ngModelChange)="onChangeFamilySelection($event)"
+  >
+    <option *ngFor="let family of families" [ngValue]="family">
       {{ family.name }}
     </option>
   </select>
+  <div *ngIf="selectedVersion">
+    <select
+      [(ngModel)]="selectedVersion"
+      (ngModelChange)="onChangeVersionSelection($event)"
+    >
+      <option *ngFor="let version of versions" [ngValue]="version">
+        {{ version }}
+      </option>
+    </select>
+  </div>
+  <button *ngIf="selectedVersion && selectedFamily" (click)="onSearch($event)">
+    search
+  </button>
 </main>

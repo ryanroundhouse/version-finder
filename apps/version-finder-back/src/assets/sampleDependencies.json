@@ -12,5 +12,19 @@
     "version": "1.0",
     "supported": true,
     "dependencies": [0]
+  },
+  {
+    "id": 2,
+    "family": { "id": 1, "name": "mCare" },
+    "version": "1.1",
+    "supported": true,
+    "dependencies": [0]
+  },
+  {
+    "id": 3,
+    "family": { "id": 0, "name": "CIS" },
+    "version": "2.0",
+    "supported": true,
+    "dependencies": []
   }
 ]

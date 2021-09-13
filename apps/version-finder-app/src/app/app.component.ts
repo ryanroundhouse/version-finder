@@ -9,8 +9,10 @@ import { VersionFinderService } from './services/version-finder.service';
 })
 export class AppComponent implements OnInit {
   dependencies: Dependency[] = [];
-  families: Family[] = [];
-  selectedFamilyId = 0;
+  families: Family[] = [{ id: 0, name: 'test' }];
+  selectedFamily: Family = this.families[0];
+  versions: string[] = [];
+  selectedVersion = '';
 
   constructor(private versionFinderService: VersionFinderService) {}
 
@@ -24,6 +26,35 @@ export class AppComponent implements OnInit {
       .getAllFamilies()
       .subscribe((families: Family[]) => {
         this.families = families;
+        this.selectedFamily = this.families[0];
       });
+  }
+
+  onChangeFamilySelection(value: Family) {
+    const versionsOfFamily = this.dependencies
+      .filter((dep) => {
+        return dep.family.id === value.id;
+      })
+      .map((dep) => {
+        return dep.version;
+      });
+    this.versions = versionsOfFamily;
+    this.selectedVersion = versionsOfFamily[0];
+    console.log('found versions for this family: ' + versionsOfFamily);
+  }
+
+  onChangeVersionSelection(value: string) {
+    console.log(value);
+  }
+
+  onSearch(event: any) {
+    console.log('search clicked');
+    const depToSearchFor = this.dependencies.find((dep) => {
+      return (
+        dep.family.id === this.selectedFamily.id &&
+        dep.version === this.selectedVersion
+      );
+    });
+    console.log(depToSearchFor);
   }
 }
