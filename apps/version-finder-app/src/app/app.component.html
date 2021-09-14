@@ -27,4 +27,11 @@
   <button *ngIf="selectedVersion && selectedFamily" (click)="onSearch($event)">
     search
   </button>
+
+  <ul class="dependency-list">
+    <li *ngFor="let dependency of foundDependencies" class="dependency-item">
+      <h3 class="mx-3">{{ dependency.family.name }}</h3>
+      <p class="mx-3">{{ dependency.version }}</p>
+    </li>
+  </ul>
 </main>

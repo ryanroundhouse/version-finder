@@ -19,6 +19,7 @@ app.get('/api', (req, res) => {
 // [{"id":1,"family":{"id":0.5835383464402961},"version":"1.0","supported":true,"dependencies":[]}]
 
 app.post('/find-dependencies', (req, res) => {
+  console.log(req.body.dependencies);
   const dependencies: Dependency[] = JSON.parse(req.body.dependencies);
   res.send(versionFinderApi.versionFinder.findDependenciesFor(dependencies));
 });

@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   selectedFamily: Family = this.families[0];
   versions: string[] = [];
   selectedVersion = '';
+  foundDependencies: Dependency[] = [];
 
   constructor(private versionFinderService: VersionFinderService) {}
 
@@ -48,13 +49,20 @@ export class AppComponent implements OnInit {
   }
 
   onSearch(event: any) {
-    console.log('search clicked');
     const depToSearchFor = this.dependencies.find((dep) => {
       return (
         dep.family.id === this.selectedFamily.id &&
         dep.version === this.selectedVersion
       );
     });
-    console.log(depToSearchFor);
+    console.log(`searching for ${JSON.stringify(depToSearchFor)}`);
+    if (depToSearchFor) {
+      this.versionFinderService
+        .findDependencies([depToSearchFor])
+        .subscribe((foundDependencies: Dependency[]) => {
+          this.foundDependencies = foundDependencies;
+          console.log('found: ' + this.foundDependencies);
+        });
+    }
   }
 }

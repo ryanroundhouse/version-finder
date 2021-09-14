@@ -18,4 +18,11 @@ export class VersionFinderService {
   getAllFamilies(): Observable<Family[]> {
     return this.http.get<Family[]>(`${this.baseUrl}/families/get`);
   }
+
+  findDependencies(dependencies: Dependency[]): Observable<Dependency[]> {
+    const dependenciesToSearch = JSON.stringify(dependencies);
+    return this.http.post<Dependency[]>(`${this.baseUrl}/find-dependencies`, {
+      dependencies: dependenciesToSearch,
+    });
+  }
 }
