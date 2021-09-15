@@ -94,7 +94,7 @@
     "id": 13,
     "family": 2,
     "version": "6.7.2",
-    "supported": true,
+    "supported": false,
     "dependencies": [9,3,14,15]
   },
   {
@@ -117,5 +117,26 @@
     "version": "6.4.20",
     "supported": true,
     "dependencies": []
+  },
+  {
+    "id": 17,
+    "family": 1,
+    "version": "6.6.3",
+    "supported": true,
+    "dependencies": [18,15,7]
+  },
+  {
+    "id": 18,
+    "family": 7,
+    "version": "6.4.20m",
+    "supported": true,
+    "dependencies": []
+  },
+  {
+    "id": 19,
+    "family": 1,
+    "version": "6.6.2",
+    "supported": true,
+    "dependencies": [18,15,7]
   }
 ]
