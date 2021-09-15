@@ -107,9 +107,41 @@ export class VersionFinder {
         foundDependencies,
         foundFamilies
       );
+    const foundDependenciesWithoutDuplicates = [
+      ...new Set(foundDependenciesWithLatestFromEachFamily),
+    ];
+    const foundDependenciesWithout64if64m = this.remove64if64mPresent(
+      foundDependenciesWithoutDuplicates
+    );
+    return foundDependenciesWithout64if64m;
+  }
 
-    const result = [...new Set(foundDependenciesWithLatestFromEachFamily)];
-    return result;
+  remove64if64mPresent(dependencies: Dependency[]): Dependency[] {
+    let cis64mDependency: Dependency;
+    let cis64Dependency: Dependency;
+
+    const cis64mFamily = this.versionManager.families.find((fam) => {
+      return fam.name === 'CIS 6.4m';
+    });
+    if (cis64mFamily) {
+      cis64mDependency = dependencies.find((dep) => {
+        return dep.family === cis64mFamily.id;
+      });
+    }
+
+    const cis64Family = this.versionManager.families.find((fam) => {
+      return fam.name === 'CIS 6.4';
+    });
+    if (cis64Family) {
+      cis64Dependency = dependencies.find((dep) => {
+        return dep.family === cis64Family.id;
+      });
+    }
+
+    if (cis64mDependency && cis64Dependency) {
+      dependencies.splice(dependencies.indexOf(cis64Dependency), 1);
+    }
+    return dependencies;
   }
 
   getFamiliesFromDependencies(foundDependencies: Dependency[]): Family[] {

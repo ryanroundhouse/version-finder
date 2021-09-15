@@ -8,7 +8,7 @@ import path = require('path');
 describe('get pre-reqs for releases', () => {
   it('should find a single entry when only that single entry exists', () => {
     const family = new Family(0, '0th');
-    const dependency = new Dependency(Math.random(), family.id, '', true, []);
+    const dependency = new Dependency(0, family.id, '', true, []);
     const versionManager = new VersionManager([family], [dependency]);
     const versionFinder = new VersionFinder(versionManager);
 
@@ -371,6 +371,39 @@ describe('get pre-reqs for releases', () => {
 
     const result = versionFinder.findDependenciesFor([cc6Dependency]);
     expect(JSON.stringify(result)).equals(JSON.stringify(expectedDependencies));
+  });
+  it('should only return the 6.4m dep and not CIS 6.4 if its possible to return both', () => {
+    const cis64mFamily = new Family(0, 'CIS 6.4m');
+    const cis64Family = new Family(1, 'CIS 6.4');
+    const mcareFamily = new Family(2, 'mCare');
+
+    const cis64mDependency = new Dependency(
+      0,
+      cis64mFamily.id,
+      '6.4.0m',
+      true,
+      []
+    );
+    const cis64Dependency = new Dependency(
+      1,
+      cis64Family.id,
+      '6.4.0',
+      true,
+      []
+    );
+    const mcareDependency = new Dependency(2, mcareFamily.id, '6.0', true, [
+      cis64mDependency.id,
+      cis64Dependency.id,
+    ]);
+
+    const versionManager = new VersionManager(
+      [cis64Family, cis64mFamily, mcareFamily],
+      [cis64Dependency, cis64mDependency, mcareDependency]
+    );
+    const versionFinder = new VersionFinder(versionManager);
+
+    const result = versionFinder.findDependenciesFor([mcareDependency]);
+    expect(result).has.same.members([cis64mDependency, mcareDependency]);
   });
 });
 
