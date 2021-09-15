@@ -27,31 +27,40 @@ export class AppComponent implements OnInit {
       .getAllFamilies()
       .subscribe((families: Family[]) => {
         this.families = families;
-        this.selectedFamily = this.families[0];
+        // this.selectedFamily = this.families[0];
       });
   }
 
   onChangeFamilySelection(value: Family) {
     const versionsOfFamily = this.dependencies
       .filter((dep) => {
-        return dep.family.id === value.id;
+        return dep.family === value.id;
       })
       .map((dep) => {
         return dep.version;
       });
     this.versions = versionsOfFamily;
     this.selectedVersion = versionsOfFamily[0];
+    this.foundDependencies = [];
     console.log('found versions for this family: ' + versionsOfFamily);
   }
 
   onChangeVersionSelection(value: string) {
+    this.foundDependencies = [];
     console.log(value);
+  }
+
+  getFamilyFromId(familyId: number): Family | undefined {
+    const family = this.families.find((family) => {
+      return family.id === familyId;
+    });
+    return family;
   }
 
   onSearch(event: any) {
     const depToSearchFor = this.dependencies.find((dep) => {
       return (
-        dep.family.id === this.selectedFamily.id &&
+        dep.family === this.selectedFamily.id &&
         dep.version === this.selectedVersion
       );
     });

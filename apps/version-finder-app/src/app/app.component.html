@@ -1,4 +1,5 @@
 <main>
+  <h1>If I want</h1>
   <select
     [(ngModel)]="selectedFamily"
     (ngModelChange)="onChangeFamilySelection($event)"
@@ -21,10 +22,13 @@
     search
   </button>
 
-  <ul class="dependency-list">
-    <li *ngFor="let dependency of foundDependencies" class="dependency-item">
-      <h3 class="mx-3">{{ dependency.family.name }}</h3>
-      <p class="mx-3">{{ dependency.version }}</p>
-    </li>
-  </ul>
+  <div *ngIf="foundDependencies.length > 0">
+    <h1>That means I need at least</h1>
+    <ul class="dependency-list">
+      <li *ngFor="let dependency of foundDependencies" class="dependency-item">
+        <h3 class="mx-3">{{ getFamilyFromId(dependency.family)?.name }}</h3>
+        <p class="mx-3">{{ dependency.version }}</p>
+      </li>
+    </ul>
+  </div>
 </main>
