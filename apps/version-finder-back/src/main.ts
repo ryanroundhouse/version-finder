@@ -1,4 +1,4 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Dependency } from '@version-finder/version-finder-lib';
 import * as express from 'express';
 import { VersionFinderApi } from './app/version-finder-api';
 import * as cors from 'cors';
@@ -12,16 +12,19 @@ app.use(cors());
 
 app.get('/api', (req, res) => {
   const deps: Dependency[] = [];
-  deps.push(new Dependency(1, new Family(), '1.0', true, []));
+  deps.push(new Dependency(-1, -1, '1.0', true, []));
   res.send(JSON.stringify(deps));
 });
 
-// [{"id":1,"family":{"id":0.5835383464402961},"version":"1.0","supported":true,"dependencies":[]}]
-
 app.post('/find-dependencies', (req, res) => {
-  console.log(req.body.dependencies);
+  console.log(
+    `got a request to find dependencies for ${req.body.dependencies}`
+  );
   const dependencies: Dependency[] = JSON.parse(req.body.dependencies);
-  res.send(versionFinderApi.versionFinder.findDependenciesFor(dependencies));
+  const result =
+    versionFinderApi.versionFinder.findDependenciesFor(dependencies);
+  console.log(`found the following dependencies ${JSON.stringify(result)}`);
+  res.send(result);
 });
 
 app.get('/families/get', (req, res) => {

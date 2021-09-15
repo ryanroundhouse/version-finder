@@ -31,9 +31,12 @@ export class VersionFinder {
         this.versionManager.getDependenciesByFamily(family);
       familyReleases.forEach((familyRelease) => {
         if (
-          familyRelease.dependencies.some((dependency) => {
-            return searchFamilies.includes(
-              this.findDependencyById(dependency).family
+          familyRelease.dependencies.some((dependencyId) => {
+            const dependency = this.findDependencyById(dependencyId);
+            return (
+              searchFamilies.find((family) => {
+                return family.id === dependency.family;
+              }) != null
             );
           })
         ) {
@@ -105,17 +108,24 @@ export class VersionFinder {
         foundFamilies
       );
 
-    return [...new Set(foundDependenciesWithLatestFromEachFamily)];
+    const result = [...new Set(foundDependenciesWithLatestFromEachFamily)];
+    return result;
   }
 
   getFamiliesFromDependencies(foundDependencies: Dependency[]): Family[] {
-    const families = [
+    const familyIds = [
       ...new Set(
         foundDependencies.map((dependency) => {
           return dependency.family;
         })
       ),
     ];
+    const families: Family[] = [];
+    familyIds.forEach((familyId) => {
+      families.push(
+        this.versionManager.families.find((family) => family.id === familyId)
+      );
+    });
     return families;
   }
 
@@ -128,7 +138,7 @@ export class VersionFinder {
     foundFamilies.forEach((foundFamily) => {
       const dependenciesByFamily = foundDependencies.filter(
         (foundDependency) => {
-          return foundDependency.family === foundFamily;
+          return foundDependency.family === foundFamily.id;
         }
       );
       if (dependenciesByFamily.length > 1) {

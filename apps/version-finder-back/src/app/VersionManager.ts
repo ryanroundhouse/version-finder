@@ -28,49 +28,56 @@ export class VersionManager {
 
   getDependenciesByFamily(family: Family): Dependency[] {
     return this.dependencies.filter((dependency) => {
-      return dependency.family === family;
+      return dependency.family === family.id;
     });
   }
 
   addDependency(dependency: Dependency): boolean {
-    let result = false;
+    // can't depend on itself.
     if (dependency.dependencies.includes(dependency.id)) {
       return false;
     }
+    // same family + dependency already exists
     const matchingDependency = this.dependencies.find((dep) => {
       return (
         dep.family === dependency.family && dep.version === dependency.version
       );
     });
-    if (!matchingDependency) {
-      if (this.families.includes(dependency.family)) {
-        this.dependencies.push(dependency);
-        result = true;
-      }
+    if (matchingDependency) {
+      return false;
     }
-    return result;
+    // family has to exist
+    if (
+      this.families.find((fam) => {
+        return fam.id === dependency.family;
+      })
+    ) {
+      this.dependencies.push(dependency);
+      return true;
+    }
+    return false;
   }
 
   loadDependenciesFromFile(filePath: string) {
-    fs.readFile(filePath, 'utf8', (err, jsonString) => {
-      if (err) {
-        console.log('File read failed:', err);
-        return;
-      }
-      console.log('File data:', jsonString);
-      this.dependencies = JSON.parse(jsonString);
+    const buffer = fs.readFileSync(filePath);
+    const dependencyObjects: Dependency[] = JSON.parse(buffer.toString());
+    dependencyObjects.forEach((dependencyObject) => {
+      this.dependencies.push(
+        Object.assign(
+          new Dependency(-1, null, '-1', true, []),
+          dependencyObject
+        )
+      );
     });
   }
 
   loadFamiliesFromFile(filePath: string) {
-    fs.readFile(filePath, 'utf8', (err, jsonString) => {
-      if (err) {
-        console.log('File read failed:', err);
-        return;
-      }
-      console.log('File data:', jsonString);
-      this.families = JSON.parse(jsonString);
+    const buffer = fs.readFileSync(filePath);
+    const familyObjects: Family[] = JSON.parse(buffer.toString());
+    familyObjects.forEach((familyObject) => {
+      this.families.push(Object.assign(new Family(-1, ''), familyObject));
     });
+    // this.families = familyObjects;
   }
 
   writeDependenciesToFile(filePath: string) {

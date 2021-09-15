@@ -6,21 +6,21 @@ import { VersionManager } from './VersionManager';
 describe('version manager family tests', () => {
   it('add family adds a family', () => {
     const versionManager = new VersionManager([], []);
-    const newFamily = new Family();
+    const newFamily = new Family(0, '0th');
     const result = versionManager.addFamily(newFamily);
 
     expect(versionManager.families).has.same.members([newFamily]);
     expect(result).to.be.true;
   });
   it('get families gets families', () => {
-    const newFamily = new Family();
+    const newFamily = new Family(0, '0th');
     const versionManager = new VersionManager([newFamily], []);
 
     const addedFamilities = versionManager.getFamilies();
     expect(addedFamilities).has.same.members([newFamily]);
   });
   it('add family wont add duplicate family', () => {
-    const newFamily = new Family();
+    const newFamily = new Family(0, '0th');
     const versionManager = new VersionManager([newFamily], []);
     const result = versionManager.addFamily(newFamily);
 
@@ -30,34 +30,22 @@ describe('version manager family tests', () => {
 });
 describe('version manager dependency tests', () => {
   it('get dependencies gets dependencies', () => {
-    const newDependency = new Dependency(
-      Math.random(),
-      new Family(),
-      '',
-      true,
-      []
-    );
+    const newDependency = new Dependency(Math.random(), 0, '', true, []);
     const versionManager = new VersionManager([], [newDependency]);
 
     const dependencies = versionManager.getDependencies();
     expect(dependencies).has.same.members([newDependency]);
   });
   it('get dependencies by family gets only dependencies by family', () => {
-    const family = new Family();
+    const family = new Family(0, '0th');
     const familyDependency = new Dependency(
       Math.random(),
-      family,
+      family.id,
       '',
       true,
       []
     );
-    const nonFamilyDependency = new Dependency(
-      Math.random(),
-      new Family(),
-      '',
-      true,
-      []
-    );
+    const nonFamilyDependency = new Dependency(Math.random(), 1, '', true, []);
     const versionManager = new VersionManager(
       [],
       [familyDependency, nonFamilyDependency]
@@ -67,8 +55,8 @@ describe('version manager dependency tests', () => {
     expect(dependencies).has.same.members([familyDependency]);
   });
   it('add dependency adds a dependency', () => {
-    const family = new Family();
-    const dependency = new Dependency(Math.random(), family, '', true, []);
+    const family = new Family(0, '0th');
+    const dependency = new Dependency(Math.random(), family.id, '', true, []);
     const versionManager = new VersionManager([family], []);
 
     const result = versionManager.addDependency(dependency);
@@ -76,13 +64,7 @@ describe('version manager dependency tests', () => {
     expect(versionManager.dependencies).has.same.members([dependency]);
   });
   it('add dependency fails when the family isnt present', () => {
-    const dependency = new Dependency(
-      Math.random(),
-      new Family(),
-      '',
-      true,
-      []
-    );
+    const dependency = new Dependency(Math.random(), 0, '', true, []);
     const versionManager = new VersionManager([], []);
 
     const result = versionManager.addDependency(dependency);
@@ -90,8 +72,8 @@ describe('version manager dependency tests', () => {
     expect(versionManager.dependencies).has.same.members([]);
   });
   it('add dependency fails when the dependency already exists', () => {
-    const family = new Family();
-    const dependency = new Dependency(Math.random(), family, '', true, []);
+    const family = new Family(0, '0th');
+    const dependency = new Dependency(Math.random(), family.id, '', true, []);
     const versionManager = new VersionManager([family], [dependency]);
 
     const result = versionManager.addDependency(dependency);
@@ -99,12 +81,18 @@ describe('version manager dependency tests', () => {
     expect(versionManager.dependencies).has.same.members([dependency]);
   });
   it('add dependency fails when the same version already exists for that dependency', () => {
-    const family = new Family();
-    const dependency = new Dependency(Math.random(), family, '1.0', true, []);
+    const family = new Family(0, '0th');
+    const dependency = new Dependency(
+      Math.random(),
+      family.id,
+      '1.0',
+      true,
+      []
+    );
     const versionManager = new VersionManager([family], [dependency]);
     const duplicateDependency = new Dependency(
       Math.random(),
-      family,
+      family.id,
       '1.0',
       true,
       []
@@ -115,9 +103,9 @@ describe('version manager dependency tests', () => {
     expect(versionManager.dependencies).has.same.members([dependency]);
   });
   it('add dependency cant depend on itself', () => {
-    const family = new Family();
+    const family = new Family(0, '0th');
     const dependencyId = Math.random();
-    const dependency = new Dependency(dependencyId, family, '1.0', true, [
+    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
       dependencyId,
     ]);
     const versionManager = new VersionManager([family], []);

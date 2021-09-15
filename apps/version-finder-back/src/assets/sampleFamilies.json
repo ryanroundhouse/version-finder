@@ -1,4 +1,9 @@
 [
-  { "id": 0, "name": "CIS" },
-  { "id": 1, "name": "mCare" }
+  { "id": 0, "name": "CIS 6.4" },
+  { "id": 1, "name": "mCare" },
+  { "id": 2, "name": "CC6" },
+  { "id": 3, "name": "SilverBlaze" },
+  { "id": 4, "name": "CIS 6.6" },
+  { "id": 5, "name": "nsBL 6.6" },
+  { "id": 6, "name": "nsBL 6.4" }
 ]

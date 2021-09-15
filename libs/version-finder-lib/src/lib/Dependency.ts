@@ -1,15 +1,13 @@
-import Family from './Family';
-
 export class Dependency {
   id: number;
   version: string;
   supported: boolean;
-  family: Family;
+  family: number;
   dependencies: number[];
 
   constructor(
     id: number,
-    family: Family,
+    family: number,
     version: string,
     supported: boolean,
     dependencies: number[]

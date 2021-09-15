@@ -1,11 +1,4 @@
 <main>
-  <ul class="dependency-list">
-    <li *ngFor="let dependency of dependencies" class="dependency-item">
-      <h3 class="mx-3">{{ dependency.family.name }}</h3>
-      <p class="mx-3">{{ dependency.version }}</p>
-    </li>
-  </ul>
-
   <select
     [(ngModel)]="selectedFamily"
     (ngModelChange)="onChangeFamilySelection($event)"
