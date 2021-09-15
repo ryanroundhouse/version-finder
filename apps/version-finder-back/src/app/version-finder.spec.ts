@@ -296,7 +296,7 @@ describe('get pre-reqs for releases', () => {
     const result = versionFinder.findDependenciesFor([searchDependency]);
     expect(result).has.same.members([searchDependency]);
   });
-  it('shouldnt return multiple of the same dependency with 4 possible sources', () => {
+  it('should resolve nested dependencies when loaded from files', () => {
     const nsBL64family = new Family(6, 'nsBL 6.4');
     const nsBL66family = new Family(5, 'nsBL 6.6');
     const cis64family = new Family(0, 'CIS 6.4');
@@ -359,18 +359,6 @@ describe('get pre-reqs for releases', () => {
       cis64Dependency,
     ];
 
-    // const versionManager = new VersionManager(
-    //   [cc6family, cis64family, cis66family, nsBL64family, nsBL66family],
-    //   [
-    //     cc6Dependency,
-    //     cis64Dependency,
-    //     cis64NsblDependency,
-    //     cis66Dependency,
-    //     cis66NsblDependency,
-    //     nsbl64Dependency,
-    //     nsbl66Dependency,
-    //   ]
-    // );
     const versionManager = new VersionManager([], []);
     versionManager.loadDependenciesFromFile(
       path.resolve(__dirname, '../assets/testDependencies.json')
