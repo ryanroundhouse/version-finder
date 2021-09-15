@@ -373,10 +373,10 @@ describe('get pre-reqs for releases', () => {
     // );
     const versionManager = new VersionManager([], []);
     versionManager.loadDependenciesFromFile(
-      path.resolve(__dirname, '../assets/sampleDependencies.json')
+      path.resolve(__dirname, '../assets/testDependencies.json')
     );
     versionManager.loadFamiliesFromFile(
-      path.resolve(__dirname, '../assets/sampleFamilies.json')
+      path.resolve(__dirname, '../assets/testFamilies.json')
     );
 
     const versionFinder = new VersionFinder(versionManager);
