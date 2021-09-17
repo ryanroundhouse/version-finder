@@ -37,17 +37,17 @@ export class VersionManager {
     });
   }
 
-  // updateFamily(family: Family): Boolean {
-  //   const matchingFamily = this.families.find((fam) => {
-  //     return fam.id === family.id;
-  //   });
-  //   if (matchingFamily) {
-  //     matchingFamily.name = family.name;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  updateFamily(family: Family): boolean {
+    const matchingFamily = this.families.find((fam) => {
+      return fam.id === family.id;
+    });
+    if (matchingFamily) {
+      matchingFamily.name = family.name;
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   addDependency(dependency: Dependency): boolean {
     // can't depend on itself.

@@ -45,7 +45,23 @@ describe('version manager family tests', () => {
     expect(versionManager.families[1].id).does.not.equal(999);
     expect(result).to.be.true;
   });
-  it('version manager can rename a family', () => {});
+  it('version manager can rename a family', () => {
+    const familyToBeRenamed = new Family(0, '0th');
+    const newNamedFamily = new Family(0, '1st');
+    const versionManager = new VersionManager([familyToBeRenamed], []);
+    const result = versionManager.updateFamily(newNamedFamily);
+
+    expect(versionManager.families[0].name).equals(newNamedFamily.name);
+    expect(result).to.be.true;
+  });
+  it('version manager cant rename a family it doesnt hae', () => {
+    const familyToBeRenamed = new Family(0, '0th');
+    const versionManager = new VersionManager([], []);
+    const result = versionManager.updateFamily(familyToBeRenamed);
+
+    expect(result).to.be.false;
+    expect(versionManager.families.length).equals(0);
+  });
 });
 describe('version manager dependency tests', () => {
   it('get dependencies gets dependencies', () => {

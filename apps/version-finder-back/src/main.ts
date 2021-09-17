@@ -29,6 +29,12 @@ app.post('/families/add', (req, res) => {
   res.send(result);
 });
 
+app.post('/families/update', (req, res) => {
+  const newFamily: Family = JSON.parse(req.body.family);
+  const result = versionManagerApi.updateFamily(newFamily);
+  res.send(result);
+});
+
 app.get('/families/get', (req, res) => {
   res.send(versionManagerApi.getAllFamilies());
 });

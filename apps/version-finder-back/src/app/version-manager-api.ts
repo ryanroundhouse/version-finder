@@ -25,4 +25,8 @@ export class VersionManagerApi {
   addFamily(newFamily: Family) {
     return this.versionManager.addFamily(newFamily);
   }
+
+  updateFamily(newFamily: Family) {
+    return this.versionManager.updateFamily(newFamily);
+  }
 }
