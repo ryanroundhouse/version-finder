@@ -39,4 +39,9 @@ export class AddReleaseComponent implements OnInit {
       this.refreshFamilies();
     });
   }
+
+  updateFamily(familyName: string, familyId: number) {
+    console.log(familyName);
+    console.log(familyId);
+  }
 }
