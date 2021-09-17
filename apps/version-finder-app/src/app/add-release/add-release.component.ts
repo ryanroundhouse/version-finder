@@ -40,8 +40,19 @@ export class AddReleaseComponent implements OnInit {
     });
   }
 
-  updateFamily(familyName: string, familyId: number) {
-    console.log(familyName);
-    console.log(familyId);
+  updateFamily(familyName: string, familyId: string) {
+    // update the family
+    const familyToUpdate = this.families.find((fam) => {
+      return fam.id === familyId;
+    });
+    if (familyToUpdate) {
+      familyToUpdate.name = familyName;
+      this.versionManagerService
+        .updateFamily(familyToUpdate)
+        .subscribe((result: any) => {
+          console.log(result);
+          this.refreshFamilies();
+        });
+    }
   }
 }

@@ -24,4 +24,10 @@ export class VersionManagerService {
       family: JSON.stringify(newFamily),
     });
   }
+
+  updateFamily(newFamily: Family): any {
+    return this.http.post<any>(`${this.baseUrl}/families/update`, {
+      family: JSON.stringify(newFamily),
+    });
+  }
 }
