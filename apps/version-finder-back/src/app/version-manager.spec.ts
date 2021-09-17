@@ -45,6 +45,7 @@ describe('version manager family tests', () => {
     expect(versionManager.families[1].id).does.not.equal(999);
     expect(result).to.be.true;
   });
+  it('version manager can rename a family', () => {});
 });
 describe('version manager dependency tests', () => {
   it('get dependencies gets dependencies', () => {
