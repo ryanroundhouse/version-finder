@@ -16,6 +16,11 @@ export class VersionManager {
 
   addFamily(newFamily: Family): boolean {
     if (!this.families.includes(newFamily)) {
+      let lastId = 0;
+      if (this.families.length > 0) {
+        lastId = this.families[this.families.length - 1].id + 1;
+      }
+      newFamily.id = lastId;
       this.families.push(newFamily);
       return true;
     }

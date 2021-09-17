@@ -27,6 +27,24 @@ describe('version manager family tests', () => {
     expect(versionManager.families).has.same.members([newFamily]);
     expect(result).to.be.false;
   });
+  it('add family assigns a new id when no families present', () => {
+    const newFamily = new Family(-1, '0th');
+    const versionManager = new VersionManager([], []);
+    const result = versionManager.addFamily(newFamily);
+
+    expect(versionManager.families[0].id).does.not.equal(-1);
+    expect(result).to.be.true;
+  });
+  it('add family assigns a new id when families are present', () => {
+    const oldFamily = new Family(0, '0th');
+    const newFamily = new Family(999, '1st');
+    const versionManager = new VersionManager([oldFamily], []);
+    const result = versionManager.addFamily(newFamily);
+
+    expect(versionManager.families[0].id).does.not.equal(999);
+    expect(versionManager.families[1].id).does.not.equal(999);
+    expect(result).to.be.true;
+  });
 });
 describe('version manager dependency tests', () => {
   it('get dependencies gets dependencies', () => {
