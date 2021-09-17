@@ -138,5 +138,12 @@
     "version": "6.6.2",
     "supported": true,
     "dependencies": [18,15,7]
+  },
+  {
+    "id": 19,
+    "family": 1,
+    "version": "6.6.2",
+    "supported": true,
+    "dependencies": [18,15,7]
   }
 ]

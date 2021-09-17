@@ -21,4 +21,8 @@ export class VersionManagerApi {
   getAllDependencies(): Dependency[] {
     return this.versionManager.getDependencies();
   }
+
+  addFamily(newFamily: Family) {
+    return this.versionManager.addFamily(newFamily);
+  }
 }

@@ -11,14 +11,6 @@ export class VersionFinderService {
 
   constructor(private http: HttpClient) {}
 
-  getAllDependencies(): Observable<Dependency[]> {
-    return this.http.get<Dependency[]>(`${this.baseUrl}/dependencies/get`);
-  }
-
-  getAllFamilies(): Observable<Family[]> {
-    return this.http.get<Family[]>(`${this.baseUrl}/families/get`);
-  }
-
   findDependencies(dependencies: Dependency[]): Observable<Dependency[]> {
     const dependenciesToSearch = JSON.stringify(dependencies);
     return this.http.post<Dependency[]>(`${this.baseUrl}/find-dependencies`, {

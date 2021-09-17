@@ -4,13 +4,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { AddReleaseComponent } from './add-release/add-release.component';
+import { FindDependenciesComponent } from './find-dependencies/find-dependencies.component';
+
+const routes: Routes = [
+  { path: 'add', component: AddReleaseComponent },
+  { path: '**', component: FindDependenciesComponent },
+];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AddReleaseComponent, FindDependenciesComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(routes),
     HttpClientModule,
     FormsModule,
   ],

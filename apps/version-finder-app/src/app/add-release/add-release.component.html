@@ -1,0 +1,8 @@
+<h1>Families</h1>
+<ul class="family-list">
+  <li *ngFor="let family of families" class="family-item">
+    <h3 class="mx-3">{{ family.name }}</h3>
+  </li>
+</ul>
+<input type="text" #newFamilyName />
+<button (click)="addFamily(newFamilyName.value)">Add Family</button>

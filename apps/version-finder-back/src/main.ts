@@ -1,20 +1,16 @@
-import { Dependency } from '@version-finder/version-finder-lib';
+import { Dependency, Family } from '@version-finder/version-finder-lib';
 import * as express from 'express';
 import { VersionFinderApi } from './app/version-finder-api';
 import * as cors from 'cors';
+import { VersionManagerApi } from './app/version-manager-api';
 
 const app = express();
 const versionFinderApi = new VersionFinderApi();
+const versionManagerApi = new VersionManagerApi();
 
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
-
-app.get('/api', (req, res) => {
-  const deps: Dependency[] = [];
-  deps.push(new Dependency(-1, -1, '1.0', true, []));
-  res.send(JSON.stringify(deps));
-});
 
 app.post('/find-dependencies', (req, res) => {
   console.log(
@@ -27,8 +23,14 @@ app.post('/find-dependencies', (req, res) => {
   res.send(result);
 });
 
+app.post('/families/add', (req, res) => {
+  const newFamily: Family = JSON.parse(req.body.family);
+  const result = versionManagerApi.addFamily(newFamily);
+  res.send(result);
+});
+
 app.get('/families/get', (req, res) => {
-  res.send(versionFinderApi.getAllFamilies());
+  res.send(versionManagerApi.getAllFamilies());
 });
 
 app.get('/dependencies/get', (req, res) => {
@@ -42,7 +44,7 @@ app.get('/dependencies/get', (req, res) => {
   if (ids) {
     res.send(versionFinderApi.getDependenciesForProductIdList(ids));
   } else {
-    res.send(versionFinderApi.getAllDependencies());
+    res.send(versionManagerApi.getAllDependencies());
   }
 });
 
