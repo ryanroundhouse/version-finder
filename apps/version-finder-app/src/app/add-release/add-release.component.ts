@@ -43,7 +43,7 @@ export class AddReleaseComponent implements OnInit {
   updateFamily(familyName: string, familyId: string) {
     // update the family
     const familyToUpdate = this.families.find((fam) => {
-      return fam.id === familyId;
+      return fam.id === Number(familyId);
     });
     if (familyToUpdate) {
       familyToUpdate.name = familyName;
