@@ -7,14 +7,21 @@ import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
 import { AddReleaseComponent } from './add-release/add-release.component';
 import { FindDependenciesComponent } from './find-dependencies/find-dependencies.component';
+import { AddFamilyComponent } from './add-family/add-family.component';
 
 const routes: Routes = [
-  { path: 'add', component: AddReleaseComponent },
+  { path: 'add-release', component: AddReleaseComponent },
+  { path: 'add-family', component: AddFamilyComponent },
   { path: '**', component: FindDependenciesComponent },
 ];
 
 @NgModule({
-  declarations: [AppComponent, AddReleaseComponent, FindDependenciesComponent],
+  declarations: [
+    AppComponent,
+    AddReleaseComponent,
+    FindDependenciesComponent,
+    AddFamilyComponent,
+  ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
