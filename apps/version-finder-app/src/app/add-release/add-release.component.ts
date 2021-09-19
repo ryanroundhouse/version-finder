@@ -49,7 +49,7 @@ export class AddReleaseComponent implements OnInit {
       familyToUpdate.name = familyName;
       this.versionManagerService
         .updateFamily(familyToUpdate)
-        .subscribe((result: any) => {
+        .subscribe((result: boolean) => {
           console.log(result);
           this.refreshFamilies();
         });
