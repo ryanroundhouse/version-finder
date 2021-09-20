@@ -8,11 +8,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddReleaseComponent } from './add-release/add-release.component';
 import { FindDependenciesComponent } from './find-dependencies/find-dependencies.component';
 import { AddFamilyComponent } from './add-family/add-family.component';
+import { LatestReleasesComponent } from './latest-releases/latest-releases.component';
 
 const routes: Routes = [
   { path: 'add-release', component: AddReleaseComponent },
   { path: 'add-family', component: AddFamilyComponent },
-  { path: '**', component: FindDependenciesComponent },
+  { path: 'release-lookup', component: FindDependenciesComponent },
+  { path: '**', component: LatestReleasesComponent },
 ];
 
 @NgModule({
@@ -21,6 +23,7 @@ const routes: Routes = [
     AddReleaseComponent,
     FindDependenciesComponent,
     AddFamilyComponent,
+    LatestReleasesComponent,
   ],
   imports: [
     BrowserModule,
