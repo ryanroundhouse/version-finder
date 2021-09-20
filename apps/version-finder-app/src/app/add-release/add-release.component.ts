@@ -15,12 +15,16 @@ export class AddReleaseComponent implements OnInit {
   constructor(private versionManagerService: VersionManagerService) {}
 
   ngOnInit(): void {
+    this.refreshDependencies();
+    this.refreshFamilies();
+  }
+
+  refreshDependencies() {
     this.versionManagerService
       .getAllDependencies()
       .subscribe((dependencies: Dependency[]) => {
         this.dependencies = dependencies;
       });
-    this.refreshFamilies();
   }
 
   refreshFamilies() {
@@ -31,28 +35,30 @@ export class AddReleaseComponent implements OnInit {
       });
   }
 
-  addFamily(newFamilyName: string) {
-    console.log('got it ');
-    const newFamily = new Family(-1, newFamilyName);
-    this.versionManagerService.addFamily(newFamily).subscribe((result: any) => {
-      console.log(result);
-      this.refreshFamilies();
+  getReleasesByFamily(familyId: number): Dependency[] {
+    const releases = this.dependencies.filter((dep) => {
+      return dep.family === familyId;
     });
+    return releases;
   }
 
-  updateFamily(familyName: string, familyId: string) {
-    // update the family
-    const familyToUpdate = this.families.find((fam) => {
-      return fam.id === Number(familyId);
+  getDependenciesForRelease(dependencies: number[]): Dependency[] {
+    const foundDependencies: Dependency[] = [];
+    dependencies.forEach((depId) => {
+      const foundDep = this.dependencies.find((dep) => {
+        return dep.id === depId;
+      });
+      if (foundDep) {
+        foundDependencies.push(foundDep);
+      }
     });
-    if (familyToUpdate) {
-      familyToUpdate.name = familyName;
-      this.versionManagerService
-        .updateFamily(familyToUpdate)
-        .subscribe((result: boolean) => {
-          console.log(result);
-          this.refreshFamilies();
-        });
-    }
+    return foundDependencies;
+  }
+
+  getFamilyNameById(familyId: number): string | undefined {
+    const family = this.families.find((fam) => {
+      return fam.id === familyId;
+    });
+    return family?.name;
   }
 }
