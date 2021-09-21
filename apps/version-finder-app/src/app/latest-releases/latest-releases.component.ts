@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Dependency, Family } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'version-finder-latest-releases',
@@ -36,13 +37,22 @@ export class LatestReleasesComponent implements OnInit {
       });
   }
 
+  getFriendlyDate(dateString: string | undefined) {
+    if (dateString) {
+      return moment(dateString).format('MMMM d, YYYY');
+    } else {
+      return undefined;
+    }
+  }
+
   getLatestReleaseByFamily(
     familyId: number | undefined
   ): Dependency | undefined {
     let latestRelease: Dependency | undefined;
     if (familyId !== undefined) {
       latestRelease = this.dependencies.find((dep) => {
-        return dep.family === familyId;
+        const isReleased = moment(dep.releaseDate) < moment(moment.now());
+        return dep.family === familyId && isReleased;
       });
     }
     return latestRelease;
@@ -61,6 +71,32 @@ export class LatestReleasesComponent implements OnInit {
       });
     }
     return foundDependencies;
+  }
+
+  get64dependencies(dependencies: number[] | undefined): Dependency[] {
+    const stream64families: Dependency[] = [];
+    if (dependencies) {
+      const foundDependencies = this.dependencies.filter((dep) => {
+        return [0, 6, 7].includes(dep.family) && dependencies.includes(dep.id);
+      });
+      foundDependencies.forEach((dep) => {
+        stream64families.push(dep);
+      });
+    }
+    return stream64families;
+  }
+
+  get66dependencies(dependencies: number[] | undefined): Dependency[] {
+    const stream64families: Dependency[] = [];
+    if (dependencies) {
+      const foundDependencies = this.dependencies.filter((dep) => {
+        return [4, 5].includes(dep.family) && dependencies.includes(dep.id);
+      });
+      foundDependencies.forEach((dep) => {
+        stream64families.push(dep);
+      });
+    }
+    return stream64families;
   }
 
   getFamilyNameById(familyId: number): string | undefined {

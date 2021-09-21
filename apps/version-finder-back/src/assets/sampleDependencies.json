@@ -4,146 +4,167 @@
     "family": 0,
     "version": "6.4.30",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/4/2021"
   },
   {
     "id": 1,
     "family": 0,
     "version": "6.4.29",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 2,
     "family": 0,
     "version": "6.4.28",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 3,
     "family": 0,
     "version": "6.4.27",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 4,
     "family": 0,
     "version": "6.4.26",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 5,
     "family": 0,
     "version": "6.4.26",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 6,
     "family": 4,
     "version": "6.6.9",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 7,
     "family": 4,
     "version": "6.6.8",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 8,
     "family": 4,
     "version": "6.6.7",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 9,
     "family": 4,
     "version": "6.6.5",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 10,
     "family": 4,
     "version": "6.6.4",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 11,
     "family": 2,
     "version": "6.8.1",
     "supported": true,
-    "dependencies": [6,0]
+    "dependencies": [6,0],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 12,
     "family": 2,
     "version": "6.8",
     "supported": true,
-    "dependencies": [6,0]
+    "dependencies": [6,0],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 13,
     "family": 2,
     "version": "6.7.2",
     "supported": false,
-    "dependencies": [9,3,14,15]
+    "dependencies": [9,3,14,15],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 14,
     "family": 5,
     "version": "6.6.9",
     "supported": true,
-    "dependencies": [7]
+    "dependencies": [7],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 15,
     "family": 6,
     "version": "6.4.29",
     "supported": true,
-    "dependencies": [16]
+    "dependencies": [16],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 16,
     "family": 0,
     "version": "6.4.20",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 17,
     "family": 1,
     "version": "6.6.3",
     "supported": true,
-    "dependencies": [18,15,7]
+    "dependencies": [18,15,7],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 18,
     "family": 7,
     "version": "6.4.20m",
     "supported": true,
-    "dependencies": []
+    "dependencies": [],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 19,
     "family": 1,
     "version": "6.6.2",
     "supported": true,
-    "dependencies": [18,15,7]
+    "dependencies": [18,15,7],
+    "releaseDate": "1/2/2021"
   },
   {
     "id": 19,
     "family": 1,
     "version": "6.6.2",
     "supported": true,
-    "dependencies": [18,15,7]
+    "dependencies": [18,15,7],
+    "releaseDate": "1/2/2021"
   }
 ]
