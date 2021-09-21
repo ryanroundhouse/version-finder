@@ -2,9 +2,9 @@
 <div *ngFor="let family of families" class="flex-down mx-3 my-5">
   <h2>{{ family.name }}</h2>
   <ul class="dependency-list flex-right">
-    <h3>
-      {{ getLatestReleaseByFamily(family.id)?.version }}
-    </h3>
+    <div class="d-flex flex-right">
+      <h3>v{{ getLatestReleaseByFamily(family.id)?.version }}</h3>
+    </div>
     <div
       *ngIf="
         getDependenciesForRelease(
@@ -22,10 +22,9 @@
           "
           class="flex-down mx-3"
         >
-          <h4>
-            {{ getFamilyNameById(dependency.family) }} -
-            {{ dependency.version }}
-          </h4>
+          <label>
+            {{ getFamilyNameById(dependency.family) }} v{{ dependency.version }}
+          </label>
         </li>
       </ul>
     </div>
