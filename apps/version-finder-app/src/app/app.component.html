@@ -1,18 +1,22 @@
-<h1>Version Finder</h1>
-<nav>
-  <ul>
-    <li><a routerLink="**" routerLinkActive="active">Latest Releases</a></li>
-    <li>
-      <a routerLink="/release-lookup" routerLinkActive="active"
-        >What do I need?</a
-      >
-    </li>
-    <li>
-      <a routerLink="/add-family" routerLinkActive="active">Add Family</a>
-    </li>
-    <li>
-      <a routerLink="/add-release" routerLinkActive="active">Add Release</a>
-    </li>
-  </ul>
-</nav>
+<div class="d-flex align-items-center">
+  <h1>Version Finder</h1>
+  <nav class="ms-auto">
+    <ul class="d-flex justify-content-end flex-row">
+      <li class="mx-4 list-unstyled">
+        <a routerLink="**" routerLinkActive="active">Latest Releases</a>
+      </li>
+      <li class="mx-4 list-unstyled">
+        <a routerLink="/release-lookup" routerLinkActive="active"
+          >What do I need?</a
+        >
+      </li>
+      <li class="mx-4 list-unstyled">
+        <a routerLink="/add-family" routerLinkActive="active">Add Family</a>
+      </li>
+      <li class="mx-4 list-unstyled">
+        <a routerLink="/add-release" routerLinkActive="active">Add Release</a>
+      </li>
+    </ul>
+  </nav>
+</div>
 <router-outlet></router-outlet>
