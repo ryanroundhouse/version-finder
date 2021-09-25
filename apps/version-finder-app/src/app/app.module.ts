@@ -10,6 +10,7 @@ import { FindDependenciesComponent } from './find-dependencies/find-dependencies
 import { AddFamilyComponent } from './add-family/add-family.component';
 import { LatestReleasesComponent } from './latest-releases/latest-releases.component';
 import { TestComponentComponent } from './test-component/test-component.component';
+import { AddDependencyComponent } from './add-release/add-dependency/add-dependency.component';
 
 const routes: Routes = [
   { path: 'add-release', component: AddReleaseComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
     AddFamilyComponent,
     LatestReleasesComponent,
     TestComponentComponent,
+    AddDependencyComponent,
   ],
   imports: [
     BrowserModule,

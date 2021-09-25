@@ -1,0 +1,23 @@
+<div class="d-flex flow-right">
+  <select
+    [(ngModel)]="selectedFamily"
+    (ngModelChange)="onChangeProductSelection($event)"
+  >
+    <option *ngFor="let family of families" [ngValue]="family">
+      {{ family.name }}
+    </option>
+  </select>
+  <div>
+    <select
+      [(ngModel)]="selectedVersion"
+      (ngModelChange)="onChangeVersionSelection($event)"
+    >
+      <option *ngFor="let version of versions" [ngValue]="version">
+        {{ version }}
+      </option>
+    </select>
+  </div>
+  <button *ngIf="selectedVersion && selectedFamily" (click)="onAdd($event)">
+    add
+  </button>
+</div>

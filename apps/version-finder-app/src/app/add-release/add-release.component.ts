@@ -10,7 +10,6 @@ import { VersionManagerService } from '../services/version-manager.service';
 export class AddReleaseComponent implements OnInit {
   dependencies: Dependency[] = [];
   families: Family[] = [];
-  newFamilyName = '';
 
   constructor(private versionManagerService: VersionManagerService) {}
 
@@ -62,7 +61,7 @@ export class AddReleaseComponent implements OnInit {
     return family?.name;
   }
 
-  onAdd(event: any) {
-    console.log(event);
+  addDependencyEvent($event: number) {
+    console.log(`got add dependency event: ${$event}`);
   }
 }

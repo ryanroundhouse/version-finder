@@ -26,16 +26,10 @@
         </div>
       </li>
     </ul>
-    <div class="d-flex flow-right">
-      <select>
-        <option *ngFor="let family of families" [ngValue]="family">
-          {{ family.name }}
-        </option>
-      </select>
-      <div>
-        <select></select>
-      </div>
-      <button (click)="onAdd($event)">add</button>
-    </div>
+    <version-finder-add-dependency
+      [families]="families"
+      [dependencies]="dependencies"
+      (addDependencyEvent)="addDependencyEvent($event)"
+    ></version-finder-add-dependency>
   </article>
 </article>
