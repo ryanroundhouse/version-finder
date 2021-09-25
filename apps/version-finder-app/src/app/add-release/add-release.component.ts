@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Dependency, Family } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
+import { AddDependencyMessage } from './add-dependency/add-dependency-message';
 
 @Component({
   selector: 'version-finder-add-release',
@@ -61,7 +62,7 @@ export class AddReleaseComponent implements OnInit {
     return family?.name;
   }
 
-  addDependencyEvent($event: number) {
-    console.log(`got add dependency event: ${$event}`);
+  addDependencyEvent(event: AddDependencyMessage) {
+    console.log(`got add dependency event: ${JSON.stringify(event)}`);
   }
 }

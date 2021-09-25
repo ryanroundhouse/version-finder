@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { AddDependencyMessage } from './add-dependency-message';
 
 @Component({
   selector: 'version-finder-add-dependency',
@@ -9,7 +10,8 @@ import { Dependency, Family } from '@version-finder/version-finder-lib';
 export class AddDependencyComponent {
   @Input() families: Family[] = [];
   @Input() dependencies: Dependency[] = [];
-  @Output() addDependencyEvent = new EventEmitter<number>();
+  @Input() productId = -1;
+  @Output() addDependencyEvent = new EventEmitter<AddDependencyMessage>();
 
   selectedFamily: Family = this.families[0];
   versions: string[] = [];
@@ -27,7 +29,9 @@ export class AddDependencyComponent {
       );
     });
     if (depToAdd) {
-      this.addDependencyEvent.emit(depToAdd.id);
+      const addDependencyMessage: AddDependencyMessage =
+        new AddDependencyMessage(this.productId, depToAdd.id);
+      this.addDependencyEvent.emit(addDependencyMessage);
     }
     console.log(`child event: ${event}`);
   }
