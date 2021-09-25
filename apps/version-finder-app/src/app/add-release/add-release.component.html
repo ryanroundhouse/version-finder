@@ -1,26 +1,41 @@
-<h1>Releases</h1>
-<div *ngFor="let family of families" class="flex-down mx-3 my-5">
+<h1 class="text-center">Releases</h1>
+<article
+  *ngFor="let family of families"
+  class="p-4 bg-white d-inline-block m-5"
+>
   <h2>{{ family.name }}</h2>
-  <ul class="dependency-list flex-right">
-    <li
-      *ngFor="let release of getReleasesByFamily(family.id)"
-      class="flex-down mx-3"
-    >
-      <h3 class="text-center">{{ release.version }}</h3>
-      <h4>Dependencies:</h4>
-      <ul class="dependency-list">
-        <li
-          *ngFor="
-            let dependency of getDependenciesForRelease(release.dependencies)
-          "
-          class="flex-down mx-3"
-        >
+  <article
+    *ngFor="let release of getReleasesByFamily(family.id)"
+    class="p-4 bg-white d-inline-block m-5"
+  >
+    <h3 class="text-center">{{ release.version }}</h3>
+    <h4>Dependencies:</h4>
+    <ul class="dependency-list">
+      <li
+        *ngFor="
+          let dependency of getDependenciesForRelease(release.dependencies)
+        "
+        class="flex-down mx-3"
+      >
+        <div class="d-flex flex-right mt-3">
           <h4>
-            {{ getFamilyNameById(dependency.family) }} -
-            {{ dependency.version }}
+            {{ getFamilyNameById(dependency.family) }}
           </h4>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div>
+          <h4 class="ms-2">v{{ dependency.version }}</h4>
+          <button class="ms-auto">Delete</button>
+        </div>
+      </li>
+    </ul>
+    <div class="d-flex flow-right">
+      <select>
+        <option *ngFor="let family of families" [ngValue]="family">
+          {{ family.name }}
+        </option>
+      </select>
+      <div>
+        <select></select>
+      </div>
+      <button (click)="onAdd($event)">add</button>
+    </div>
+  </article>
+</article>

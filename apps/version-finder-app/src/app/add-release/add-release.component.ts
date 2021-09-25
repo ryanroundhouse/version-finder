@@ -61,4 +61,8 @@ export class AddReleaseComponent implements OnInit {
     });
     return family?.name;
   }
+
+  onAdd(event: any) {
+    console.log(event);
+  }
 }
