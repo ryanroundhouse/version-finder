@@ -35,4 +35,14 @@
       (addDependencyEvent)="addDependencyEvent($event)"
     ></version-finder-add-dependency>
   </article>
+  <article class="p-4 bg-white d-inline-block m-5">
+    <h3>Add a Release</h3>
+    <div class="flex-right">
+      <label class="mx-3">Version: </label>
+      <input type="text" class="me-3" #newReleaseVersion />
+      <button (click)="addRelease(newReleaseVersion.value, family.id)">
+        Add Release
+      </button>
+    </div>
+  </article>
 </article>

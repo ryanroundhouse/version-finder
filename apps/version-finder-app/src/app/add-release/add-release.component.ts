@@ -102,4 +102,15 @@ export class AddReleaseComponent implements OnInit {
       }
     }
   }
+
+  addRelease(releaseVersion: string, familyId: number) {
+    console.log(`adding release ${releaseVersion} for family ${familyId}`);
+    const newRelease = new Dependency(-1, familyId, releaseVersion, true, []);
+    this.versionManagerService
+      .addRelease(newRelease)
+      .subscribe((result: boolean) => {
+        console.log(result);
+        this.refreshDependencies();
+      });
+  }
 }

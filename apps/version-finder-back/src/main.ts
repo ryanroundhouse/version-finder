@@ -29,6 +29,12 @@ app.post('/families/add', (req, res) => {
   res.send(result);
 });
 
+app.post('/dependencies/add', (req, res) => {
+  const newRelease: Dependency = JSON.parse(req.body.dependency);
+  const result = versionManagerApi.addRelease(newRelease);
+  res.send(result);
+});
+
 app.post('/families/update', (req, res) => {
   const newFamily: Family = JSON.parse(req.body.family);
   const result = versionManagerApi.updateFamily(newFamily);

@@ -23,7 +23,13 @@ export class VersionManagerService {
     const result = this.http.post<boolean>(`${this.baseUrl}/families/add`, {
       family: JSON.stringify(newFamily),
     });
-    console.log(`typeof: ${typeof result}`);
+    return result;
+  }
+
+  addRelease(newRelease: Dependency): Observable<boolean> {
+    const result = this.http.post<boolean>(`${this.baseUrl}/dependencies/add`, {
+      dependency: JSON.stringify(newRelease),
+    });
     return result;
   }
 
