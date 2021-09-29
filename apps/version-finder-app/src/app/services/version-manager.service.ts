@@ -33,6 +33,16 @@ export class VersionManagerService {
     return result;
   }
 
+  deleteRelease(releaseToDelete: Dependency) {
+    const result = this.http.post<boolean>(
+      `${this.baseUrl}/dependencies/delete`,
+      {
+        dependency: JSON.stringify(releaseToDelete),
+      }
+    );
+    return result;
+  }
+
   updateDependency(releaseToGetNewDependency: Dependency): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/dependencies/update`, {
       dependency: JSON.stringify(releaseToGetNewDependency),

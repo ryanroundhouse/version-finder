@@ -35,6 +35,12 @@ app.post('/dependencies/add', (req, res) => {
   res.send(result);
 });
 
+app.post('/dependencies/delete', (req, res) => {
+  const releaseToDelete: Dependency = JSON.parse(req.body.dependency);
+  const result = versionManagerApi.deleteRelease(releaseToDelete);
+  res.send(result);
+});
+
 app.post('/families/update', (req, res) => {
   const newFamily: Family = JSON.parse(req.body.family);
   const result = versionManagerApi.updateFamily(newFamily);

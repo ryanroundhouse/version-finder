@@ -149,4 +149,28 @@ describe('version manager dependency tests', () => {
     expect(result).to.be.false;
     expect(versionManager.dependencies).has.same.members([]);
   });
+  it('can delete release', () => {
+    const family = new Family(0, '0th');
+    const dependencyId = Math.random();
+    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
+      dependencyId,
+    ]);
+    const versionManager = new VersionManager([family], [dependency]);
+
+    const result = versionManager.deleteDependency(dependency);
+    expect(result).to.be.true;
+    expect(versionManager.dependencies).has.same.members([]);
+  });
+  it('returns false if it cant find the release', () => {
+    const family = new Family(0, '0th');
+    const dependencyId = Math.random();
+    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
+      dependencyId,
+    ]);
+    const versionManager = new VersionManager([family], []);
+
+    const result = versionManager.deleteDependency(dependency);
+    expect(result).to.be.false;
+    expect(versionManager.dependencies).has.same.members([]);
+  });
 });

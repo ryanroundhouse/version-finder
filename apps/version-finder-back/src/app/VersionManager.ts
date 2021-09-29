@@ -27,6 +27,18 @@ export class VersionManager {
     return false;
   }
 
+  deleteDependency(releaseToDelete: Dependency) {
+    const indexOfRelease = this.dependencies.findIndex((rel) => {
+      return rel.id === releaseToDelete.id;
+    });
+    if (indexOfRelease >= 0) {
+      this.dependencies.splice(indexOfRelease, 1);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getDependencies(): Dependency[] {
     return this.dependencies;
   }

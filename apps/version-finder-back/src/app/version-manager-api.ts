@@ -30,6 +30,10 @@ export class VersionManagerApi {
     return this.versionManager.addDependency(newRelease);
   }
 
+  deleteRelease(releaseToDelete: Dependency) {
+    return this.versionManager.deleteDependency(releaseToDelete);
+  }
+
   updateFamily(newFamily: Family) {
     return this.versionManager.updateFamily(newFamily);
   }

@@ -113,4 +113,19 @@ export class AddReleaseComponent implements OnInit {
         this.refreshDependencies();
       });
   }
+
+  deleteRelease(releaseId: number) {
+    console.log(`got delete request for release ${releaseId}'`);
+    const releaseToDelete = this.dependencies.find((rel) => {
+      return rel.id === releaseId;
+    });
+    if (releaseToDelete) {
+      this.versionManagerService
+        .deleteRelease(releaseToDelete)
+        .subscribe((result: boolean) => {
+          console.log(result);
+          this.refreshDependencies();
+        });
+    }
+  }
 }
