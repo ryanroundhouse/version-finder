@@ -49,6 +49,21 @@ export class VersionManager {
     }
   }
 
+  updateDependency(updatedDependency: Dependency): boolean {
+    const matchingDependency = this.dependencies.find((dep) => {
+      return dep.id === updatedDependency.id;
+    });
+    if (matchingDependency) {
+      matchingDependency.dependencies = updatedDependency.dependencies;
+      matchingDependency.releaseDate = updatedDependency.releaseDate;
+      matchingDependency.supported = updatedDependency.supported;
+      matchingDependency.version = updatedDependency.version;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   addDependency(dependency: Dependency): boolean {
     // can't depend on itself.
     if (dependency.dependencies.includes(dependency.id)) {

@@ -1,9 +1,9 @@
 export class AddDependencyMessage {
-  familyId: number;
-  dependencyId: number;
+  releaseId: number;
+  newDependencyId: number;
 
-  constructor(familyId: number, dependencyId: number) {
-    this.familyId = familyId;
-    this.dependencyId = dependencyId;
+  constructor(releaseId: number, dependencyId: number) {
+    this.releaseId = releaseId;
+    this.newDependencyId = dependencyId;
   }
 }

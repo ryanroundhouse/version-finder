@@ -25,6 +25,12 @@ export class VersionManagerService {
     });
   }
 
+  updateDependency(releaseToGetNewDependency: Dependency) {
+    return this.http.post<any>(`${this.baseUrl}/dependencies/update`, {
+      dependency: JSON.stringify(releaseToGetNewDependency),
+    });
+  }
+
   updateFamily(newFamily: Family): any {
     return this.http.post<any>(`${this.baseUrl}/families/update`, {
       family: JSON.stringify(newFamily),

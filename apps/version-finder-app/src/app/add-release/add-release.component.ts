@@ -64,5 +64,17 @@ export class AddReleaseComponent implements OnInit {
 
   addDependencyEvent(event: AddDependencyMessage) {
     console.log(`got add dependency event: ${JSON.stringify(event)}`);
+    const releaseToGetNewDependency = this.dependencies.find((dep) => {
+      return dep.id === event.releaseId;
+    });
+    if (releaseToGetNewDependency) {
+      releaseToGetNewDependency.dependencies.push(event.newDependencyId);
+      this.versionManagerService
+        .updateDependency(releaseToGetNewDependency)
+        .subscribe((result: boolean) => {
+          console.log(result);
+          this.refreshDependencies();
+        });
+    }
   }
 }

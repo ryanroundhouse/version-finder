@@ -54,6 +54,12 @@ app.get('/dependencies/get', (req, res) => {
   }
 });
 
+app.post('/dependencies/update', (req, res) => {
+  const updatedDependency: Dependency = JSON.parse(req.body.dependency);
+  const result = versionManagerApi.updateDependency(updatedDependency);
+  res.send(result);
+});
+
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);

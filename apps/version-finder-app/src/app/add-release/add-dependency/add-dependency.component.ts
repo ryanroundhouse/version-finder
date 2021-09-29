@@ -17,10 +17,6 @@ export class AddDependencyComponent {
   versions: string[] = [];
   selectedVersion = '';
 
-  constructor() {
-    console.log('child constructor');
-  }
-
   onAdd(event: any) {
     const depToAdd = this.dependencies.find((dep) => {
       return (
