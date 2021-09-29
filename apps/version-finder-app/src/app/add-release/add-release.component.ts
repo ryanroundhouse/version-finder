@@ -82,23 +82,28 @@ export class AddReleaseComponent implements OnInit {
     console.log(
       `got delete request for release ${releaseId}'s dependency ${dependencyId}`
     );
-    const release = this.dependencies.find((rel) => {
-      return rel.id === releaseId;
-    });
-    if (release) {
-      const indexOfDependency = release.dependencies.findIndex((rel) => {
-        return rel === dependencyId;
+    const confirmResult = confirm(
+      'Are you sure you want to delete the dependency?'
+    );
+    if (confirmResult) {
+      const release = this.dependencies.find((rel) => {
+        return rel.id === releaseId;
       });
-      console.log(`found index of dependency: ${indexOfDependency}`);
-      if (indexOfDependency >= 0) {
-        release.dependencies.splice(indexOfDependency, 1);
-        console.log(`new release after delete: ${JSON.stringify(release)}`);
-        this.versionManagerService
-          .updateDependency(release)
-          .subscribe((result: boolean) => {
-            console.log(result);
-            this.refreshDependencies();
-          });
+      if (release) {
+        const indexOfDependency = release.dependencies.findIndex((rel) => {
+          return rel === dependencyId;
+        });
+        console.log(`found index of dependency: ${indexOfDependency}`);
+        if (indexOfDependency >= 0) {
+          release.dependencies.splice(indexOfDependency, 1);
+          console.log(`new release after delete: ${JSON.stringify(release)}`);
+          this.versionManagerService
+            .updateDependency(release)
+            .subscribe((result: boolean) => {
+              console.log(result);
+              this.refreshDependencies();
+            });
+        }
       }
     }
   }
@@ -116,16 +121,21 @@ export class AddReleaseComponent implements OnInit {
 
   deleteRelease(releaseId: number) {
     console.log(`got delete request for release ${releaseId}'`);
-    const releaseToDelete = this.dependencies.find((rel) => {
-      return rel.id === releaseId;
-    });
-    if (releaseToDelete) {
-      this.versionManagerService
-        .deleteRelease(releaseToDelete)
-        .subscribe((result: boolean) => {
-          console.log(result);
-          this.refreshDependencies();
-        });
+    const confirmResult = confirm(
+      'Are you sure you want to delete the release?'
+    );
+    if (confirmResult) {
+      const releaseToDelete = this.dependencies.find((rel) => {
+        return rel.id === releaseId;
+      });
+      if (releaseToDelete) {
+        this.versionManagerService
+          .deleteRelease(releaseToDelete)
+          .subscribe((result: boolean) => {
+            console.log(result);
+            this.refreshDependencies();
+          });
+      }
     }
   }
 }

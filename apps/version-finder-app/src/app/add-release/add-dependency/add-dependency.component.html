@@ -1,7 +1,9 @@
 <div class="d-flex flow-right">
+  <label class="me-3">Add dependency:</label>
   <select
     [(ngModel)]="selectedFamily"
     (ngModelChange)="onChangeProductSelection($event)"
+    class="me-3"
   >
     <option *ngFor="let family of families" [ngValue]="family">
       {{ family.name }}
@@ -11,6 +13,7 @@
     <select
       [(ngModel)]="selectedVersion"
       (ngModelChange)="onChangeVersionSelection($event)"
+      class="me-3"
     >
       <option *ngFor="let version of versions" [ngValue]="version">
         {{ version }}

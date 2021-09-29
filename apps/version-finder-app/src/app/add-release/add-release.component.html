@@ -34,7 +34,9 @@
       [productId]="release.id"
       (addDependencyEvent)="addDependencyEvent($event)"
     ></version-finder-add-dependency>
-    <button (click)="deleteRelease(release.id)">Delete Release</button>
+    <button class="float-end mt-4" (click)="deleteRelease(release.id)">
+      Delete Release
+    </button>
   </article>
   <article class="p-4 bg-white d-inline-block m-5">
     <h3>Add a Release</h3>
