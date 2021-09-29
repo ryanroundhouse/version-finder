@@ -22,7 +22,9 @@
             {{ getFamilyNameById(dependency.family) }}
           </h4>
           <h4 class="ms-2">v{{ dependency.version }}</h4>
-          <button class="ms-auto">Delete</button>
+          <button class="ms-auto" (click)="onDelete(release.id, dependency.id)">
+            Delete
+          </button>
         </div>
       </li>
     </ul>
