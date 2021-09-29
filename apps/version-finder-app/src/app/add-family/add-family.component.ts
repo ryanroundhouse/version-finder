@@ -34,10 +34,12 @@ export class AddFamilyComponent implements OnInit {
   addFamily(newFamilyName: string) {
     console.log('got it ');
     const newFamily = new Family(-1, newFamilyName);
-    this.versionManagerService.addFamily(newFamily).subscribe((result: any) => {
-      console.log(result);
-      this.refreshFamilies();
-    });
+    this.versionManagerService
+      .addFamily(newFamily)
+      .subscribe((result: boolean) => {
+        console.log(result);
+        this.refreshFamilies();
+      });
   }
 
   updateFamily(familyName: string, familyId: string) {

@@ -17,7 +17,7 @@ export class AddDependencyComponent {
   versions: string[] = [];
   selectedVersion = '';
 
-  onAdd(event: any) {
+  onAdd() {
     const depToAdd = this.dependencies.find((dep) => {
       return (
         dep.family === this.selectedFamily.id &&
@@ -29,10 +29,9 @@ export class AddDependencyComponent {
         new AddDependencyMessage(this.productId, depToAdd.id);
       this.addDependencyEvent.emit(addDependencyMessage);
     }
-    console.log(`child event: ${event}`);
   }
 
-  onChangeProductSelection(value: any) {
+  onChangeProductSelection(value: Family) {
     const versionsOfFamily = this.dependencies
       .filter((dep) => {
         return dep.family === value.id;
