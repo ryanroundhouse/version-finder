@@ -7,7 +7,8 @@ import { Dependency, Family } from '@version-finder/version-finder-lib';
   providedIn: 'root',
 })
 export class VersionManagerService {
-  private readonly baseUrl: string = 'http://localhost:3333';
+  private readonly port = 80;
+  private readonly baseUrl: string = `http://localhost:${this.port}`;
 
   constructor(private http: HttpClient) {}
 

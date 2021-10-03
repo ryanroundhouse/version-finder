@@ -3,6 +3,8 @@ import * as express from 'express';
 import { VersionFinderApi } from './app/version-finder-api';
 import * as cors from 'cors';
 import { VersionManagerApi } from './app/version-manager-api';
+import path = require('path');
+import * as compression from 'compression';
 
 const app = express();
 const versionFinderApi = new VersionFinderApi();
@@ -11,6 +13,7 @@ const versionManagerApi = new VersionManagerApi();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
+app.use(compression());
 
 app.post('/find-dependencies', (req, res) => {
   console.log(
@@ -72,8 +75,11 @@ app.post('/dependencies/update', (req, res) => {
   res.send(result);
 });
 
-const port = process.env.port || 3333;
+app.use(express.static(__dirname + '/front'));
+app.get('/*', (req, res) => res.sendFile(path.join(__dirname)));
+
+const port = process.env.port || 80;
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  console.log(`Listening at http://localhost:${port}/`);
 });
 server.on('error', console.error);
