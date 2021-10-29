@@ -2,20 +2,18 @@ import { Dependency, Family } from '@version-finder/version-finder-lib';
 import VersionFinder from './VersionFinder';
 import { VersionManager } from './VersionManager';
 import * as path from 'path';
-import { debug } from 'console';
+import { VersionLoaderFile } from './VersionLoaderFile';
 
 export class VersionFinderApi {
   versionManager: VersionManager;
   versionFinder: VersionFinder;
 
   constructor() {
-    this.versionManager = new VersionManager([], []);
-    this.versionManager.loadDependenciesFromFile(
+    const versionLoaderFile = new VersionLoaderFile(
+      path.resolve(__dirname, 'assets/sampleFamilies.json'),
       path.resolve(__dirname, 'assets/sampleDependencies.json')
     );
-    this.versionManager.loadFamiliesFromFile(
-      path.resolve(__dirname, 'assets/sampleFamilies.json')
-    );
+    this.versionManager = new VersionManager(versionLoaderFile);
     this.versionFinder = new VersionFinder(this.versionManager);
   }
 
