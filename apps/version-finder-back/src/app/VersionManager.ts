@@ -1,13 +1,14 @@
 import { Dependency, Family } from '@version-finder/version-finder-lib';
 import * as fs from 'fs';
+import { VersionLoader } from './VersionLoader';
 
 export class VersionManager {
   dependencies: Dependency[];
   families: Family[];
 
-  constructor(families: Family[], dependencies: Dependency[]) {
-    this.dependencies = dependencies;
-    this.families = families;
+  constructor(versionLoader: VersionLoader) {
+    this.dependencies = versionLoader.getDependencies();
+    this.families = versionLoader.getFamilies();
   }
 
   getFamilies(): Family[] {

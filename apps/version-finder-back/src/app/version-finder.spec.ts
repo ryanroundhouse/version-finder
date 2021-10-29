@@ -4,12 +4,14 @@ import { Dependency, Family } from '@version-finder/version-finder-lib';
 import VersionFinder from './VersionFinder';
 import { VersionManager } from './VersionManager';
 import path = require('path');
+import { VersionLoaderMemory } from './VersionLoaderMemory';
 
 describe('get pre-reqs for releases', () => {
   it('should find a single entry when only that single entry exists', () => {
     const family = new Family(0, '0th');
     const dependency = new Dependency(0, family.id, '', true, []);
-    const versionManager = new VersionManager([family], [dependency]);
+    const versionLoader = new VersionLoaderMemory([family], [dependency]);
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([dependency]);
@@ -32,10 +34,11 @@ describe('get pre-reqs for releases', () => {
       true,
       []
     );
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [dependencyFamily, unrelatedDependencyFamily],
       [dependency, unrelatedDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([dependency]);
@@ -58,10 +61,11 @@ describe('get pre-reqs for releases', () => {
       true,
       [relatedDependency.id]
     );
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [relatedDependencyFamily, dependencyFamily],
       [dependency, relatedDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([dependency]);
@@ -92,7 +96,7 @@ describe('get pre-reqs for releases', () => {
       true,
       [firstLevelDependency.id]
     );
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [
         secondLevelDependencyFamily,
         firstLevelDependencyFamily,
@@ -100,6 +104,7 @@ describe('get pre-reqs for releases', () => {
       ],
       [dependency, firstLevelDependency, secondLevelDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([dependency]);
@@ -143,10 +148,11 @@ describe('get pre-reqs for releases', () => {
       [middleDependency.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [superBottomFamily, bottomFamily, middleFamily, topFamily],
       [superBottomDependency, bottomDependency, middleDependency, topDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([topDependency]);
@@ -190,7 +196,7 @@ describe('get pre-reqs for releases', () => {
       [secondDependencyFromFamilyX.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [
         familyX,
         searchDependencyWithFirstDependencyFamily,
@@ -203,6 +209,7 @@ describe('get pre-reqs for releases', () => {
         searchDependencyWithSecondDependency,
       ]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([
@@ -248,7 +255,7 @@ describe('get pre-reqs for releases', () => {
       [newerDependencyFromFamilyX.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [
         familyX,
         searchDependencyWithFirstDependencyFamily,
@@ -261,6 +268,7 @@ describe('get pre-reqs for releases', () => {
         searchDependencyWithSecondDependency,
       ]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([
@@ -287,10 +295,11 @@ describe('get pre-reqs for releases', () => {
       [unsupportedDependency.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [unsupportedDependencyFamily, searchDependencyFamily],
       [unsupportedDependency, searchDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([searchDependency]);
@@ -358,8 +367,8 @@ describe('get pre-reqs for releases', () => {
       nsbl64Dependency,
       cis64Dependency,
     ];
-
-    const versionManager = new VersionManager([], []);
+    const versionLoader = new VersionLoaderMemory([], []);
+    const versionManager = new VersionManager(versionLoader);
     versionManager.loadDependenciesFromFile(
       path.resolve(__dirname, '../assets/testDependencies.json')
     );
@@ -396,10 +405,11 @@ describe('get pre-reqs for releases', () => {
       cis64Dependency.id,
     ]);
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [cis64Family, cis64mFamily, mcareFamily],
       [cis64Dependency, cis64mDependency, mcareDependency]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findDependenciesFor([mcareDependency]);
@@ -421,10 +431,11 @@ describe('get releases for pre-req', () => {
     const singleRelease = new Dependency(1, singleReleaseFamily.id, '', true, [
       productToQuery.id,
     ]);
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [productToQueryFamily, singleReleaseFamily],
       [singleRelease, productToQuery]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.whatProductsCanIRunWithDependency([
@@ -472,7 +483,7 @@ describe('get releases for pre-req', () => {
       [tooNewQueryProduct.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [queryProductFamily, dependencyFamily],
       [
         queryProduct,
@@ -482,6 +493,7 @@ describe('get releases for pre-req', () => {
         tooNewDependency,
       ]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.whatProductsCanIRunWithDependency([
@@ -506,10 +518,11 @@ describe('get releases for pre-req', () => {
       false,
       [productToQuery.id]
     );
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [productToQueryFamily, unsupportedReleaseFamily],
       [unsupportedRelease, productToQuery]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.whatProductsCanIRunWithDependency([
@@ -542,10 +555,11 @@ describe('get releases for pre-req', () => {
       [olderRelease.id]
     );
 
-    const versionManager = new VersionManager(
+    const versionLoader = new VersionLoaderMemory(
       [searchFamily, productFamily],
       [olderRelease, searchRelease, productForOlderRelease]
     );
+    const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.whatProductsCanIRunWithDependency([
