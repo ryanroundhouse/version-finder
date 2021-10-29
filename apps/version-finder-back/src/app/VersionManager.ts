@@ -103,28 +103,6 @@ export class VersionManager {
     return false;
   }
 
-  loadDependenciesFromFile(filePath: string) {
-    const buffer = fs.readFileSync(filePath);
-    const dependencyObjects: Dependency[] = JSON.parse(buffer.toString());
-    dependencyObjects.forEach((dependencyObject) => {
-      this.dependencies.push(
-        Object.assign(
-          new Dependency(-1, null, '-1', true, []),
-          dependencyObject
-        )
-      );
-    });
-  }
-
-  loadFamiliesFromFile(filePath: string) {
-    const buffer = fs.readFileSync(filePath);
-    const familyObjects: Family[] = JSON.parse(buffer.toString());
-    familyObjects.forEach((familyObject) => {
-      this.families.push(Object.assign(new Family(-1, ''), familyObject));
-    });
-    // this.families = familyObjects;
-  }
-
   writeDependenciesToFile(filePath: string) {
     fs.writeFile(filePath, JSON.stringify(this.dependencies), (err) => {
       if (err) {

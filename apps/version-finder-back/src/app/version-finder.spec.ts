@@ -4,6 +4,7 @@ import { Dependency, Family } from '@version-finder/version-finder-lib';
 import VersionFinder from './VersionFinder';
 import { VersionManager } from './VersionManager';
 import path = require('path');
+import { VersionLoaderFile } from './VersionLoaderFile';
 import { VersionLoaderMemory } from './VersionLoaderMemory';
 
 describe('get pre-reqs for releases', () => {
@@ -367,14 +368,11 @@ describe('get pre-reqs for releases', () => {
       nsbl64Dependency,
       cis64Dependency,
     ];
-    const versionLoader = new VersionLoaderMemory([], []);
-    const versionManager = new VersionManager(versionLoader);
-    versionManager.loadDependenciesFromFile(
+    const versionLoaderFile = new VersionLoaderFile(
+      path.resolve(__dirname, '../assets/testFamilies.json'),
       path.resolve(__dirname, '../assets/testDependencies.json')
     );
-    versionManager.loadFamiliesFromFile(
-      path.resolve(__dirname, '../assets/testFamilies.json')
-    );
+    const versionManager = new VersionManager(versionLoaderFile);
 
     const versionFinder = new VersionFinder(versionManager);
 

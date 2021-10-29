@@ -1,17 +1,16 @@
 import * as path from 'path';
 import { VersionManager } from './VersionManager';
 import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { VersionLoaderFile } from './VersionLoaderFile';
 
 export class VersionManagerApi {
   versionManager: VersionManager;
   constructor() {
-    this.versionManager = new VersionManager([], []);
-    this.versionManager.loadDependenciesFromFile(
+    const versionLoaderFile = new VersionLoaderFile(
+      path.resolve(__dirname, 'assets/sampleFamilies.json'),
       path.resolve(__dirname, 'assets/sampleDependencies.json')
     );
-    this.versionManager.loadFamiliesFromFile(
-      path.resolve(__dirname, 'assets/sampleFamilies.json')
-    );
+    this.versionManager = new VersionManager(versionLoaderFile);
   }
 
   getAllFamilies(): Family[] {
