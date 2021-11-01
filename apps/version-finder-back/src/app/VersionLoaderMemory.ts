@@ -17,4 +17,12 @@ export class VersionLoaderMemory implements VersionLoader {
   getFamilies(): Family[] {
     return this.families;
   }
+
+  addFamily(newFamily: Family): boolean {
+    return true;
+  }
+
+  addDependency(newDependency: Dependency): boolean {
+    return true;
+  }
 }

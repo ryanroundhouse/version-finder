@@ -17,6 +17,18 @@ export class VersionLoaderFile implements VersionLoader {
   getFamilies(): Family[] {
     return this.loadFamiliesFromFile(this.familyFilePath);
   }
+  addFamily(newFamily: Family): boolean {
+    const families = this.getFamilies();
+    families.push(newFamily);
+    this.writeFamiliesToFile(this.familyFilePath, families);
+    return true;
+  }
+  addDependency(newDependency: Dependency): boolean {
+    const dependencies = this.getDependencies();
+    dependencies.push(newDependency);
+    this.writeDependenciesToFile(this.dependencyFilePath, dependencies);
+    return true;
+  }
 
   loadDependenciesFromFile(filePath: string): Dependency[] {
     const dependencies: Dependency[] = [];
@@ -41,5 +53,23 @@ export class VersionLoaderFile implements VersionLoader {
       families.push(Object.assign(new Family(-1, ''), familyObject));
     });
     return families;
+  }
+
+  writeFamiliesToFile(filePath: string, families: Family[]) {
+    fs.writeFile(filePath, JSON.stringify(families), (err) => {
+      if (err) {
+        console.log('File write failed:', err);
+        return;
+      }
+    });
+  }
+
+  writeDependenciesToFile(filePath: string, dependencies: Dependency[]) {
+    fs.writeFile(filePath, JSON.stringify(dependencies), (err) => {
+      if (err) {
+        console.log('File write failed:', err);
+        return;
+      }
+    });
   }
 }

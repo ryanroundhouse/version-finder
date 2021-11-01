@@ -5,10 +5,12 @@ import { VersionLoader } from './VersionLoader';
 export class VersionManager {
   dependencies: Dependency[];
   families: Family[];
+  versionLoader: VersionLoader;
 
   constructor(versionLoader: VersionLoader) {
     this.dependencies = versionLoader.getDependencies();
     this.families = versionLoader.getFamilies();
+    this.versionLoader = versionLoader;
   }
 
   getFamilies(): Family[] {
@@ -23,6 +25,7 @@ export class VersionManager {
       }
       newFamily.id = lastId;
       this.families.push(newFamily);
+      this.versionLoader.addFamily(newFamily);
       return true;
     }
     return false;
@@ -97,27 +100,12 @@ export class VersionManager {
         return fam.id === dependency.family;
       })
     ) {
+      const depWithMaxId = this.dependencies.reduce((p, c) => (p.id > c.id ? p : c));
+      dependency.id = depWithMaxId.id + 1;
       this.dependencies.push(dependency);
+      this.versionLoader.addDependency(dependency);
       return true;
     }
     return false;
-  }
-
-  writeDependenciesToFile(filePath: string) {
-    fs.writeFile(filePath, JSON.stringify(this.dependencies), (err) => {
-      if (err) {
-        console.log('File write failed:', err);
-        return;
-      }
-    });
-  }
-
-  writeFamiliesToFile(filePath: string) {
-    fs.writeFile(filePath, JSON.stringify(this.families), (err) => {
-      if (err) {
-        console.log('File write failed:', err);
-        return;
-      }
-    });
   }
 }
