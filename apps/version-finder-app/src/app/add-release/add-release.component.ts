@@ -39,7 +39,6 @@ export class AddReleaseComponent implements OnInit {
     const releases = this.releases.filter((dep) => {
       return dep.product === productId;
     });
-    console.log(`found ${JSON.stringify(releases)}`);
     return releases;
   }
 
@@ -64,7 +63,6 @@ export class AddReleaseComponent implements OnInit {
   }
 
   addReleaseEvent(event: AddDependencyMessage) {
-    console.log(`got add Release event: ${JSON.stringify(event)}`);
     const releaseToGetNewRelease = this.releases.find((dep) => {
       return dep.id === event.releaseId;
     });
@@ -94,10 +92,8 @@ export class AddReleaseComponent implements OnInit {
         const indexOfRelease = release.releases.findIndex((rel) => {
           return rel === ReleaseId;
         });
-        console.log(`found index of Release: ${indexOfRelease}`);
         if (indexOfRelease >= 0) {
           release.releases.splice(indexOfRelease, 1);
-          console.log(`new release after delete: ${JSON.stringify(release)}`);
           this.versionManagerService
             .updateRelease(release)
             .subscribe((result: boolean) => {
@@ -107,6 +103,26 @@ export class AddReleaseComponent implements OnInit {
         }
       }
     }
+  }
+
+  onReleaseDateUpdate(
+    release: Release,
+    newReleaseDate: string,
+    newVersionNumber: string
+  ) {
+    console.log(
+      `release: ${JSON.stringify(release)} new date: ${JSON.stringify(
+        newReleaseDate
+      )} new version: ${JSON.stringify(newVersionNumber)}`
+    );
+    release.version = newVersionNumber;
+    release.releaseDate = newReleaseDate;
+    this.versionManagerService
+      .updateRelease(release)
+      .subscribe((result: boolean) => {
+        console.log(result);
+        this.refreshReleases();
+      });
   }
 
   addRelease(releaseVersion: string, ProductId: number) {

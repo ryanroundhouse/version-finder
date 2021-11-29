@@ -9,8 +9,33 @@
     class="p-4 bg-white d-inline-block m-5"
   >
     <h3 class="text-center">{{ release.version }}</h3>
+    <div class="flex-right">
+      <label class="mx-3">Version Number: </label>
+      <input
+        type="text"
+        class="me-3"
+        value="{{ release.version }}"
+        #versionNumber
+      />
+    </div>
+    <div class="flex-right">
+      <label class="mx-3">Release Date: </label>
+      <input
+        type="date"
+        class="me-3"
+        value="{{ release.releaseDate }}"
+        #releaseDate
+      />
+      <button
+        (click)="
+          onReleaseDateUpdate(release, releaseDate.value, versionNumber.value)
+        "
+      >
+        Update
+      </button>
+    </div>
     <h4>Dependencies:</h4>
-    <ul class="Release-list">
+    <ul class="dependency-list">
       <li
         *ngFor="let release of getReleasesForRelease(release.releases)"
         class="flex-down mx-3"
