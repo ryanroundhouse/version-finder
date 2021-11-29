@@ -39,7 +39,7 @@ export class LatestReleasesComponent implements OnInit {
 
   getFriendlyDate(dateString: string | undefined) {
     if (dateString) {
-      return moment(dateString).format('MMMM d, YYYY');
+      return moment(dateString).format('MMMM DD, YYYY');
     } else {
       return undefined;
     }
