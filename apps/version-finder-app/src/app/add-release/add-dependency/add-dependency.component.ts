@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { AddDependencyMessage } from './add-dependency-message';
 
 @Component({
@@ -8,40 +8,40 @@ import { AddDependencyMessage } from './add-dependency-message';
   styleUrls: ['./add-dependency.component.scss'],
 })
 export class AddDependencyComponent {
-  @Input() families: Family[] = [];
-  @Input() dependencies: Dependency[] = [];
+  @Input() Products: Product[] = [];
+  @Input() Releases: Release[] = [];
   @Input() productId = -1;
-  @Output() addDependencyEvent = new EventEmitter<AddDependencyMessage>();
+  @Output() addReleaseEvent = new EventEmitter<AddDependencyMessage>();
 
-  selectedFamily: Family = this.families[0];
+  selectedProduct: Product = this.Products[0];
   versions: string[] = [];
   selectedVersion = '';
 
   onAdd() {
-    const depToAdd = this.dependencies.find((dep) => {
+    const depToAdd = this.Releases.find((dep) => {
       return (
-        dep.family === this.selectedFamily.id &&
+        dep.product === this.selectedProduct.id &&
         dep.version === this.selectedVersion
       );
     });
     if (depToAdd) {
-      const addDependencyMessage: AddDependencyMessage =
-        new AddDependencyMessage(this.productId, depToAdd.id);
-      this.addDependencyEvent.emit(addDependencyMessage);
+      const addReleaseMessage: AddDependencyMessage = new AddDependencyMessage(
+        this.productId,
+        depToAdd.id
+      );
+      this.addReleaseEvent.emit(addReleaseMessage);
     }
   }
 
-  onChangeProductSelection(value: Family) {
-    const versionsOfFamily = this.dependencies
-      .filter((dep) => {
-        return dep.family === value.id;
-      })
-      .map((dep) => {
-        return dep.version;
-      });
-    this.versions = versionsOfFamily;
-    this.selectedVersion = versionsOfFamily[0];
-    console.log('found versions for this family: ' + versionsOfFamily);
+  onChangeProductSelection(value: Product) {
+    const versionsOfProduct = this.Releases.filter((dep) => {
+      return dep.product === value.id;
+    }).map((dep) => {
+      return dep.version;
+    });
+    this.versions = versionsOfProduct;
+    this.selectedVersion = versionsOfProduct[0];
+    console.log('found versions for this Product: ' + versionsOfProduct);
   }
 
   onChangeVersionSelection(value: string) {

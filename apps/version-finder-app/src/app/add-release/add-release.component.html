@@ -1,38 +1,36 @@
 <h1 class="text-center">Releases</h1>
 <article
-  *ngFor="let family of families"
+  *ngFor="let product of products"
   class="p-4 bg-white d-inline-block m-5"
 >
-  <h2>{{ family.name }}</h2>
+  <h2>{{ product.name }}</h2>
   <article
-    *ngFor="let release of getReleasesByFamily(family.id)"
+    *ngFor="let release of getReleasesByProduct(product.id)"
     class="p-4 bg-white d-inline-block m-5"
   >
     <h3 class="text-center">{{ release.version }}</h3>
     <h4>Dependencies:</h4>
-    <ul class="dependency-list">
+    <ul class="Release-list">
       <li
-        *ngFor="
-          let dependency of getDependenciesForRelease(release.dependencies)
-        "
+        *ngFor="let release of getReleasesForRelease(release.releases)"
         class="flex-down mx-3"
       >
         <div class="d-flex flex-right mt-3">
           <h4>
-            {{ getFamilyNameById(dependency.family) }}
+            {{ getProductNameById(release.product) }}
           </h4>
-          <h4 class="ms-2">v{{ dependency.version }}</h4>
-          <button class="ms-auto" (click)="onDelete(release.id, dependency.id)">
+          <h4 class="ms-2">v{{ release.version }}</h4>
+          <button class="ms-auto" (click)="onDelete(release.id, release.id)">
             Delete
           </button>
         </div>
       </li>
     </ul>
     <version-finder-add-dependency
-      [families]="families"
-      [dependencies]="dependencies"
+      [Products]="products"
+      [Releases]="releases"
       [productId]="release.id"
-      (addDependencyEvent)="addDependencyEvent($event)"
+      (addReleaseEvent)="addReleaseEvent($event)"
     ></version-finder-add-dependency>
     <button class="float-end mt-4" (click)="deleteRelease(release.id)">
       Delete Release
@@ -43,7 +41,7 @@
     <div class="flex-right">
       <label class="mx-3">Version: </label>
       <input type="text" class="me-3" #newReleaseVersion />
-      <button (click)="addRelease(newReleaseVersion.value, family.id)">
+      <button (click)="addRelease(newReleaseVersion.value, product.id)">
         Add Release
       </button>
     </div>

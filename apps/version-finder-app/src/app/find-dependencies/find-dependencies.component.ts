@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionFinderService } from '../services/version-finder.service';
 import { VersionManagerService } from '../services/version-manager.service';
 
 @Component({
-  selector: 'version-finder-find-dependencies',
+  selector: 'version-finder-find-releases',
   templateUrl: './find-dependencies.component.html',
   styleUrls: ['./find-dependencies.component.scss'],
 })
 export class FindDependenciesComponent implements OnInit {
-  dependencies: Dependency[] = [];
-  families: Family[] = [{ id: 0, name: 'test' }];
-  selectedFamily: Family = this.families[0];
+  releases: Release[] = [];
+  products: Product[] = [{ id: 0, name: 'test' }];
+  selectedProduct: Product = this.products[0];
   versions: string[] = [];
   selectedVersion = '';
-  foundDependencies: Dependency[] = [];
+  foundReleases: Release[] = [];
 
   constructor(
     private versionFinderService: VersionFinderService,
@@ -23,58 +23,58 @@ export class FindDependenciesComponent implements OnInit {
 
   ngOnInit(): void {
     this.versionManagerService
-      .getAllDependencies()
-      .subscribe((dependencies: Dependency[]) => {
-        this.dependencies = dependencies;
+      .getAllReleases()
+      .subscribe((Releases: Release[]) => {
+        this.releases = Releases;
       });
     this.versionManagerService
-      .getAllFamilies()
-      .subscribe((families: Family[]) => {
-        this.families = families;
-        // this.selectedFamily = this.families[0];
+      .getAllProducts()
+      .subscribe((Products: Product[]) => {
+        this.products = Products;
+        // this.selectedProduct = this.Products[0];
       });
   }
 
-  onChangeFamilySelection(value: Family) {
-    const versionsOfFamily = this.dependencies
+  onChangeProductSelection(value: Product) {
+    const versionsOfProduct = this.releases
       .filter((dep) => {
-        return dep.family === value.id;
+        return dep.product === value.id;
       })
       .map((dep) => {
         return dep.version;
       });
-    this.versions = versionsOfFamily;
-    this.selectedVersion = versionsOfFamily[0];
-    this.foundDependencies = [];
-    console.log('found versions for this family: ' + versionsOfFamily);
+    this.versions = versionsOfProduct;
+    this.selectedVersion = versionsOfProduct[0];
+    this.foundReleases = [];
+    console.log('found versions for this Product: ' + versionsOfProduct);
   }
 
   onChangeVersionSelection(value: string) {
-    this.foundDependencies = [];
+    this.foundReleases = [];
     console.log(value);
   }
 
-  getFamilyFromId(familyId: number): Family | undefined {
-    const family = this.families.find((family) => {
-      return family.id === familyId;
+  getProductFromId(productId: number): Product | undefined {
+    const product = this.products.find((product) => {
+      return product.id === productId;
     });
-    return family;
+    return product;
   }
 
   onSearch(event: any) {
-    const depToSearchFor = this.dependencies.find((dep) => {
+    const depToSearchFor = this.releases.find((dep) => {
       return (
-        dep.family === this.selectedFamily.id &&
+        dep.product === this.selectedProduct.id &&
         dep.version === this.selectedVersion
       );
     });
     console.log(`searching for ${JSON.stringify(depToSearchFor)}`);
     if (depToSearchFor) {
       this.versionFinderService
-        .findDependencies([depToSearchFor])
-        .subscribe((foundDependencies: Dependency[]) => {
-          this.foundDependencies = foundDependencies;
-          console.log('found: ' + this.foundDependencies);
+        .findReleases([depToSearchFor])
+        .subscribe((foundReleases: Release[]) => {
+          this.foundReleases = foundReleases;
+          console.log('found: ' + this.foundReleases);
         });
     }
   }

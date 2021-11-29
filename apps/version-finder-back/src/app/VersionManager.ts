@@ -1,109 +1,109 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import * as fs from 'fs';
 import { VersionLoader } from './VersionLoader';
 
 export class VersionManager {
-  dependencies: Dependency[];
-  families: Family[];
+  releases: Release[];
+  products: Product[];
   versionLoader: VersionLoader;
 
   constructor(versionLoader: VersionLoader) {
-    this.dependencies = versionLoader.getDependencies();
-    this.families = versionLoader.getFamilies();
+    this.releases = versionLoader.getReleases();
+    this.products = versionLoader.getProducts();
     this.versionLoader = versionLoader;
   }
 
-  getFamilies(): Family[] {
-    return this.families;
+  getProducts(): Product[] {
+    return this.products;
   }
 
-  addFamily(newFamily: Family): boolean {
-    if (!this.families.includes(newFamily)) {
+  addProduct(newProduct: Product): boolean {
+    if (!this.products.includes(newProduct)) {
       let lastId = 0;
-      if (this.families.length > 0) {
-        lastId = this.families[this.families.length - 1].id + 1;
+      if (this.products.length > 0) {
+        lastId = this.products[this.products.length - 1].id + 1;
       }
-      newFamily.id = lastId;
-      this.families.push(newFamily);
-      this.versionLoader.addFamily(newFamily);
+      newProduct.id = lastId;
+      this.products.push(newProduct);
+      this.versionLoader.addProduct(newProduct);
       return true;
     }
     return false;
   }
 
-  deleteDependency(releaseToDelete: Dependency) {
-    const indexOfRelease = this.dependencies.findIndex((rel) => {
+  deleteRelease(releaseToDelete: Release) {
+    const indexOfRelease = this.releases.findIndex((rel) => {
       return rel.id === releaseToDelete.id;
     });
     if (indexOfRelease >= 0) {
-      this.dependencies.splice(indexOfRelease, 1);
+      this.releases.splice(indexOfRelease, 1);
       return true;
     } else {
       return false;
     }
   }
 
-  getDependencies(): Dependency[] {
-    return this.dependencies;
+  getReleases(): Release[] {
+    return this.releases;
   }
 
-  getDependenciesByFamily(family: Family): Dependency[] {
-    return this.dependencies.filter((dependency) => {
-      return dependency.family === family.id;
+  getReleasesByProduct(product: Product): Release[] {
+    return this.releases.filter((release) => {
+      return release.product === product.id;
     });
   }
 
-  updateFamily(family: Family): boolean {
-    const matchingFamily = this.families.find((fam) => {
-      return fam.id === family.id;
+  updateProduct(product: Product): boolean {
+    const matchingProduct = this.products.find((fam) => {
+      return fam.id === product.id;
     });
-    if (matchingFamily) {
-      matchingFamily.name = family.name;
+    if (matchingProduct) {
+      matchingProduct.name = product.name;
       return true;
     } else {
       return false;
     }
   }
 
-  updateDependency(updatedDependency: Dependency): boolean {
-    const matchingDependency = this.dependencies.find((dep) => {
-      return dep.id === updatedDependency.id;
+  updateRelease(updatedRelease: Release): boolean {
+    const matchingRelease = this.releases.find((dep) => {
+      return dep.id === updatedRelease.id;
     });
-    if (matchingDependency) {
-      matchingDependency.dependencies = updatedDependency.dependencies;
-      matchingDependency.releaseDate = updatedDependency.releaseDate;
-      matchingDependency.supported = updatedDependency.supported;
-      matchingDependency.version = updatedDependency.version;
+    if (matchingRelease) {
+      matchingRelease.releases = updatedRelease.releases;
+      matchingRelease.releaseDate = updatedRelease.releaseDate;
+      matchingRelease.supported = updatedRelease.supported;
+      matchingRelease.version = updatedRelease.version;
       return true;
     } else {
       return false;
     }
   }
 
-  addDependency(dependency: Dependency): boolean {
+  addRelease(release: Release): boolean {
     // can't depend on itself.
-    if (dependency.dependencies.includes(dependency.id)) {
+    if (release.releases.includes(release.id)) {
       return false;
     }
-    // same family + dependency already exists
-    const matchingDependency = this.dependencies.find((dep) => {
-      return (
-        dep.family === dependency.family && dep.version === dependency.version
-      );
+    // same Product + Release already exists
+    const matchingRelease = this.releases.find((dep) => {
+      return dep.product === release.product && dep.version === release.version;
     });
-    if (matchingDependency) {
+    if (matchingRelease) {
       return false;
     }
-    // family has to exist
+    // Product has to exist
     if (
-      this.families.find((fam) => {
-        return fam.id === dependency.family;
+      this.products.find((fam) => {
+        return fam.id === release.product;
       })
     ) {
-      const depWithMaxId = this.dependencies.reduce((p, c) => (p.id > c.id ? p : c));
-      dependency.id = depWithMaxId.id + 1;
-      this.dependencies.push(dependency);
-      this.versionLoader.addDependency(dependency);
+      const depWithMaxId = this.releases.reduce((p, c) =>
+        p.id > c.id ? p : c
+      );
+      release.id = depWithMaxId.id + 1;
+      this.releases.push(release);
+      this.versionLoader.addRelease(release);
       return true;
     }
     return false;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionFinderService } from './services/version-finder.service';
 import { VersionManagerService } from './services/version-manager.service';
 

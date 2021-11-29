@@ -1,4 +1,4 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 
 import { VersionManager } from './VersionManager';
 
@@ -9,183 +9,174 @@ export class VersionFinder {
     this.versionManager = versionManager;
   }
 
-  findDependencyById(id: number) {
-    return this.versionManager.dependencies.find((dep) => {
+  findReleaseById(id: number) {
+    return this.versionManager.releases.find((dep) => {
       return dep.id === id;
     });
   }
 
-  whatProductsCanIRunWithDependency(
-    productsToQuery: Dependency[]
-  ): Dependency[] {
-    const foundDependencies: Dependency[] = [];
+  whatProductsCanIRunWithRelease(productsToQuery: Release[]): Release[] {
+    const foundReleases: Release[] = [];
 
-    const allFamilies: Family[] = this.getFamiliesFromDependencies(
-      this.versionManager.getDependencies()
+    const allProducts: Product[] = this.getProductsFromReleases(
+      this.versionManager.getReleases()
     );
-    const searchFamilies: Family[] =
-      this.getFamiliesFromDependencies(productsToQuery);
+    const searchProducts: Product[] =
+      this.getProductsFromReleases(productsToQuery);
 
-    allFamilies.forEach((family) => {
-      const familyReleases =
-        this.versionManager.getDependenciesByFamily(family);
-      familyReleases.forEach((familyRelease) => {
+    allProducts.forEach((product) => {
+      const productReleases = this.versionManager.getReleasesByProduct(product);
+      productReleases.forEach((ProductRelease) => {
         if (
-          familyRelease.dependencies.some((dependencyId) => {
-            const dependency = this.findDependencyById(dependencyId);
+          ProductRelease.releases.some((ReleaseId) => {
+            const release = this.findReleaseById(ReleaseId);
             return (
-              searchFamilies.find((family) => {
-                return family.id === dependency.family;
+              searchProducts.find((product) => {
+                return product.id === release.product;
               }) != null
             );
           })
         ) {
           if (
-            familyRelease.supported &&
-            !this.isTooNew(familyRelease, productsToQuery)
+            ProductRelease.supported &&
+            !this.isTooNew(ProductRelease, productsToQuery)
           ) {
-            foundDependencies.push(familyRelease);
+            foundReleases.push(ProductRelease);
           }
         }
       });
     });
 
-    const foundDependenciesWithLatestFromEachFamily: Dependency[] =
-      this.removeEarlierDependenciesFromDuplicateFamilies(
-        foundDependencies,
-        allFamilies
+    const foundReleasesWithLatestFromEachProduct: Release[] =
+      this.removeEarlierReleasesFromDuplicateProducts(
+        foundReleases,
+        allProducts
       );
 
-    return foundDependenciesWithLatestFromEachFamily;
+    return foundReleasesWithLatestFromEachProduct;
   }
 
-  isTooNew(familyRelease: Dependency, productsToQuery: Dependency[]): boolean {
+  isTooNew(productRelease: Release, productsToQuery: Release[]): boolean {
     let isTooNew = false;
-    familyRelease.dependencies.forEach((familyDependency) => {
-      const resolvedDependency = this.findDependencyById(familyDependency);
+    productRelease.releases.forEach((ProductRelease) => {
+      const resolvedRelease = this.findReleaseById(ProductRelease);
       const productToQuery = productsToQuery.find((productToQuery) => {
-        return resolvedDependency.family === productToQuery.family;
+        return resolvedRelease.product === productToQuery.product;
       });
-      if (Dependency.isGreaterThan(productToQuery, resolvedDependency)) {
+      if (Release.isGreaterThan(productToQuery, resolvedRelease)) {
         isTooNew = true;
       }
     });
     return isTooNew;
   }
 
-  findSubDependencies(
-    dependencies: Dependency[],
-    families: Family[]
-  ): Dependency[] {
-    dependencies.forEach((dependency) => {
-      dependency.dependencies.forEach((subDependency) => {
-        const resolvedDependency = this.findDependencyById(subDependency);
-        if (resolvedDependency.supported) {
-          dependencies.push(resolvedDependency);
+  findSubReleases(releases: Release[], products: Product[]): Release[] {
+    releases.forEach((Release) => {
+      Release.releases.forEach((subRelease) => {
+        const resolvedRelease = this.findReleaseById(subRelease);
+        if (resolvedRelease.supported) {
+          releases.push(resolvedRelease);
         }
       });
     });
-    const newFamilies = this.getFamiliesFromDependencies(dependencies);
-    if (newFamilies > families) {
-      return this.findSubDependencies(dependencies, newFamilies);
+    const newProducts = this.getProductsFromReleases(releases);
+    if (newProducts > products) {
+      return this.findSubReleases(releases, newProducts);
     } else {
-      return dependencies;
+      return releases;
     }
   }
 
-  findDependenciesFor(searchDependencies: Dependency[]): Dependency[] {
-    const searchDependencyFamilies =
-      this.getFamiliesFromDependencies(searchDependencies);
-    const foundDependencies = this.findSubDependencies(
-      searchDependencies,
-      searchDependencyFamilies
+  findReleasesFor(searchReleases: Release[]): Release[] {
+    const searchReleaseProducts = this.getProductsFromReleases(searchReleases);
+    const foundReleases = this.findSubReleases(
+      searchReleases,
+      searchReleaseProducts
     );
-    const foundFamilies: Family[] =
-      this.getFamiliesFromDependencies(foundDependencies);
-    const foundDependenciesWithLatestFromEachFamily: Dependency[] =
-      this.removeEarlierDependenciesFromDuplicateFamilies(
-        foundDependencies,
-        foundFamilies
+    const foundProducts: Product[] =
+      this.getProductsFromReleases(foundReleases);
+    const foundReleasesWithLatestFromEachProduct: Release[] =
+      this.removeEarlierReleasesFromDuplicateProducts(
+        foundReleases,
+        foundProducts
       );
-    const foundDependenciesWithoutDuplicates = [
-      ...new Set(foundDependenciesWithLatestFromEachFamily),
+    const foundReleasesWithoutDuplicates = [
+      ...new Set(foundReleasesWithLatestFromEachProduct),
     ];
-    const foundDependenciesWithout64if64m = this.remove64if64mPresent(
-      foundDependenciesWithoutDuplicates
+    const foundReleasesWithout64if64m = this.remove64if64mPresent(
+      foundReleasesWithoutDuplicates
     );
-    return foundDependenciesWithout64if64m;
+    return foundReleasesWithout64if64m;
   }
 
-  remove64if64mPresent(dependencies: Dependency[]): Dependency[] {
-    let cis64mDependency: Dependency;
-    let cis64Dependency: Dependency;
+  remove64if64mPresent(Releases: Release[]): Release[] {
+    let cis64mRelease: Release;
+    let cis64Release: Release;
 
-    const cis64mFamily = this.versionManager.families.find((fam) => {
+    const cis64mProduct = this.versionManager.products.find((fam) => {
       return fam.name === 'CIS 6.4m';
     });
-    if (cis64mFamily) {
-      cis64mDependency = dependencies.find((dep) => {
-        return dep.family === cis64mFamily.id;
+    if (cis64mProduct) {
+      cis64mRelease = Releases.find((dep) => {
+        return dep.product === cis64mProduct.id;
       });
     }
 
-    const cis64Family = this.versionManager.families.find((fam) => {
+    const cis64Product = this.versionManager.products.find((fam) => {
       return fam.name === 'CIS 6.4';
     });
-    if (cis64Family) {
-      cis64Dependency = dependencies.find((dep) => {
-        return dep.family === cis64Family.id;
+    if (cis64Product) {
+      cis64Release = Releases.find((dep) => {
+        return dep.product === cis64Product.id;
       });
     }
 
-    if (cis64mDependency && cis64Dependency) {
-      dependencies.splice(dependencies.indexOf(cis64Dependency), 1);
+    if (cis64mRelease && cis64Release) {
+      Releases.splice(Releases.indexOf(cis64Release), 1);
     }
-    return dependencies;
+    return Releases;
   }
 
-  getFamiliesFromDependencies(foundDependencies: Dependency[]): Family[] {
-    const familyIds = [
+  getProductsFromReleases(foundReleases: Release[]): Product[] {
+    const productIds = [
       ...new Set(
-        foundDependencies.map((dependency) => {
-          return dependency.family;
+        foundReleases.map((Release) => {
+          return Release.product;
         })
       ),
     ];
-    const families: Family[] = [];
-    familyIds.forEach((familyId) => {
-      families.push(
-        this.versionManager.families.find((family) => family.id === familyId)
+    const products: Product[] = [];
+    productIds.forEach((productId) => {
+      products.push(
+        this.versionManager.products.find((product) => product.id === productId)
       );
     });
-    return families;
+    return products;
   }
 
-  removeEarlierDependenciesFromDuplicateFamilies(
-    foundDependencies: Dependency[],
-    foundFamilies: Family[]
-  ): Dependency[] {
-    foundDependencies.sort(Dependency.compare);
+  removeEarlierReleasesFromDuplicateProducts(
+    foundReleases: Release[],
+    foundProducts: Product[]
+  ): Release[] {
+    foundReleases.sort(Release.compare);
 
-    foundFamilies.forEach((foundFamily) => {
-      const dependenciesByFamily = foundDependencies.filter(
-        (foundDependency) => {
-          return foundDependency.family === foundFamily.id;
-        }
-      );
-      if (dependenciesByFamily.length > 1) {
+    foundProducts.forEach((foundProduct) => {
+      const releasesByProduct = foundReleases.filter((foundRelease) => {
+        return foundRelease.product === foundProduct.id;
+      });
+      if (releasesByProduct.length > 1) {
         let dontRemoveThisOne = true;
-        dependenciesByFamily.forEach((dep) => {
+        releasesByProduct.forEach((dep) => {
           if (dontRemoveThisOne) {
             dontRemoveThisOne = false;
           } else {
-            const dependencyIndexToRemove = foundDependencies.indexOf(dep);
-            foundDependencies.splice(dependencyIndexToRemove, 1);
+            const releaseIndexToRemove = foundReleases.indexOf(dep);
+            foundReleases.splice(releaseIndexToRemove, 1);
           }
         });
       }
     });
-    return foundDependencies;
+    return foundReleases;
   }
 }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
 import { AddDependencyMessage } from './add-dependency/add-dependency-message';
 
@@ -9,113 +9,114 @@ import { AddDependencyMessage } from './add-dependency/add-dependency-message';
   styleUrls: ['./add-release.component.scss'],
 })
 export class AddReleaseComponent implements OnInit {
-  dependencies: Dependency[] = [];
-  families: Family[] = [];
+  releases: Release[] = [];
+  products: Product[] = [];
 
   constructor(private versionManagerService: VersionManagerService) {}
 
   ngOnInit(): void {
-    this.refreshDependencies();
-    this.refreshFamilies();
+    this.refreshReleases();
+    this.refreshProducts();
   }
 
-  refreshDependencies() {
+  refreshReleases() {
     this.versionManagerService
-      .getAllDependencies()
-      .subscribe((dependencies: Dependency[]) => {
-        this.dependencies = dependencies;
+      .getAllReleases()
+      .subscribe((releases: Release[]) => {
+        this.releases = releases;
       });
   }
 
-  refreshFamilies() {
+  refreshProducts() {
     this.versionManagerService
-      .getAllFamilies()
-      .subscribe((families: Family[]) => {
-        this.families = families;
+      .getAllProducts()
+      .subscribe((products: Product[]) => {
+        this.products = products;
       });
   }
 
-  getReleasesByFamily(familyId: number): Dependency[] {
-    const releases = this.dependencies.filter((dep) => {
-      return dep.family === familyId;
+  getReleasesByProduct(productId: number): Release[] {
+    const releases = this.releases.filter((dep) => {
+      return dep.product === productId;
     });
+    console.log(`found ${JSON.stringify(releases)}`);
     return releases;
   }
 
-  getDependenciesForRelease(dependencies: number[]): Dependency[] {
-    const foundDependencies: Dependency[] = [];
-    dependencies.forEach((depId) => {
-      const foundDep = this.dependencies.find((dep) => {
+  getReleasesForRelease(releases: number[]): Release[] {
+    const foundReleases: Release[] = [];
+    releases.forEach((depId) => {
+      const foundDep = this.releases.find((dep) => {
         return dep.id === depId;
       });
       if (foundDep) {
-        foundDependencies.push(foundDep);
+        foundReleases.push(foundDep);
       }
     });
-    return foundDependencies;
+    return foundReleases;
   }
 
-  getFamilyNameById(familyId: number): string | undefined {
-    const family = this.families.find((fam) => {
-      return fam.id === familyId;
+  getProductNameById(ProductId: number): string | undefined {
+    const Product = this.products.find((fam) => {
+      return fam.id === ProductId;
     });
-    return family?.name;
+    return Product?.name;
   }
 
-  addDependencyEvent(event: AddDependencyMessage) {
-    console.log(`got add dependency event: ${JSON.stringify(event)}`);
-    const releaseToGetNewDependency = this.dependencies.find((dep) => {
+  addReleaseEvent(event: AddDependencyMessage) {
+    console.log(`got add Release event: ${JSON.stringify(event)}`);
+    const releaseToGetNewRelease = this.releases.find((dep) => {
       return dep.id === event.releaseId;
     });
-    if (releaseToGetNewDependency) {
-      releaseToGetNewDependency.dependencies.push(event.newDependencyId);
+    if (releaseToGetNewRelease) {
+      releaseToGetNewRelease.releases.push(event.newReleaseId);
       this.versionManagerService
-        .updateDependency(releaseToGetNewDependency)
+        .updateRelease(releaseToGetNewRelease)
         .subscribe((result: boolean) => {
           console.log(result);
-          this.refreshDependencies();
+          this.refreshReleases();
         });
     }
   }
 
-  onDelete(releaseId: number, dependencyId: number) {
+  onDelete(releaseId: number, ReleaseId: number) {
     console.log(
-      `got delete request for release ${releaseId}'s dependency ${dependencyId}`
+      `got delete request for release ${releaseId}'s Release ${ReleaseId}`
     );
     const confirmResult = confirm(
-      'Are you sure you want to delete the dependency?'
+      'Are you sure you want to delete the Release?'
     );
     if (confirmResult) {
-      const release = this.dependencies.find((rel) => {
+      const release = this.releases.find((rel) => {
         return rel.id === releaseId;
       });
       if (release) {
-        const indexOfDependency = release.dependencies.findIndex((rel) => {
-          return rel === dependencyId;
+        const indexOfRelease = release.releases.findIndex((rel) => {
+          return rel === ReleaseId;
         });
-        console.log(`found index of dependency: ${indexOfDependency}`);
-        if (indexOfDependency >= 0) {
-          release.dependencies.splice(indexOfDependency, 1);
+        console.log(`found index of Release: ${indexOfRelease}`);
+        if (indexOfRelease >= 0) {
+          release.releases.splice(indexOfRelease, 1);
           console.log(`new release after delete: ${JSON.stringify(release)}`);
           this.versionManagerService
-            .updateDependency(release)
+            .updateRelease(release)
             .subscribe((result: boolean) => {
               console.log(result);
-              this.refreshDependencies();
+              this.refreshReleases();
             });
         }
       }
     }
   }
 
-  addRelease(releaseVersion: string, familyId: number) {
-    console.log(`adding release ${releaseVersion} for family ${familyId}`);
-    const newRelease = new Dependency(-1, familyId, releaseVersion, true, []);
+  addRelease(releaseVersion: string, ProductId: number) {
+    console.log(`adding release ${releaseVersion} for Product ${ProductId}`);
+    const newRelease = new Release(-1, ProductId, releaseVersion, true, []);
     this.versionManagerService
       .addRelease(newRelease)
       .subscribe((result: boolean) => {
         console.log(result);
-        this.refreshDependencies();
+        this.refreshReleases();
       });
   }
 
@@ -125,7 +126,7 @@ export class AddReleaseComponent implements OnInit {
       'Are you sure you want to delete the release?'
     );
     if (confirmResult) {
-      const releaseToDelete = this.dependencies.find((rel) => {
+      const releaseToDelete = this.releases.find((rel) => {
         return rel.id === releaseId;
       });
       if (releaseToDelete) {
@@ -133,7 +134,7 @@ export class AddReleaseComponent implements OnInit {
           .deleteRelease(releaseToDelete)
           .subscribe((result: boolean) => {
             console.log(result);
-            this.refreshDependencies();
+            this.refreshReleases();
           });
       }
     }

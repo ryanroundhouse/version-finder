@@ -1,12 +1,12 @@
 <div class="d-flex flow-right">
-  <label class="me-3">Add dependency:</label>
+  <label class="me-3">Add Dependency:</label>
   <select
-    [(ngModel)]="selectedFamily"
+    [(ngModel)]="selectedProduct"
     (ngModelChange)="onChangeProductSelection($event)"
     class="me-3"
   >
-    <option *ngFor="let family of families" [ngValue]="family">
-      {{ family.name }}
+    <option *ngFor="let Product of Products" [ngValue]="Product">
+      {{ Product.name }}
     </option>
   </select>
   <div>
@@ -20,7 +20,7 @@
       </option>
     </select>
   </div>
-  <button *ngIf="selectedVersion && selectedFamily" (click)="onAdd()">
+  <button *ngIf="selectedVersion && selectedProduct" (click)="onAdd()">
     add
   </button>
 </div>

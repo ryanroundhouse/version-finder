@@ -1,9 +1,9 @@
 export class AddDependencyMessage {
   releaseId: number;
-  newDependencyId: number;
+  newReleaseId: number;
 
-  constructor(releaseId: number, dependencyId: number) {
+  constructor(releaseId: number, ReleaseId: number) {
     this.releaseId = releaseId;
-    this.newDependencyId = dependencyId;
+    this.newReleaseId = ReleaseId;
   }
 }

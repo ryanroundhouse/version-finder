@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-export class Family {
+export class Product {
   id: number = Math.random();
   name: string = '';
 
@@ -9,4 +9,4 @@ export class Family {
   }
 }
 
-export default Family;
+export default Product;

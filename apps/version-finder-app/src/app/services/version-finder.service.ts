@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +12,10 @@ export class VersionFinderService {
 
   constructor(private http: HttpClient) {}
 
-  findDependencies(dependencies: Dependency[]): Observable<Dependency[]> {
-    const dependenciesToSearch = JSON.stringify(dependencies);
-    return this.http.post<Dependency[]>(`${this.baseUrl}/find-dependencies`, {
-      dependencies: dependenciesToSearch,
+  findReleases(Releases: Release[]): Observable<Release[]> {
+    const ReleasesToSearch = JSON.stringify(Releases);
+    return this.http.post<Release[]>(`${this.baseUrl}/find-Releases`, {
+      Releases: ReleasesToSearch,
     });
   }
 }

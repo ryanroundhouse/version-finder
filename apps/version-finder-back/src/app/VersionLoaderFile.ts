@@ -1,62 +1,59 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import * as fs from 'fs';
 import { VersionLoader } from './VersionLoader';
 
 export class VersionLoaderFile implements VersionLoader {
-  dependencyFilePath: string;
-  familyFilePath: string;
+  ReleaseFilePath: string;
+  ProductFilePath: string;
 
-  constructor(familyFilePath: string, dependencyFilePath: string) {
-    this.familyFilePath = familyFilePath;
-    this.dependencyFilePath = dependencyFilePath;
+  constructor(ProductFilePath: string, ReleaseFilePath: string) {
+    this.ProductFilePath = ProductFilePath;
+    this.ReleaseFilePath = ReleaseFilePath;
   }
 
-  getDependencies(): Dependency[] {
-    return this.loadDependenciesFromFile(this.dependencyFilePath);
+  getReleases(): Release[] {
+    return this.loadReleasesFromFile(this.ReleaseFilePath);
   }
-  getFamilies(): Family[] {
-    return this.loadFamiliesFromFile(this.familyFilePath);
+  getProducts(): Product[] {
+    return this.loadProductsFromFile(this.ProductFilePath);
   }
-  addFamily(newFamily: Family): boolean {
-    const families = this.getFamilies();
-    families.push(newFamily);
-    this.writeFamiliesToFile(this.familyFilePath, families);
+  addProduct(newProduct: Product): boolean {
+    const Products = this.getProducts();
+    Products.push(newProduct);
+    this.writeProductsToFile(this.ProductFilePath, Products);
     return true;
   }
-  addDependency(newDependency: Dependency): boolean {
-    const dependencies = this.getDependencies();
-    dependencies.push(newDependency);
-    this.writeDependenciesToFile(this.dependencyFilePath, dependencies);
+  addRelease(newRelease: Release): boolean {
+    const Releases = this.getReleases();
+    Releases.push(newRelease);
+    this.writeReleasesToFile(this.ReleaseFilePath, Releases);
     return true;
   }
 
-  loadDependenciesFromFile(filePath: string): Dependency[] {
-    const dependencies: Dependency[] = [];
+  loadReleasesFromFile(filePath: string): Release[] {
+    const Releases: Release[] = [];
     const buffer = fs.readFileSync(filePath);
-    const dependencyObjects: Dependency[] = JSON.parse(buffer.toString());
-    dependencyObjects.forEach((dependencyObject) => {
-      dependencies.push(
-        Object.assign(
-          new Dependency(-1, null, '-1', true, []),
-          dependencyObject
-        )
+    const ReleaseObjects: Release[] = JSON.parse(buffer.toString());
+    ReleaseObjects.forEach((ReleaseObject) => {
+      Releases.push(
+        Object.assign(new Release(-1, null, '-1', true, []), ReleaseObject)
       );
     });
-    return dependencies;
+    return Releases;
   }
 
-  loadFamiliesFromFile(filePath: string): Family[] {
-    const families: Family[] = [];
+  loadProductsFromFile(filePath: string): Product[] {
+    const Products: Product[] = [];
     const buffer = fs.readFileSync(filePath);
-    const familyObjects: Family[] = JSON.parse(buffer.toString());
-    familyObjects.forEach((familyObject) => {
-      families.push(Object.assign(new Family(-1, ''), familyObject));
+    const ProductObjects: Product[] = JSON.parse(buffer.toString());
+    ProductObjects.forEach((ProductObject) => {
+      Products.push(Object.assign(new Product(-1, ''), ProductObject));
     });
-    return families;
+    return Products;
   }
 
-  writeFamiliesToFile(filePath: string, families: Family[]) {
-    fs.writeFile(filePath, JSON.stringify(families), (err) => {
+  writeProductsToFile(filePath: string, Products: Product[]) {
+    fs.writeFile(filePath, JSON.stringify(Products), (err) => {
       if (err) {
         console.log('File write failed:', err);
         return;
@@ -64,8 +61,8 @@ export class VersionLoaderFile implements VersionLoader {
     });
   }
 
-  writeDependenciesToFile(filePath: string, dependencies: Dependency[]) {
-    fs.writeFile(filePath, JSON.stringify(dependencies), (err) => {
+  writeReleasesToFile(filePath: string, Releases: Release[]) {
+    fs.writeFile(filePath, JSON.stringify(Releases), (err) => {
       if (err) {
         console.log('File write failed:', err);
         return;

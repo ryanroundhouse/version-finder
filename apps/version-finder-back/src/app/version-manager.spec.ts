@@ -1,193 +1,181 @@
 import { expect } from 'chai';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 
 import { VersionManager } from './VersionManager';
 import { VersionLoaderMemory } from './VersionLoaderMemory';
 
-describe('version manager family tests', () => {
-  it('add family adds a family', () => {
+describe('version manager Product tests', () => {
+  it('add Product adds a Product', () => {
     const versionLoader = new VersionLoaderMemory([], []);
     const versionManager = new VersionManager(versionLoader);
-    const newFamily = new Family(0, '0th');
-    const result = versionManager.addFamily(newFamily);
+    const newProduct = new Product(0, '0th');
+    const result = versionManager.addProduct(newProduct);
 
-    expect(versionManager.families).has.same.members([newFamily]);
+    expect(versionManager.products).has.same.members([newProduct]);
     expect(result).to.be.true;
   });
-  it('get families gets families', () => {
-    const newFamily = new Family(0, '0th');
-    const versionLoader = new VersionLoaderMemory([newFamily], []);
+  it('get Products gets Products', () => {
+    const newProduct = new Product(0, '0th');
+    const versionLoader = new VersionLoaderMemory([newProduct], []);
     const versionManager = new VersionManager(versionLoader);
 
-    const addedFamilities = versionManager.getFamilies();
-    expect(addedFamilities).has.same.members([newFamily]);
+    const addedFamilities = versionManager.getProducts();
+    expect(addedFamilities).has.same.members([newProduct]);
   });
-  it('add family wont add duplicate family', () => {
-    const newFamily = new Family(0, '0th');
-    const versionLoader = new VersionLoaderMemory([newFamily], []);
+  it('add Product wont add duplicate Product', () => {
+    const newProduct = new Product(0, '0th');
+    const versionLoader = new VersionLoaderMemory([newProduct], []);
     const versionManager = new VersionManager(versionLoader);
-    const result = versionManager.addFamily(newFamily);
+    const result = versionManager.addProduct(newProduct);
 
-    expect(versionManager.families).has.same.members([newFamily]);
+    expect(versionManager.products).has.same.members([newProduct]);
     expect(result).to.be.false;
   });
-  it('add family assigns a new id when no families present', () => {
-    const newFamily = new Family(-1, '0th');
+  it('add Product assigns a new id when no Products present', () => {
+    const newProduct = new Product(-1, '0th');
     const versionLoader = new VersionLoaderMemory([], []);
     const versionManager = new VersionManager(versionLoader);
-    const result = versionManager.addFamily(newFamily);
+    const result = versionManager.addProduct(newProduct);
 
-    expect(versionManager.families[0].id).does.not.equal(-1);
+    expect(versionManager.products[0].id).does.not.equal(-1);
     expect(result).to.be.true;
   });
-  it('add family assigns a new id when families are present', () => {
-    const oldFamily = new Family(0, '0th');
-    const newFamily = new Family(999, '1st');
-    const versionLoader = new VersionLoaderMemory([oldFamily], []);
+  it('add Product assigns a new id when Products are present', () => {
+    const oldProduct = new Product(0, '0th');
+    const newProduct = new Product(999, '1st');
+    const versionLoader = new VersionLoaderMemory([oldProduct], []);
     const versionManager = new VersionManager(versionLoader);
-    const result = versionManager.addFamily(newFamily);
+    const result = versionManager.addProduct(newProduct);
 
-    expect(versionManager.families[0].id).does.not.equal(999);
-    expect(versionManager.families[1].id).does.not.equal(999);
+    expect(versionManager.products[0].id).does.not.equal(999);
+    expect(versionManager.products[1].id).does.not.equal(999);
     expect(result).to.be.true;
   });
-  it('version manager can rename a family', () => {
-    const familyToBeRenamed = new Family(0, '0th');
-    const newNamedFamily = new Family(0, '1st');
-    const versionLoader = new VersionLoaderMemory([familyToBeRenamed], []);
+  it('version manager can rename a Product', () => {
+    const ProductToBeRenamed = new Product(0, '0th');
+    const newNamedProduct = new Product(0, '1st');
+    const versionLoader = new VersionLoaderMemory([ProductToBeRenamed], []);
     const versionManager = new VersionManager(versionLoader);
-    const result = versionManager.updateFamily(newNamedFamily);
+    const result = versionManager.updateProduct(newNamedProduct);
 
-    expect(versionManager.families[0].name).equals(newNamedFamily.name);
+    expect(versionManager.products[0].name).equals(newNamedProduct.name);
     expect(result).to.be.true;
   });
-  it('version manager cant rename a family it doesnt hae', () => {
-    const familyToBeRenamed = new Family(0, '0th');
+  it('version manager cant rename a Product it doesnt hae', () => {
+    const ProductToBeRenamed = new Product(0, '0th');
     const versionLoader = new VersionLoaderMemory([], []);
     const versionManager = new VersionManager(versionLoader);
-    const result = versionManager.updateFamily(familyToBeRenamed);
+    const result = versionManager.updateProduct(ProductToBeRenamed);
 
     expect(result).to.be.false;
-    expect(versionManager.families.length).equals(0);
+    expect(versionManager.products.length).equals(0);
   });
 });
-describe('version manager dependency tests', () => {
-  it('get dependencies gets dependencies', () => {
-    const newDependency = new Dependency(Math.random(), 0, '', true, []);
-    const versionLoader = new VersionLoaderMemory([], [newDependency]);
+describe('version manager Release tests', () => {
+  it('get Releases gets Releases', () => {
+    const newRelease = new Release(Math.random(), 0, '', true, []);
+    const versionLoader = new VersionLoaderMemory([], [newRelease]);
     const versionManager = new VersionManager(versionLoader);
 
-    const dependencies = versionManager.getDependencies();
-    expect(dependencies).has.same.members([newDependency]);
+    const Releases = versionManager.getReleases();
+    expect(Releases).has.same.members([newRelease]);
   });
-  it('get dependencies by family gets only dependencies by family', () => {
-    const family = new Family(0, '0th');
-    const familyDependency = new Dependency(
-      Math.random(),
-      family.id,
-      '',
-      true,
-      []
-    );
-    const nonFamilyDependency = new Dependency(Math.random(), 1, '', true, []);
+  it('get Releases by Product gets only Releases by Product', () => {
+    const product = new Product(0, '0th');
+    const ProductRelease = new Release(Math.random(), product.id, '', true, []);
+    const nonProductRelease = new Release(Math.random(), 1, '', true, []);
     const versionLoader = new VersionLoaderMemory(
       [],
-      [familyDependency, nonFamilyDependency]
+      [ProductRelease, nonProductRelease]
     );
     const versionManager = new VersionManager(versionLoader);
 
-    const dependencies = versionManager.getDependenciesByFamily(family);
-    expect(dependencies).has.same.members([familyDependency]);
+    const Releases = versionManager.getReleasesByProduct(product);
+    expect(Releases).has.same.members([ProductRelease]);
   });
-  it('add dependency adds a dependency', () => {
-    const family = new Family(0, '0th');
-    const dependency = new Dependency(Math.random(), family.id, '', true, []);
-    const versionLoader = new VersionLoaderMemory([family], []);
+  it('add Release adds a Release', () => {
+    const product = new Product(0, '0th');
+    const release = new Release(Math.random(), product.id, '', true, []);
+    const versionLoader = new VersionLoaderMemory([product], []);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.addDependency(dependency);
+    const result = versionManager.addRelease(release);
     expect(result).to.be.true;
-    expect(versionManager.dependencies).has.same.members([dependency]);
+    expect(versionManager.releases).has.same.members([release]);
   });
-  it('add dependency fails when the family isnt present', () => {
-    const dependency = new Dependency(Math.random(), 0, '', true, []);
+  it('add Release fails when the Product isnt present', () => {
+    const release = new Release(Math.random(), 0, '', true, []);
     const versionLoader = new VersionLoaderMemory([], []);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.addDependency(dependency);
+    const result = versionManager.addRelease(release);
     expect(result).to.be.false;
-    expect(versionManager.dependencies).has.same.members([]);
+    expect(versionManager.releases).has.same.members([]);
   });
-  it('add dependency fails when the dependency already exists', () => {
-    const family = new Family(0, '0th');
-    const dependency = new Dependency(Math.random(), family.id, '', true, []);
-    const versionLoader = new VersionLoaderMemory([family], [dependency]);
+  it('add Release fails when the Release already exists', () => {
+    const product = new Product(0, '0th');
+    const release = new Release(Math.random(), product.id, '', true, []);
+    const versionLoader = new VersionLoaderMemory([product], [release]);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.addDependency(dependency);
+    const result = versionManager.addRelease(release);
     expect(result).to.be.false;
-    expect(versionManager.dependencies).has.same.members([dependency]);
+    expect(versionManager.releases).has.same.members([Release]);
   });
-  it('add dependency fails when the same version already exists for that dependency', () => {
-    const family = new Family(0, '0th');
-    const dependency = new Dependency(
-      Math.random(),
-      family.id,
-      '1.0',
-      true,
-      []
-    );
-    const versionLoader = new VersionLoaderMemory([family], [dependency]);
+  it('add Release fails when the same version already exists for that Release', () => {
+    const product = new Product(0, '0th');
+    const release = new Release(Math.random(), product.id, '1.0', true, []);
+    const versionLoader = new VersionLoaderMemory([product], [release]);
     const versionManager = new VersionManager(versionLoader);
-    const duplicateDependency = new Dependency(
+    const duplicateRelease = new Release(
       Math.random(),
-      family.id,
+      product.id,
       '1.0',
       true,
       []
     );
 
-    const result = versionManager.addDependency(duplicateDependency);
+    const result = versionManager.addRelease(duplicateRelease);
     expect(result).to.be.false;
-    expect(versionManager.dependencies).has.same.members([dependency]);
+    expect(versionManager.releases).has.same.members([Release]);
   });
-  it('add dependency cant depend on itself', () => {
-    const family = new Family(0, '0th');
-    const dependencyId = Math.random();
-    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
-      dependencyId,
+  it('add Release cant depend on itself', () => {
+    const product = new Product(0, '0th');
+    const ReleaseId = Math.random();
+    const release = new Release(ReleaseId, product.id, '1.0', true, [
+      ReleaseId,
     ]);
-    const versionLoader = new VersionLoaderMemory([family], []);
+    const versionLoader = new VersionLoaderMemory([product], []);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.addDependency(dependency);
+    const result = versionManager.addRelease(release);
     expect(result).to.be.false;
-    expect(versionManager.dependencies).has.same.members([]);
+    expect(versionManager.releases).has.same.members([]);
   });
   it('can delete release', () => {
-    const family = new Family(0, '0th');
-    const dependencyId = Math.random();
-    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
-      dependencyId,
+    const product = new Product(0, '0th');
+    const ReleaseId = Math.random();
+    const release = new Release(ReleaseId, product.id, '1.0', true, [
+      ReleaseId,
     ]);
-    const versionLoader = new VersionLoaderMemory([family], [dependency]);
+    const versionLoader = new VersionLoaderMemory([product], [release]);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.deleteDependency(dependency);
+    const result = versionManager.deleteRelease(release);
     expect(result).to.be.true;
-    expect(versionManager.dependencies).has.same.members([]);
+    expect(versionManager.releases).has.same.members([]);
   });
   it('returns false if it cant find the release', () => {
-    const family = new Family(0, '0th');
-    const dependencyId = Math.random();
-    const dependency = new Dependency(dependencyId, family.id, '1.0', true, [
-      dependencyId,
+    const product = new Product(0, '0th');
+    const ReleaseId = Math.random();
+    const release = new Release(ReleaseId, product.id, '1.0', true, [
+      ReleaseId,
     ]);
-    const versionLoader = new VersionLoaderMemory([family], []);
+    const versionLoader = new VersionLoaderMemory([product], []);
     const versionManager = new VersionManager(versionLoader);
 
-    const result = versionManager.deleteDependency(dependency);
+    const result = versionManager.deleteRelease(release);
     expect(result).to.be.false;
-    expect(versionManager.dependencies).has.same.members([]);
+    expect(versionManager.releases).has.same.members([]);
   });
 });

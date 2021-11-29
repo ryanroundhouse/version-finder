@@ -1,43 +1,43 @@
 import * as path from 'path';
 import { VersionManager } from './VersionManager';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionLoaderFile } from './VersionLoaderFile';
 
 export class VersionManagerApi {
   versionManager: VersionManager;
   constructor() {
     const versionLoaderFile = new VersionLoaderFile(
-      path.resolve(__dirname, 'assets/sampleFamilies.json'),
-      path.resolve(__dirname, 'assets/sampleDependencies.json')
+      path.resolve(__dirname, 'assets/sampleProducts.json'),
+      path.resolve(__dirname, 'assets/sampleReleases.json')
     );
     this.versionManager = new VersionManager(versionLoaderFile);
   }
 
-  getAllFamilies(): Family[] {
-    return this.versionManager.getFamilies();
+  getAllProducts(): Product[] {
+    return this.versionManager.getProducts();
   }
 
-  getAllDependencies(): Dependency[] {
-    return this.versionManager.getDependencies();
+  getAllReleases(): Release[] {
+    return this.versionManager.getReleases();
   }
 
-  addFamily(newFamily: Family) {
-    return this.versionManager.addFamily(newFamily);
+  addProduct(newProduct: Product) {
+    return this.versionManager.addProduct(newProduct);
   }
 
-  addRelease(newRelease: Dependency) {
-    return this.versionManager.addDependency(newRelease);
+  addRelease(newRelease: Release) {
+    return this.versionManager.addRelease(newRelease);
   }
 
-  deleteRelease(releaseToDelete: Dependency) {
-    return this.versionManager.deleteDependency(releaseToDelete);
+  deleteRelease(releaseToDelete: Release) {
+    return this.versionManager.deleteRelease(releaseToDelete);
   }
 
-  updateFamily(newFamily: Family) {
-    return this.versionManager.updateFamily(newFamily);
+  updateProduct(newProduct: Product) {
+    return this.versionManager.updateProduct(newProduct);
   }
 
-  updateDependency(updatedDependency: Dependency) {
-    return this.versionManager.updateDependency(updatedDependency);
+  updateRelease(updatedRelease: Release) {
+    return this.versionManager.updateRelease(updatedRelease);
   }
 }

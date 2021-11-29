@@ -1,2 +1,2 @@
-export * from './lib/Dependency';
-export * from './lib/Family';
+export * from './lib/Release';
+export * from './lib/Product';

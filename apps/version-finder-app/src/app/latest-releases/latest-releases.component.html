@@ -1,66 +1,61 @@
 <h1 class="text-center">Latest Releases</h1>
 <div class="d-flex flex-wrap">
   <article
-    *ngFor="let family of families"
+    *ngFor="let product of products"
     class="p-4 bg-white d-inline-block m-5"
   >
-    <h2>{{ family.name }}</h2>
-    <ul class="dependency-list flex-right">
-      <h3>v{{ getLatestReleaseByFamily(family.id)?.version }}</h3>
+    <h2>{{ product.name }}</h2>
+    <ul class="Release-list flex-right">
+      <h3>v{{ getLatestReleaseByProduct(product.id)?.version }}</h3>
       <label
         >released
         {{
-          getFriendlyDate(getLatestReleaseByFamily(family.id)?.releaseDate)
+          getFriendlyDate(getLatestReleaseByProduct(product.id)?.releaseDate)
         }}</label
       >
       <div
         *ngIf="
-          getDependenciesForRelease(
-            getLatestReleaseByFamily(family.id)?.dependencies
-          ).length > 0
+          getReleasesForRelease(getLatestReleaseByProduct(product.id)?.releases)
+            .length > 0
         "
       >
         <h4>Dependencies:</h4>
-        <ul class="dependency-list">
+        <ul class="Release-list">
           <li
             *ngFor="
-              let dependency of get64dependencies(
-                getLatestReleaseByFamily(family.id)?.dependencies
+              let release of get64Releases(
+                getLatestReleaseByProduct(product.id)?.releases
               )
             "
             class="flex-down mx-3"
           >
             <label>
-              {{ getFamilyNameById(dependency.family) }} v{{
-                dependency.version
-              }}
+              {{ getProductNameById(release.product) }} v{{ release.version }}
             </label>
           </li>
         </ul>
         <h4
           class="ms-5"
           *ngIf="
-            get64dependencies(getLatestReleaseByFamily(family.id)?.dependencies)
+            get64Releases(getLatestReleaseByProduct(product.id)?.releases)
               .length > 0 &&
-            get66dependencies(getLatestReleaseByFamily(family.id)?.dependencies)
+            get66Releases(getLatestReleaseByProduct(product.id)?.releases)
               .length > 0
           "
         >
           OR
         </h4>
-        <ul class="dependency-list">
+        <ul class="Release-list">
           <li
             *ngFor="
-              let dependency of get66dependencies(
-                getLatestReleaseByFamily(family.id)?.dependencies
+              let release of get66Releases(
+                getLatestReleaseByProduct(product.id)?.releases
               )
             "
             class="flex-down mx-3"
           >
             <label>
-              {{ getFamilyNameById(dependency.family) }} v{{
-                dependency.version
-              }}
+              {{ getProductNameById(release.product) }} v{{ release.version }}
             </label>
           </li>
         </ul>

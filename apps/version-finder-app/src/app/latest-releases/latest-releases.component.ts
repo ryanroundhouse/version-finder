@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
 import * as moment from 'moment';
 
@@ -9,31 +9,31 @@ import * as moment from 'moment';
   styleUrls: ['./latest-releases.component.scss'],
 })
 export class LatestReleasesComponent implements OnInit {
-  dependencies: Dependency[] = [];
-  families: Family[] = [];
+  releases: Release[] = [];
+  products: Product[] = [];
 
   constructor(private versionManagerService: VersionManagerService) {}
 
   ngOnInit(): void {
-    this.refreshDependencies();
-    this.refreshFamilies();
+    this.refreshReleases();
+    this.refreshProducts();
   }
 
-  refreshDependencies() {
+  refreshReleases() {
     this.versionManagerService
-      .getAllDependencies()
-      .subscribe((dependencies: Dependency[]) => {
-        this.dependencies = dependencies;
-        console.log(`found dependencies: ${JSON.stringify(this.dependencies)}`);
+      .getAllReleases()
+      .subscribe((Releases: Release[]) => {
+        this.releases = Releases;
+        console.log(`found Releases: ${JSON.stringify(this.releases)}`);
       });
   }
 
-  refreshFamilies() {
+  refreshProducts() {
     this.versionManagerService
-      .getAllFamilies()
-      .subscribe((families: Family[]) => {
-        this.families = families;
-        console.log(`found families: ${JSON.stringify(this.families)}`);
+      .getAllProducts()
+      .subscribe((Products: Product[]) => {
+        this.products = Products;
+        console.log(`found Products: ${JSON.stringify(this.products)}`);
       });
   }
 
@@ -45,64 +45,64 @@ export class LatestReleasesComponent implements OnInit {
     }
   }
 
-  getLatestReleaseByFamily(
-    familyId: number | undefined
-  ): Dependency | undefined {
-    let latestRelease: Dependency | undefined;
-    if (familyId !== undefined) {
-      latestRelease = this.dependencies.find((dep) => {
+  getLatestReleaseByProduct(
+    ProductId: number | undefined
+  ): Release | undefined {
+    let latestRelease: Release | undefined;
+    if (ProductId !== undefined) {
+      latestRelease = this.releases.find((dep) => {
         const isReleased = moment(dep.releaseDate) < moment(moment.now());
-        return dep.family === familyId && isReleased;
+        return dep.product === ProductId && isReleased;
       });
     }
     return latestRelease;
   }
 
-  getDependenciesForRelease(dependencies: number[] | undefined): Dependency[] {
-    const foundDependencies: Dependency[] = [];
-    if (dependencies) {
-      dependencies.forEach((depId) => {
-        const foundDep = this.dependencies.find((dep) => {
+  getReleasesForRelease(Releases: number[] | undefined): Release[] {
+    const foundReleases: Release[] = [];
+    if (Releases) {
+      Releases.forEach((depId) => {
+        const foundDep = this.releases.find((dep) => {
           return dep.id === depId;
         });
         if (foundDep) {
-          foundDependencies.push(foundDep);
+          foundReleases.push(foundDep);
         }
       });
     }
-    return foundDependencies;
+    return foundReleases;
   }
 
-  get64dependencies(dependencies: number[] | undefined): Dependency[] {
-    const stream64families: Dependency[] = [];
-    if (dependencies) {
-      const foundDependencies = this.dependencies.filter((dep) => {
-        return [0, 6, 7].includes(dep.family) && dependencies.includes(dep.id);
+  get64Releases(Releases: number[] | undefined): Release[] {
+    const stream64Products: Release[] = [];
+    if (Releases) {
+      const foundReleases = this.releases.filter((dep) => {
+        return [0, 6, 7].includes(dep.product) && Releases.includes(dep.id);
       });
-      foundDependencies.forEach((dep) => {
-        stream64families.push(dep);
+      foundReleases.forEach((dep) => {
+        stream64Products.push(dep);
       });
     }
-    return stream64families;
+    return stream64Products;
   }
 
-  get66dependencies(dependencies: number[] | undefined): Dependency[] {
-    const stream64families: Dependency[] = [];
-    if (dependencies) {
-      const foundDependencies = this.dependencies.filter((dep) => {
-        return [4, 5].includes(dep.family) && dependencies.includes(dep.id);
+  get66Releases(Releases: number[] | undefined): Release[] {
+    const stream64Products: Release[] = [];
+    if (Releases) {
+      const foundReleases = this.releases.filter((dep) => {
+        return [4, 5].includes(dep.product) && Releases.includes(dep.id);
       });
-      foundDependencies.forEach((dep) => {
-        stream64families.push(dep);
+      foundReleases.forEach((dep) => {
+        stream64Products.push(dep);
       });
     }
-    return stream64families;
+    return stream64Products;
   }
 
-  getFamilyNameById(familyId: number): string | undefined {
-    const family = this.families.find((fam) => {
-      return fam.id === familyId;
+  getProductNameById(ProductId: number): string | undefined {
+    const Product = this.products.find((fam) => {
+      return fam.id === ProductId;
     });
-    return family?.name;
+    return Product?.name;
   }
 }

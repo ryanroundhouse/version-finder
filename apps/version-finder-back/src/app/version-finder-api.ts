@@ -1,4 +1,4 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import VersionFinder from './VersionFinder';
 import { VersionManager } from './VersionManager';
 import * as path from 'path';
@@ -10,34 +10,34 @@ export class VersionFinderApi {
 
   constructor() {
     const versionLoaderFile = new VersionLoaderFile(
-      path.resolve(__dirname, 'assets/sampleFamilies.json'),
-      path.resolve(__dirname, 'assets/sampleDependencies.json')
+      path.resolve(__dirname, 'assets/sampleProducts.json'),
+      path.resolve(__dirname, 'assets/sampleReleases.json')
     );
     this.versionManager = new VersionManager(versionLoaderFile);
     this.versionFinder = new VersionFinder(this.versionManager);
   }
 
-  getAllFamilies(): Family[] {
-    return this.versionManager.getFamilies();
+  getAllProducts(): Product[] {
+    return this.versionManager.getProducts();
   }
 
-  getAllDependencies(): Dependency[] {
-    return this.versionManager.getDependencies();
+  getAllReleases(): Release[] {
+    return this.versionManager.getReleases();
   }
 
-  getDependenciesForProductIdList(ids: number[]): Dependency[] {
-    const dependencies: Dependency[] = [];
+  getReleasesForProductIdList(ids: number[]): Release[] {
+    const Releases: Release[] = [];
     ids.forEach((id) => {
-      const dep = this.versionFinder.findDependencyById(id);
+      const dep = this.versionFinder.findReleaseById(id);
       if (dep) {
-        dependencies.push(dep);
+        Releases.push(dep);
       } else {
         console.log(
-          `Warning - getDependenciesForProductIdList contained an id that didnt exist.  It is being ignored.`
+          `Warning - getReleasesForProductIdList contained an id that didnt exist.  It is being ignored.`
         );
       }
     });
-    const result = this.versionFinder.findDependenciesFor(dependencies);
+    const result = this.versionFinder.findReleasesFor(Releases);
     return result;
   }
 }

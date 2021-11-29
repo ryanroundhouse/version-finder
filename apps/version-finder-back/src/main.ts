@@ -1,4 +1,4 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import * as express from 'express';
 import { VersionFinderApi } from './app/version-finder-api';
 import * as cors from 'cors';
@@ -15,46 +15,43 @@ app.use(express.urlencoded());
 app.use(cors());
 app.use(compression());
 
-app.post('/find-dependencies', (req, res) => {
-  console.log(
-    `got a request to find dependencies for ${req.body.dependencies}`
-  );
-  const dependencies: Dependency[] = JSON.parse(req.body.dependencies);
-  const result =
-    versionFinderApi.versionFinder.findDependenciesFor(dependencies);
-  console.log(`found the following dependencies ${JSON.stringify(result)}`);
+app.post('/find-Releases', (req, res) => {
+  console.log(`got a request to find Releases for ${req.body.Releases}`);
+  const Releases: Release[] = JSON.parse(req.body.Releases);
+  const result = versionFinderApi.versionFinder.findReleasesFor(Releases);
+  console.log(`found the following Releases ${JSON.stringify(result)}`);
   res.send(result);
 });
 
-app.post('/families/add', (req, res) => {
-  const newFamily: Family = JSON.parse(req.body.family);
-  const result = versionManagerApi.addFamily(newFamily);
+app.post('/Products/add', (req, res) => {
+  const newProduct: Product = JSON.parse(req.body.Product);
+  const result = versionManagerApi.addProduct(newProduct);
   res.send(result);
 });
 
-app.post('/dependencies/add', (req, res) => {
-  const newRelease: Dependency = JSON.parse(req.body.dependency);
+app.post('/Releases/add', (req, res) => {
+  const newRelease: Release = JSON.parse(req.body.Release);
   const result = versionManagerApi.addRelease(newRelease);
   res.send(result);
 });
 
-app.post('/dependencies/delete', (req, res) => {
-  const releaseToDelete: Dependency = JSON.parse(req.body.dependency);
+app.post('/Releases/delete', (req, res) => {
+  const releaseToDelete: Release = JSON.parse(req.body.Release);
   const result = versionManagerApi.deleteRelease(releaseToDelete);
   res.send(result);
 });
 
-app.post('/families/update', (req, res) => {
-  const newFamily: Family = JSON.parse(req.body.family);
-  const result = versionManagerApi.updateFamily(newFamily);
+app.post('/Products/update', (req, res) => {
+  const newProduct: Product = JSON.parse(req.body.Product);
+  const result = versionManagerApi.updateProduct(newProduct);
   res.send(result);
 });
 
-app.get('/families/get', (req, res) => {
-  res.send(versionManagerApi.getAllFamilies());
+app.get('/Products/get', (req, res) => {
+  res.send(versionManagerApi.getAllProducts());
 });
 
-app.get('/dependencies/get', (req, res) => {
+app.get('/Releases/get', (req, res) => {
   let ids: number[];
   if (req.query.id) {
     ids = req.query.id
@@ -63,15 +60,15 @@ app.get('/dependencies/get', (req, res) => {
       .map((x) => +x);
   }
   if (ids) {
-    res.send(versionFinderApi.getDependenciesForProductIdList(ids));
+    res.send(versionFinderApi.getReleasesForProductIdList(ids));
   } else {
-    res.send(versionManagerApi.getAllDependencies());
+    res.send(versionManagerApi.getAllReleases());
   }
 });
 
-app.post('/dependencies/update', (req, res) => {
-  const updatedDependency: Dependency = JSON.parse(req.body.dependency);
-  const result = versionManagerApi.updateDependency(updatedDependency);
+app.post('/Releases/update', (req, res) => {
+  const updatedRelease: Release = JSON.parse(req.body.Release);
+  const result = versionManagerApi.updateRelease(updatedRelease);
   res.send(result);
 });
 

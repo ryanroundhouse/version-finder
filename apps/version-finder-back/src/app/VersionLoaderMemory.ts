@@ -1,28 +1,28 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionLoader } from './VersionLoader';
 
 export class VersionLoaderMemory implements VersionLoader {
-  dependencies: Dependency[];
-  families: Family[];
+  Releases: Release[];
+  Products: Product[];
 
-  constructor(families: Family[], dependencies: Dependency[]) {
-    this.dependencies = dependencies;
-    this.families = families;
+  constructor(Products: Product[], Releases: Release[]) {
+    this.Releases = Releases;
+    this.Products = Products;
   }
 
-  getDependencies(): Dependency[] {
-    return this.dependencies;
+  getReleases(): Release[] {
+    return this.Releases;
   }
 
-  getFamilies(): Family[] {
-    return this.families;
+  getProducts(): Product[] {
+    return this.Products;
   }
 
-  addFamily(newFamily: Family): boolean {
+  addProduct(newProduct: Product): boolean {
     return true;
   }
 
-  addDependency(newDependency: Dependency): boolean {
+  addRelease(newRelease: Release): boolean {
     return true;
   }
 }

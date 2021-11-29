@@ -1,8 +1,8 @@
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 
 export interface VersionLoader {
-  getDependencies(): Dependency[];
-  getFamilies(): Family[];
-  addFamily(newFamily: Family): boolean;
-  addDependency(newDependency: Dependency): boolean;
+  getReleases(): Release[];
+  getProducts(): Product[];
+  addProduct(newProduct: Product): boolean;
+  addRelease(newRelease: Release): boolean;
 }

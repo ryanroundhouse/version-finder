@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Dependency, Family } from '@version-finder/version-finder-lib';
+import { Release, Product } from '@version-finder/version-finder-lib';
 
 import VersionFinder from './VersionFinder';
 import { VersionManager } from './VersionManager';
@@ -9,558 +9,496 @@ import { VersionLoaderMemory } from './VersionLoaderMemory';
 
 describe('get pre-reqs for releases', () => {
   it('should find a single entry when only that single entry exists', () => {
-    const family = new Family(0, '0th');
-    const dependency = new Dependency(0, family.id, '', true, []);
-    const versionLoader = new VersionLoaderMemory([family], [dependency]);
+    const product = new Product(0, '0th');
+    const release = new Release(0, product.id, '', true, []);
+    const versionLoader = new VersionLoaderMemory([product], [release]);
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([dependency]);
-    expect(result).has.same.members([dependency]);
+    const result = versionFinder.findReleasesFor([release]);
+    expect(result).has.same.members([Release]);
   });
-  it('should return only the entry when no dependency for search exist', () => {
-    const dependencyFamily = new Family(0, '0th');
-    const dependency = new Dependency(
+  it('should return only the entry when no Release for search exist', () => {
+    const ReleaseProduct = new Product(0, '0th');
+    const release = new Release(Math.random(), ReleaseProduct.id, '', true, []);
+    const unrelatedReleaseProduct = new Product(1, '1st');
+    const unrelatedRelease = new Release(
       Math.random(),
-      dependencyFamily.id,
-      '',
-      true,
-      []
-    );
-    const unrelatedDependencyFamily = new Family(1, '1st');
-    const unrelatedDependency = new Dependency(
-      Math.random(),
-      unrelatedDependencyFamily.id,
+      unrelatedReleaseProduct.id,
       '',
       true,
       []
     );
     const versionLoader = new VersionLoaderMemory(
-      [dependencyFamily, unrelatedDependencyFamily],
-      [dependency, unrelatedDependency]
+      [ReleaseProduct, unrelatedReleaseProduct],
+      [release, unrelatedRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([dependency]);
-    expect(result).has.same.members([dependency]);
+    const result = versionFinder.findReleasesFor([release]);
+    expect(result).has.same.members([Release]);
   });
-  it('should return all dependency linked by dependency', () => {
-    const relatedDependencyFamily = new Family(0, '0th');
-    const relatedDependency = new Dependency(
+  it('should return all Release linked by Release', () => {
+    const relatedReleaseProduct = new Product(0, '0th');
+    const relatedRelease = new Release(
       Math.random(),
-      relatedDependencyFamily.id,
+      relatedReleaseProduct.id,
       '',
       true,
       []
     );
-    const dependencyFamily = new Family(1, '1st');
-    const dependency = new Dependency(
-      Math.random(),
-      dependencyFamily.id,
-      '',
-      true,
-      [relatedDependency.id]
-    );
+    const ReleaseProduct = new Product(1, '1st');
+    const release = new Release(Math.random(), ReleaseProduct.id, '', true, [
+      relatedRelease.id,
+    ]);
     const versionLoader = new VersionLoaderMemory(
-      [relatedDependencyFamily, dependencyFamily],
-      [dependency, relatedDependency]
+      [relatedReleaseProduct, ReleaseProduct],
+      [release, relatedRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([dependency]);
-    expect(result).has.same.members([dependency, relatedDependency]);
+    const result = versionFinder.findReleasesFor([release]);
+    expect(result).has.same.members([release, relatedRelease]);
   });
-  it('should return dependency of dependency', () => {
-    const secondLevelDependencyFamily = new Family(0, '0th');
-    const secondLevelDependency = new Dependency(
+  it('should return Release of Release', () => {
+    const secondLevelReleaseProduct = new Product(0, '0th');
+    const secondLevelRelease = new Release(
       Math.random(),
-      secondLevelDependencyFamily.id,
+      secondLevelReleaseProduct.id,
       '',
       true,
       []
     );
-    const firstLevelDependencyFamily = new Family(1, '1st');
-    const firstLevelDependency = new Dependency(
+    const firstLevelReleaseProduct = new Product(1, '1st');
+    const firstLevelRelease = new Release(
       Math.random(),
-      firstLevelDependencyFamily.id,
+      firstLevelReleaseProduct.id,
       '',
       true,
-      [secondLevelDependency.id]
+      [secondLevelRelease.id]
     );
-    const dependencyFamily = new Family(2, '2nd');
-    const dependency = new Dependency(
-      Math.random(),
-      dependencyFamily.id,
-      '',
-      true,
-      [firstLevelDependency.id]
-    );
+    const ReleaseProduct = new Product(2, '2nd');
+    const release = new Release(Math.random(), ReleaseProduct.id, '', true, [
+      firstLevelRelease.id,
+    ]);
     const versionLoader = new VersionLoaderMemory(
-      [
-        secondLevelDependencyFamily,
-        firstLevelDependencyFamily,
-        dependencyFamily,
-      ],
-      [dependency, firstLevelDependency, secondLevelDependency]
+      [secondLevelReleaseProduct, firstLevelReleaseProduct, ReleaseProduct],
+      [release, firstLevelRelease, secondLevelRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([dependency]);
+    const result = versionFinder.findReleasesFor([release]);
     expect(result).has.same.members([
-      dependency,
-      firstLevelDependency,
-      secondLevelDependency,
+      Release,
+      firstLevelRelease,
+      secondLevelRelease,
     ]);
   });
-  it('should look for deeper dependencies until no new families are discovered', () => {
-    const superBottomFamily = new Family(0, '0th');
-    const superBottomDependency = new Dependency(
+  it('should look for deeper Releases until no new Products are discovered', () => {
+    const superBottomProduct = new Product(0, '0th');
+    const superBottomRelease = new Release(
       Math.random(),
-      superBottomFamily.id,
+      superBottomProduct.id,
       '',
       true,
       []
     );
-    const bottomFamily = new Family(1, '1st');
-    const bottomDependency = new Dependency(
+    const bottomProduct = new Product(1, '1st');
+    const bottomRelease = new Release(
       Math.random(),
-      bottomFamily.id,
+      bottomProduct.id,
       '',
       true,
-      [superBottomDependency.id]
+      [superBottomRelease.id]
     );
-    const middleFamily = new Family(2, '2nd');
-    const middleDependency = new Dependency(
+    const middleProduct = new Product(2, '2nd');
+    const middleRelease = new Release(
       Math.random(),
-      middleFamily.id,
+      middleProduct.id,
       '',
       true,
-      [bottomDependency.id]
+      [bottomRelease.id]
     );
-    const topFamily = new Family(3, '3rd');
-    const topDependency = new Dependency(
-      Math.random(),
-      topFamily.id,
-      '',
-      true,
-      [middleDependency.id]
-    );
+    const topProduct = new Product(3, '3rd');
+    const topRelease = new Release(Math.random(), topProduct.id, '', true, [
+      middleRelease.id,
+    ]);
 
     const versionLoader = new VersionLoaderMemory(
-      [superBottomFamily, bottomFamily, middleFamily, topFamily],
-      [superBottomDependency, bottomDependency, middleDependency, topDependency]
+      [superBottomProduct, bottomProduct, middleProduct, topProduct],
+      [superBottomRelease, bottomRelease, middleRelease, topRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([topDependency]);
+    const result = versionFinder.findReleasesFor([topRelease]);
     expect(result).has.same.members([
-      topDependency,
-      middleDependency,
-      bottomDependency,
-      superBottomDependency,
+      topRelease,
+      middleRelease,
+      bottomRelease,
+      superBottomRelease,
     ]);
   });
-  it('should only return a single dependency of each family', () => {
-    const familyX = new Family(0, '0th');
-    const firstDependencyFromFamilyX = new Dependency(
+  it('should only return a single Release of each Product', () => {
+    const ProductX = new Product(0, '0th');
+    const firstReleaseFromProductX = new Release(
       Math.random(),
-      familyX.id,
+      ProductX.id,
       '',
       true,
       []
     );
-    const secondDependencyFromFamilyX = new Dependency(
+    const secondReleaseFromProductX = new Release(
       Math.random(),
-      familyX.id,
+      ProductX.id,
       '',
       true,
       []
     );
-    const searchDependencyWithFirstDependencyFamily = new Family(1, '1st');
-    const searchDependencyWithFirstDependency = new Dependency(
+    const searchReleaseWithFirstReleaseProduct = new Product(1, '1st');
+    const searchReleaseWithFirstRelease = new Release(
       Math.random(),
-      searchDependencyWithFirstDependencyFamily.id,
+      searchReleaseWithFirstReleaseProduct.id,
       '',
       true,
-      [firstDependencyFromFamilyX.id]
+      [firstReleaseFromProductX.id]
     );
-    const searchDependencyWithSecondDependencyFamily = new Family(2, '2nd');
-    const searchDependencyWithSecondDependency = new Dependency(
+    const searchReleaseWithSecondReleaseProduct = new Product(2, '2nd');
+    const searchReleaseWithSecondRelease = new Release(
       Math.random(),
-      searchDependencyWithSecondDependencyFamily.id,
+      searchReleaseWithSecondReleaseProduct.id,
       '',
       true,
-      [secondDependencyFromFamilyX.id]
+      [secondReleaseFromProductX.id]
     );
 
     const versionLoader = new VersionLoaderMemory(
       [
-        familyX,
-        searchDependencyWithFirstDependencyFamily,
-        searchDependencyWithSecondDependencyFamily,
+        ProductX,
+        searchReleaseWithFirstReleaseProduct,
+        searchReleaseWithSecondReleaseProduct,
       ],
       [
-        firstDependencyFromFamilyX,
-        secondDependencyFromFamilyX,
-        searchDependencyWithFirstDependency,
-        searchDependencyWithSecondDependency,
+        firstReleaseFromProductX,
+        secondReleaseFromProductX,
+        searchReleaseWithFirstRelease,
+        searchReleaseWithSecondRelease,
       ]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([
-      searchDependencyWithFirstDependency,
-      searchDependencyWithSecondDependency,
+    const result = versionFinder.findReleasesFor([
+      searchReleaseWithFirstRelease,
+      searchReleaseWithSecondRelease,
     ]);
     expect(result).has.same.members([
-      searchDependencyWithFirstDependency,
-      searchDependencyWithSecondDependency,
-      firstDependencyFromFamilyX,
+      searchReleaseWithFirstRelease,
+      searchReleaseWithSecondRelease,
+      firstReleaseFromProductX,
     ]);
   });
-  it('should only return the latest dependency of each family', () => {
-    const familyX = new Family(0, '0th');
-    const olderDependencyFromFamilyX = new Dependency(
+  it('should only return the latest Release of each Product', () => {
+    const ProductX = new Product(0, '0th');
+    const olderReleaseFromProductX = new Release(
       Math.random(),
-      familyX.id,
+      ProductX.id,
       '1.0',
       true,
       []
     );
-    const newerDependencyFromFamilyX = new Dependency(
+    const newerReleaseFromProductX = new Release(
       Math.random(),
-      familyX.id,
+      ProductX.id,
       '2.0',
       true,
       []
     );
-    const searchDependencyWithFirstDependencyFamily = new Family(1, '1st');
-    const searchDependencyWithFirstDependency = new Dependency(
+    const searchReleaseWithFirstReleaseProduct = new Product(1, '1st');
+    const searchReleaseWithFirstRelease = new Release(
       Math.random(),
-      searchDependencyWithFirstDependencyFamily.id,
+      searchReleaseWithFirstReleaseProduct.id,
       '',
       true,
-      [olderDependencyFromFamilyX.id]
+      [olderReleaseFromProductX.id]
     );
-    const searchDependencyWithSecondDependencyFamily = new Family(2, '2nd');
-    const searchDependencyWithSecondDependency = new Dependency(
+    const searchReleaseWithSecondReleaseProduct = new Product(2, '2nd');
+    const searchReleaseWithSecondRelease = new Release(
       Math.random(),
-      searchDependencyWithSecondDependencyFamily.id,
+      searchReleaseWithSecondReleaseProduct.id,
       '',
       true,
-      [newerDependencyFromFamilyX.id]
+      [newerReleaseFromProductX.id]
     );
 
     const versionLoader = new VersionLoaderMemory(
       [
-        familyX,
-        searchDependencyWithFirstDependencyFamily,
-        searchDependencyWithSecondDependencyFamily,
+        ProductX,
+        searchReleaseWithFirstReleaseProduct,
+        searchReleaseWithSecondReleaseProduct,
       ],
       [
-        olderDependencyFromFamilyX,
-        newerDependencyFromFamilyX,
-        searchDependencyWithFirstDependency,
-        searchDependencyWithSecondDependency,
+        olderReleaseFromProductX,
+        newerReleaseFromProductX,
+        searchReleaseWithFirstRelease,
+        searchReleaseWithSecondRelease,
       ]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([
-      searchDependencyWithFirstDependency,
-      searchDependencyWithSecondDependency,
+    const result = versionFinder.findReleasesFor([
+      searchReleaseWithFirstRelease,
+      searchReleaseWithSecondRelease,
     ]);
-    expect(result.includes(newerDependencyFromFamilyX)).to.be.true;
+    expect(result.includes(newerReleaseFromProductX)).to.be.true;
   });
   it('dont return a prerequisite that is no longer supported', () => {
-    const unsupportedDependencyFamily = new Family(0, '0th');
-    const unsupportedDependency = new Dependency(
+    const unsupportedReleaseProduct = new Product(0, '0th');
+    const unsupportedRelease = new Release(
       Math.random(),
-      unsupportedDependencyFamily.id,
+      unsupportedReleaseProduct.id,
       '',
       false,
       []
     );
-    const searchDependencyFamily = new Family(1, '1st');
-    const searchDependency = new Dependency(
+    const searchReleaseProduct = new Product(1, '1st');
+    const searchRelease = new Release(
       Math.random(),
-      searchDependencyFamily.id,
+      searchReleaseProduct.id,
       '',
       true,
-      [unsupportedDependency.id]
+      [unsupportedRelease.id]
     );
 
     const versionLoader = new VersionLoaderMemory(
-      [unsupportedDependencyFamily, searchDependencyFamily],
-      [unsupportedDependency, searchDependency]
+      [unsupportedReleaseProduct, searchReleaseProduct],
+      [unsupportedRelease, searchRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([searchDependency]);
-    expect(result).has.same.members([searchDependency]);
+    const result = versionFinder.findReleasesFor([searchRelease]);
+    expect(result).has.same.members([searchRelease]);
   });
-  it('should resolve nested dependencies when loaded from files', () => {
-    const nsBL64family = new Family(6, 'nsBL 6.4');
-    const nsBL66family = new Family(5, 'nsBL 6.6');
-    const cis64family = new Family(0, 'CIS 6.4');
-    const cis66family = new Family(4, 'CIS 6.6');
-    const cc6family = new Family(2, 'CC6');
+  it('should resolve nested Releases when loaded from files', () => {
+    const nsBL64Product = new Product(6, 'nsBL 6.4');
+    const nsBL66Product = new Product(5, 'nsBL 6.6');
+    const cis64Product = new Product(0, 'CIS 6.4');
+    const cis66Product = new Product(4, 'CIS 6.6');
+    const cc6Product = new Product(2, 'CC6');
 
-    const cis64NsblDependency = new Dependency(
+    const cis64NsblRelease = new Release(
       16,
-      cis64family.id,
+      cis64Product.id,
       '6.4.20',
       true,
       []
     );
-    const nsbl64Dependency = new Dependency(
-      15,
-      nsBL64family.id,
-      '6.4.29',
-      true,
-      [cis64NsblDependency.id]
-    );
-    const cis66NsblDependency = new Dependency(
-      7,
-      cis66family.id,
-      '6.6.8',
-      true,
-      []
-    );
-    const nsbl66Dependency = new Dependency(
-      14,
-      nsBL66family.id,
-      '6.6.9',
-      true,
-      [cis66NsblDependency.id]
-    );
-    const cis66Dependency = new Dependency(
-      9,
-      cis66family.id,
-      '6.6.5',
-      true,
-      []
-    );
-    const cis64Dependency = new Dependency(
-      3,
-      cis64family.id,
-      '6.4.27',
-      true,
-      []
-    );
-    const cc6Dependency = new Dependency(13, cc6family.id, '6.7.2', true, [
-      cis64Dependency.id,
-      cis66Dependency.id,
-      nsbl64Dependency.id,
-      nsbl66Dependency.id,
+    const nsbl64Release = new Release(15, nsBL64Product.id, '6.4.29', true, [
+      cis64NsblRelease.id,
     ]);
-    const expectedDependencies = [
-      cc6Dependency,
-      nsbl66Dependency,
-      cis66NsblDependency,
-      nsbl64Dependency,
-      cis64Dependency,
+    const cis66NsblRelease = new Release(7, cis66Product.id, '6.6.8', true, []);
+    const nsbl66Release = new Release(14, nsBL66Product.id, '6.6.9', true, [
+      cis66NsblRelease.id,
+    ]);
+    const cis66Release = new Release(9, cis66Product.id, '6.6.5', true, []);
+    const cis64Release = new Release(3, cis64Product.id, '6.4.27', true, []);
+    const cc6Release = new Release(13, cc6Product.id, '6.7.2', true, [
+      cis64Release.id,
+      cis66Release.id,
+      nsbl64Release.id,
+      nsbl66Release.id,
+    ]);
+    const expectedReleases = [
+      cc6Release,
+      nsbl66Release,
+      cis66NsblRelease,
+      nsbl64Release,
+      cis64Release,
     ];
     const versionLoaderFile = new VersionLoaderFile(
-      path.resolve(__dirname, '../assets/testFamilies.json'),
-      path.resolve(__dirname, '../assets/testDependencies.json')
+      path.resolve(__dirname, '../assets/testProducts.json'),
+      path.resolve(__dirname, '../assets/testReleases.json')
     );
     const versionManager = new VersionManager(versionLoaderFile);
 
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([cc6Dependency]);
-    expect(JSON.stringify(result)).equals(JSON.stringify(expectedDependencies));
+    const result = versionFinder.findReleasesFor([cc6Release]);
+    expect(JSON.stringify(result)).equals(JSON.stringify(expectedReleases));
   });
   it('should only return the 6.4m dep and not CIS 6.4 if its possible to return both', () => {
-    const cis64mFamily = new Family(0, 'CIS 6.4m');
-    const cis64Family = new Family(1, 'CIS 6.4');
-    const mcareFamily = new Family(2, 'mCare');
+    const cis64mProduct = new Product(0, 'CIS 6.4m');
+    const cis64Product = new Product(1, 'CIS 6.4');
+    const mcareProduct = new Product(2, 'mCare');
 
-    const cis64mDependency = new Dependency(
-      0,
-      cis64mFamily.id,
-      '6.4.0m',
-      true,
-      []
-    );
-    const cis64Dependency = new Dependency(
-      1,
-      cis64Family.id,
-      '6.4.0',
-      true,
-      []
-    );
-    const mcareDependency = new Dependency(2, mcareFamily.id, '6.0', true, [
-      cis64mDependency.id,
-      cis64Dependency.id,
+    const cis64mRelease = new Release(0, cis64mProduct.id, '6.4.0m', true, []);
+    const cis64Release = new Release(1, cis64Product.id, '6.4.0', true, []);
+    const mcareRelease = new Release(2, mcareProduct.id, '6.0', true, [
+      cis64mRelease.id,
+      cis64Release.id,
     ]);
 
     const versionLoader = new VersionLoaderMemory(
-      [cis64Family, cis64mFamily, mcareFamily],
-      [cis64Dependency, cis64mDependency, mcareDependency]
+      [cis64Product, cis64mProduct, mcareProduct],
+      [cis64Release, cis64mRelease, mcareRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.findDependenciesFor([mcareDependency]);
-    expect(result).has.same.members([cis64mDependency, mcareDependency]);
+    const result = versionFinder.findReleasesFor([mcareRelease]);
+    expect(result).has.same.members([cis64mRelease, mcareRelease]);
   });
 });
 
 describe('get releases for pre-req', () => {
   it('should find a single item if only one release exists', () => {
-    const productToQueryFamily = new Family(0, '0th');
-    const productToQuery = new Dependency(
+    const productToQueryProduct = new Product(0, '0th');
+    const productToQuery = new Release(
       0,
-      productToQueryFamily.id,
+      productToQueryProduct.id,
       '',
       true,
       []
     );
-    const singleReleaseFamily = new Family(1, '1st');
-    const singleRelease = new Dependency(1, singleReleaseFamily.id, '', true, [
+    const singleReleaseProduct = new Product(1, '1st');
+    const singleRelease = new Release(1, singleReleaseProduct.id, '', true, [
       productToQuery.id,
     ]);
     const versionLoader = new VersionLoaderMemory(
-      [productToQueryFamily, singleReleaseFamily],
+      [productToQueryProduct, singleReleaseProduct],
       [singleRelease, productToQuery]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.whatProductsCanIRunWithDependency([
+    const result = versionFinder.whatProductsCanIRunWithRelease([
       productToQuery,
     ]);
     expect(result).has.same.members([singleRelease]);
   });
-  it('should find latest dependency that supports it', () => {
-    const queryProductFamily = new Family(0, '0th');
-    const queryProduct = new Dependency(
+  it('should find latest Release that supports it', () => {
+    const queryProductProduct = new Product(0, '0th');
+    const queryProduct = new Release(
       Math.random(),
-      queryProductFamily.id,
+      queryProductProduct.id,
       '6.4',
       true,
       []
     );
-    const tooNewQueryProduct = new Dependency(
+    const tooNewQueryProduct = new Release(
       Math.random(),
-      queryProductFamily.id,
+      queryProductProduct.id,
       '6.5',
       true,
       []
     );
 
-    const dependencyFamily = new Family(1, '1st');
-    const tooOldDependency = new Dependency(
+    const ReleaseProduct = new Product(1, '1st');
+    const tooOldRelease = new Release(
       Math.random(),
-      dependencyFamily.id,
+      ReleaseProduct.id,
       '1.0',
       true,
       [queryProduct.id]
     );
-    const justRightDependency = new Dependency(
+    const justRightRelease = new Release(
       Math.random(),
-      dependencyFamily.id,
+      ReleaseProduct.id,
       '2.0',
       true,
       [queryProduct.id]
     );
-    const tooNewDependency = new Dependency(
+    const tooNewRelease = new Release(
       Math.random(),
-      dependencyFamily.id,
+      ReleaseProduct.id,
       '3.0',
       true,
       [tooNewQueryProduct.id]
     );
 
     const versionLoader = new VersionLoaderMemory(
-      [queryProductFamily, dependencyFamily],
+      [queryProductProduct, ReleaseProduct],
       [
         queryProduct,
         tooNewQueryProduct,
-        tooOldDependency,
-        justRightDependency,
-        tooNewDependency,
+        tooOldRelease,
+        justRightRelease,
+        tooNewRelease,
       ]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.whatProductsCanIRunWithDependency([
-      queryProduct,
-    ]);
-    expect(result).has.same.members([justRightDependency]);
+    const result = versionFinder.whatProductsCanIRunWithRelease([queryProduct]);
+    expect(result).has.same.members([justRightRelease]);
   });
-  it('shouldnt return dependencies that arent supported', () => {
-    const productToQueryFamily = new Family(0, '0th');
-    const productToQuery = new Dependency(
+  it('shouldnt return Releases that arent supported', () => {
+    const productToQueryProduct = new Product(0, '0th');
+    const productToQuery = new Release(
       Math.random(),
-      productToQueryFamily.id,
+      productToQueryProduct.id,
       '',
       true,
       []
     );
-    const unsupportedReleaseFamily = new Family(1, '1st');
-    const unsupportedRelease = new Dependency(
+    const unsupportedReleaseProduct = new Product(1, '1st');
+    const unsupportedRelease = new Release(
       Math.random(),
-      unsupportedReleaseFamily.id,
+      unsupportedReleaseProduct.id,
       '',
       false,
       [productToQuery.id]
     );
     const versionLoader = new VersionLoaderMemory(
-      [productToQueryFamily, unsupportedReleaseFamily],
+      [productToQueryProduct, unsupportedReleaseProduct],
       [unsupportedRelease, productToQuery]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.whatProductsCanIRunWithDependency([
+    const result = versionFinder.whatProductsCanIRunWithRelease([
       productToQuery,
     ]);
     expect(result).has.same.members([]);
   });
   it('if no product matches your version return one from an earlier version', () => {
-    const searchFamily = new Family(0, '0th');
-    const olderRelease = new Dependency(
+    const searchProduct = new Product(0, '0th');
+    const olderRelease = new Release(
       Math.random(),
-      searchFamily.id,
+      searchProduct.id,
       '1.0',
       true,
       []
     );
-    const searchRelease = new Dependency(
+    const searchRelease = new Release(
       Math.random(),
-      searchFamily.id,
+      searchProduct.id,
       '2.0',
       true,
       []
     );
-    const productFamily = new Family(1, '1st');
-    const productForOlderRelease = new Dependency(
+    const productProduct = new Product(1, '1st');
+    const productForOlderRelease = new Release(
       Math.random(),
-      productFamily.id,
+      productProduct.id,
       '8.0',
       true,
       [olderRelease.id]
     );
 
     const versionLoader = new VersionLoaderMemory(
-      [searchFamily, productFamily],
+      [searchProduct, productProduct],
       [olderRelease, searchRelease, productForOlderRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
-    const result = versionFinder.whatProductsCanIRunWithDependency([
+    const result = versionFinder.whatProductsCanIRunWithRelease([
       searchRelease,
     ]);
     expect(result).has.same.members([productForOlderRelease]);
