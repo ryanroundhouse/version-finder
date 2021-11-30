@@ -1,41 +1,41 @@
 <h1 class="text-center">Latest Releases</h1>
 <div class="d-flex flex-wrap">
-  <article
-    *ngFor="let product of products"
-    class="p-4 bg-white d-inline-block m-5"
-  >
-    <h2>{{ product.name }}</h2>
-    <ul class="Release-list flex-right">
-      <h3>v{{ getLatestReleaseByProduct(product.id)?.version }}</h3>
-      <label
-        >released
+  <article *ngFor="let product of products" class="m-3">
+    <div class="article-header-rectangle">
+      <label class="mx-3 header">{{ product.name }}</label>
+    </div>
+    <div class="release-list d-flex flex-column">
+      <label class="mx-3 subheader">
+        {{ getLatestReleaseByProduct(product.id)?.version }}
+      </label>
+      <label class="mx-3 text">
         {{
           getFriendlyDate(getLatestReleaseByProduct(product.id)?.releaseDate)
-        }}</label
-      >
+        }}
+      </label>
       <div
         *ngIf="
           getReleasesForRelease(getLatestReleaseByProduct(product.id)?.releases)
             .length > 0
         "
       >
-        <h4>Dependencies:</h4>
-        <ul class="Release-list">
+        <label class="mx-3 subheader">Dependencies:</label>
+        <ul class="dependency-list">
           <li
             *ngFor="
               let release of get64Releases(
                 getLatestReleaseByProduct(product.id)?.releases
               )
             "
-            class="flex-down mx-3"
+            class="orange"
           >
-            <label>
+            <label class="text">
               {{ getProductNameById(release.product) }} v{{ release.version }}
             </label>
           </li>
         </ul>
-        <h4
-          class="ms-5"
+        <label
+          class="mx-3 subheader"
           *ngIf="
             get64Releases(getLatestReleaseByProduct(product.id)?.releases)
               .length > 0 &&
@@ -44,22 +44,22 @@
           "
         >
           OR
-        </h4>
-        <ul class="Release-list">
+        </label>
+        <ul class="dependency-list">
           <li
             *ngFor="
               let release of get66Releases(
                 getLatestReleaseByProduct(product.id)?.releases
               )
             "
-            class="flex-down mx-3"
+            class="blue"
           >
-            <label>
+            <label class="text">
               {{ getProductNameById(release.product) }} v{{ release.version }}
             </label>
           </li>
         </ul>
       </div>
-    </ul>
+    </div>
   </article>
 </div>
