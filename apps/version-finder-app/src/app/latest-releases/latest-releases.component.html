@@ -1,10 +1,13 @@
-<h1 class="text-center">Latest Releases</h1>
-<div class="d-flex flex-wrap">
+<div>
+  <label class="page-header m-3">Latest Releases</label>
+  <div class="page-header-rectangle ms-3"></div>
+</div>
+<div class="d-flex flex-wrap border-box m-3">
   <article *ngFor="let product of products" class="m-3">
     <div class="article-header-rectangle">
       <label class="mx-3 header">{{ product.name }}</label>
     </div>
-    <div class="release-list d-flex flex-column">
+    <div class="release-list d-flex flex-column mt-1">
       <label class="mx-3 subheader">
         {{ getLatestReleaseByProduct(product.id)?.version }}
       </label>
