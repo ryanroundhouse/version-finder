@@ -27,6 +27,32 @@
         <ul class="dependency-list">
           <li
             *ngFor="
+              let release of getOtherReleases(
+                getLatestReleaseByProduct(product.id)?.dependencies
+              )
+            "
+            class="green"
+          >
+            <label class="text">
+              {{ getProductNameById(release.product) }} v{{ release.version }}
+            </label>
+          </li>
+        </ul>
+        <label
+          class="mx-3 subheader"
+          *ngIf="
+            getOtherReleases(
+              getLatestReleaseByProduct(product.id)?.dependencies
+            ).length > 0 &&
+            get64Releases(getLatestReleaseByProduct(product.id)?.dependencies)
+              .length > 0
+          "
+        >
+          AND
+        </label>
+        <ul class="dependency-list">
+          <li
+            *ngFor="
               let release of get64Releases(
                 getLatestReleaseByProduct(product.id)?.dependencies
               )

@@ -99,6 +99,21 @@ export class LatestReleasesComponent implements OnInit {
     return stream64Products;
   }
 
+  getOtherReleases(Releases: number[] | undefined): Release[] {
+    const non6466Products: Release[] = [];
+    if (Releases) {
+      const foundReleases = this.releases.filter((dep) => {
+        return (
+          ![0, 4, 5, 6, 7].includes(dep.product) && Releases.includes(dep.id)
+        );
+      });
+      foundReleases.forEach((dep) => {
+        non6466Products.push(dep);
+      });
+    }
+    return non6466Products;
+  }
+
   getProductNameById(ProductId: number): string | undefined {
     const Product = this.products.find((fam) => {
       return fam.id === ProductId;
