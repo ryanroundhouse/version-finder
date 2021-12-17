@@ -42,17 +42,17 @@ export class AddReleaseComponent implements OnInit {
     return releases;
   }
 
-  getReleasesForRelease(releases: number[]): Release[] {
-    const foundReleases: Release[] = [];
+  getDependenciesForRelease(releases: number[]): Release[] {
+    const foundDependencies: Release[] = [];
     releases.forEach((depId) => {
       const foundDep = this.releases.find((dep) => {
         return dep.id === depId;
       });
       if (foundDep) {
-        foundReleases.push(foundDep);
+        foundDependencies.push(foundDep);
       }
     });
-    return foundReleases;
+    return foundDependencies;
   }
 
   getProductNameById(ProductId: number): string | undefined {
@@ -77,23 +77,23 @@ export class AddReleaseComponent implements OnInit {
     }
   }
 
-  onDelete(productId: number, releaseId: number) {
+  onDeleteDependency(releaseId: number, dependencyId: number) {
     console.log(
-      `got delete request for release ${productId}'s Release ${releaseId}`
+      `got delete request for release ${releaseId}'s dependency ${dependencyId}`
     );
     const confirmResult = confirm(
-      'Are you sure you want to delete the Release?'
+      'Are you sure you want to delete the Dependency?'
     );
     if (confirmResult) {
       const release = this.releases.find((rel) => {
-        return rel.id === productId;
+        return rel.id === releaseId;
       });
       if (release) {
-        const indexOfRelease = release.dependencies.findIndex((rel) => {
-          return rel === releaseId;
+        const indexOfDependency = release.dependencies.findIndex((dep) => {
+          return dep === dependencyId;
         });
-        if (indexOfRelease >= 0) {
-          release.dependencies.splice(indexOfRelease, 1);
+        if (indexOfDependency >= 0) {
+          release.dependencies.splice(indexOfDependency, 1);
           this.versionManagerService
             .updateRelease(release)
             .subscribe((result: boolean) => {
@@ -125,9 +125,20 @@ export class AddReleaseComponent implements OnInit {
       });
   }
 
-  addRelease(releaseVersion: string, ProductId: number) {
+  addRelease(
+    releaseVersion: string,
+    newReleaseReleaseDate: string,
+    ProductId: number
+  ) {
     console.log(`adding release ${releaseVersion} for Product ${ProductId}`);
-    const newRelease = new Release(-1, ProductId, releaseVersion, true, []);
+    const newRelease = new Release(
+      -1,
+      ProductId,
+      releaseVersion,
+      true,
+      [],
+      newReleaseReleaseDate
+    );
     this.versionManagerService
       .addRelease(newRelease)
       .subscribe((result: boolean) => {

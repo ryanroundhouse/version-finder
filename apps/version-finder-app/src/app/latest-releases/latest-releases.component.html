@@ -18,8 +18,9 @@
       </label>
       <div
         *ngIf="
-          getReleasesForRelease(getLatestReleaseByProduct(product.id)?.releases)
-            .length > 0
+          getReleasesForRelease(
+            getLatestReleaseByProduct(product.id)?.dependencies
+          ).length > 0
         "
       >
         <label class="mx-3 subheader">Dependencies:</label>
@@ -27,7 +28,7 @@
           <li
             *ngFor="
               let release of get64Releases(
-                getLatestReleaseByProduct(product.id)?.releases
+                getLatestReleaseByProduct(product.id)?.dependencies
               )
             "
             class="orange"
@@ -40,9 +41,9 @@
         <label
           class="mx-3 subheader"
           *ngIf="
-            get64Releases(getLatestReleaseByProduct(product.id)?.releases)
+            get64Releases(getLatestReleaseByProduct(product.id)?.dependencies)
               .length > 0 &&
-            get66Releases(getLatestReleaseByProduct(product.id)?.releases)
+            get66Releases(getLatestReleaseByProduct(product.id)?.dependencies)
               .length > 0
           "
         >
@@ -52,7 +53,7 @@
           <li
             *ngFor="
               let release of get66Releases(
-                getLatestReleaseByProduct(product.id)?.releases
+                getLatestReleaseByProduct(product.id)?.dependencies
               )
             "
             class="blue"

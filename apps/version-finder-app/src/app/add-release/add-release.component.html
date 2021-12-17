@@ -43,15 +43,22 @@
       <label class="subheader">Dependencies:</label>
       <ul class="dependency-list">
         <li
-          *ngFor="let release of getReleasesForRelease(release.dependencies)"
+          *ngFor="
+            let dependency of getDependenciesForRelease(release.dependencies)
+          "
           class="orange"
         >
           <div class="d-flex flex-right">
             <label class="text">
-              {{ getProductNameById(release.product) }} v{{ release.version }}
+              {{ getProductNameById(dependency.product) }} v{{
+                dependency.version
+              }}
             </label>
-            <button class="ms-auto" (click)="onDelete(product.id, release.id)">
-              Delete
+            <button
+              class="ms-auto"
+              (click)="onDeleteDependency(release.id, dependency.id)"
+            >
+              Delete Dependency
             </button>
           </div>
         </li>
@@ -69,12 +76,25 @@
     <article class="p-4 bg-white d-inline-block m-5">
       <h3>Add a Release</h3>
       <div class="flex-right">
-        <label class="mx-3">Version: </label>
+        <label class="subheader mx-3">Version Number: </label>
         <input type="text" class="me-3" #newReleaseVersion />
-        <button (click)="addRelease(newReleaseVersion.value, product.id)">
-          Add Release
-        </button>
       </div>
+      <div class="flex-right">
+        <label class="subheader mx-3">Release Date: </label>
+        <input type="date" class="text me-3" #newReleaseReleaseDate />
+      </div>
+      <button
+        (click)="
+          addRelease(
+            newReleaseVersion.value,
+            newReleaseReleaseDate.value,
+            product.id
+          )
+        "
+        class="float-end mt-4"
+      >
+        Add Release
+      </button>
     </article>
   </article>
 </div>
