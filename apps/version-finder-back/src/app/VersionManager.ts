@@ -74,6 +74,7 @@ export class VersionManager {
       matchingRelease.releaseDate = updatedRelease.releaseDate;
       matchingRelease.supported = updatedRelease.supported;
       matchingRelease.version = updatedRelease.version;
+      this.versionLoader.updateRelease(matchingRelease);
       return true;
     } else {
       return false;
