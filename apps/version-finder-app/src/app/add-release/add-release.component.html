@@ -1,74 +1,80 @@
-<h1 class="text-center">Releases</h1>
-<article
-  *ngFor="let product of products"
-  class="p-4 bg-white d-inline-block m-5"
->
-  <h2>{{ product.name }}</h2>
+<div>
+  <label class="page-header m-3">Releases</label>
+  <div class="page-header-rectangle ms-3"></div>
+</div>
+<div class="d-flex flex-wrap border-box m-3">
   <article
-    *ngFor="let release of getReleasesByProduct(product.id)"
+    *ngFor="let product of products"
     class="p-4 bg-white d-inline-block m-5"
   >
-    <h3 class="text-center">{{ release.version }}</h3>
-    <div class="flex-right">
-      <label class="mx-3">Version Number: </label>
-      <input
-        type="text"
-        class="me-3"
-        value="{{ release.version }}"
-        #versionNumber
-      />
-    </div>
-    <div class="flex-right">
-      <label class="mx-3">Release Date: </label>
-      <input
-        type="date"
-        class="me-3"
-        value="{{ release.releaseDate }}"
-        #releaseDate
-      />
-      <button
-        (click)="
-          onReleaseDateUpdate(release, releaseDate.value, versionNumber.value)
-        "
-      >
-        Update
+    <h2>{{ product.name }}</h2>
+    <article
+      *ngFor="let release of getReleasesByProduct(product.id)"
+      class="p-4 bg-white d-inline-block m-5"
+    >
+      <div class="article-header-rectangle">
+        <label class="mx-3 header">{{ release.version }}</label>
+      </div>
+      <div class="flex-right">
+        <label class="subheader mx-3">Version Number: </label>
+        <input
+          type="text"
+          class="text me-3"
+          value="{{ release.version }}"
+          #versionNumber
+        />
+      </div>
+      <div class="flex-right">
+        <label class="subheader mx-3">Release Date: </label>
+        <input
+          type="date"
+          class="text me-3"
+          value="{{ release.releaseDate }}"
+          #releaseDate
+        />
+        <button
+          (click)="
+            onReleaseDateUpdate(release, releaseDate.value, versionNumber.value)
+          "
+        >
+          Update
+        </button>
+      </div>
+      <label class="subheader">Dependencies:</label>
+      <ul class="dependency-list">
+        <li
+          *ngFor="let release of getReleasesForRelease(release.dependencies)"
+          class="orange"
+        >
+          <div class="d-flex flex-right">
+            <label class="text">
+              {{ getProductNameById(release.product) }} v{{ release.version }}
+            </label>
+            <button class="ms-auto" (click)="onDelete(product.id, release.id)">
+              Delete
+            </button>
+          </div>
+        </li>
+      </ul>
+      <version-finder-add-dependency
+        [Products]="products"
+        [Releases]="releases"
+        [productId]="release.id"
+        (addReleaseEvent)="addReleaseEvent($event)"
+      ></version-finder-add-dependency>
+      <button class="float-end mt-4" (click)="deleteRelease(release.id)">
+        Delete Release
       </button>
-    </div>
-    <h4>Dependencies:</h4>
-    <ul class="dependency-list">
-      <li
-        *ngFor="let release of getReleasesForRelease(release.releases)"
-        class="flex-down mx-3"
-      >
-        <div class="d-flex flex-right mt-3">
-          <h4>
-            {{ getProductNameById(release.product) }}
-          </h4>
-          <h4 class="ms-2">v{{ release.version }}</h4>
-          <button class="ms-auto" (click)="onDelete(release.id, release.id)">
-            Delete
-          </button>
-        </div>
-      </li>
-    </ul>
-    <version-finder-add-dependency
-      [Products]="products"
-      [Releases]="releases"
-      [productId]="release.id"
-      (addReleaseEvent)="addReleaseEvent($event)"
-    ></version-finder-add-dependency>
-    <button class="float-end mt-4" (click)="deleteRelease(release.id)">
-      Delete Release
-    </button>
+    </article>
+    <article class="p-4 bg-white d-inline-block m-5">
+      <h3>Add a Release</h3>
+      <div class="flex-right">
+        <label class="mx-3">Version: </label>
+        <input type="text" class="me-3" #newReleaseVersion />
+        <button (click)="addRelease(newReleaseVersion.value, product.id)">
+          Add Release
+        </button>
+      </div>
+    </article>
   </article>
-  <article class="p-4 bg-white d-inline-block m-5">
-    <h3>Add a Release</h3>
-    <div class="flex-right">
-      <label class="mx-3">Version: </label>
-      <input type="text" class="me-3" #newReleaseVersion />
-      <button (click)="addRelease(newReleaseVersion.value, product.id)">
-        Add Release
-      </button>
-    </div>
-  </article>
-</article>
+</div>

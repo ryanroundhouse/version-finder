@@ -4,139 +4,139 @@
     "product": 0,
     "version": "6.4.30",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 1,
     "product": 0,
     "version": "6.4.29",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 2,
     "product": 0,
     "version": "6.4.28",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 3,
     "product": 0,
     "version": "6.4.27",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 4,
     "product": 0,
     "version": "6.4.26",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 5,
     "product": 0,
     "version": "6.4.26",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 6,
     "product": 4,
     "version": "6.6.9",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 7,
     "product": 4,
     "version": "6.6.8",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 8,
     "product": 4,
     "version": "6.6.7",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 9,
     "product": 4,
     "version": "6.6.5",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 10,
     "product": 4,
     "version": "6.6.4",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 11,
     "product": 2,
     "version": "6.8.1",
     "supported": true,
-    "releases": [6, 0]
+    "dependencies": [6, 0]
   },
   {
     "id": 12,
     "product": 2,
     "version": "6.8",
     "supported": true,
-    "releases": [6, 0]
+    "dependencies": [6, 0]
   },
   {
     "id": 13,
     "product": 2,
     "version": "6.7.2",
     "supported": false,
-    "releases": [9, 3, 14, 15]
+    "dependencies": [9, 3, 14, 15]
   },
   {
     "id": 14,
     "product": 5,
     "version": "6.6.9",
     "supported": true,
-    "releases": [7]
+    "dependencies": [7]
   },
   {
     "id": 15,
     "product": 6,
     "version": "6.4.29",
     "supported": true,
-    "releases": [16]
+    "dependencies": [16]
   },
   {
     "id": 16,
     "product": 0,
     "version": "6.4.20",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 17,
     "product": 1,
     "version": "6.6.3",
     "supported": true,
-    "releases": [18, 15, 7]
+    "dependencies": [18, 15, 7]
   },
   {
     "id": 18,
     "product": 7,
     "version": "6.4.20m",
     "supported": true,
-    "releases": []
+    "dependencies": []
   },
   {
     "id": 19,
     "product": 1,
     "version": "6.6.2",
     "supported": true,
-    "releases": [18, 15, 7]
+    "dependencies": [18, 15, 7]
   }
 ]

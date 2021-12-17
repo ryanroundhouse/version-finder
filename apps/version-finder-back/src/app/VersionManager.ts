@@ -1,5 +1,4 @@
 import { Release, Product } from '@version-finder/version-finder-lib';
-import * as fs from 'fs';
 import { VersionLoader } from './VersionLoader';
 
 export class VersionManager {
@@ -70,7 +69,7 @@ export class VersionManager {
       return dep.id === updatedRelease.id;
     });
     if (matchingRelease) {
-      matchingRelease.releases = updatedRelease.releases;
+      matchingRelease.dependencies = updatedRelease.dependencies;
       matchingRelease.releaseDate = updatedRelease.releaseDate;
       matchingRelease.supported = updatedRelease.supported;
       matchingRelease.version = updatedRelease.version;
@@ -82,7 +81,7 @@ export class VersionManager {
 
   addRelease(release: Release): boolean {
     // can't depend on itself.
-    if (release.releases.includes(release.id)) {
+    if (release.dependencies.includes(release.id)) {
       return false;
     }
     // same Product + Release already exists
@@ -98,10 +97,14 @@ export class VersionManager {
         return fam.id === release.product;
       })
     ) {
-      const depWithMaxId = this.releases.reduce((p, c) =>
-        p.id > c.id ? p : c
-      );
-      release.id = depWithMaxId.id + 1;
+      let releaseId = 0;
+      if (this.releases.length > 0) {
+        const depWithMaxId = this.releases.reduce((p, c) =>
+          p.id > c.id ? p : c
+        );
+        releaseId = depWithMaxId.id + 1;
+      }
+      release.id = releaseId;
       this.releases.push(release);
       this.versionLoader.addRelease(release);
       return true;

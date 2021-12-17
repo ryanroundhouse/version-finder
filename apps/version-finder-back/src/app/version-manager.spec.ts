@@ -120,7 +120,7 @@ describe('version manager Release tests', () => {
 
     const result = versionManager.addRelease(release);
     expect(result).to.be.false;
-    expect(versionManager.releases).has.same.members([Release]);
+    expect(versionManager.releases).has.same.members([release]);
   });
   it('add Release fails when the same version already exists for that Release', () => {
     const product = new Product(0, '0th');
@@ -137,7 +137,7 @@ describe('version manager Release tests', () => {
 
     const result = versionManager.addRelease(duplicateRelease);
     expect(result).to.be.false;
-    expect(versionManager.releases).has.same.members([Release]);
+    expect(versionManager.releases).has.same.members([release]);
   });
   it('add Release cant depend on itself', () => {
     const product = new Product(0, '0th');

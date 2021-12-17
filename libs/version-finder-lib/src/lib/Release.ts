@@ -3,7 +3,7 @@ export class Release {
   version: string;
   supported: boolean;
   product: number;
-  releases: number[] = [];
+  dependencies: number[] = [];
   releaseDate = '';
 
   constructor(
@@ -19,7 +19,7 @@ export class Release {
     this.version = version;
     this.supported = supported;
     if (releases) {
-      this.releases = releases;
+      this.dependencies = releases;
     }
     if (releaseDate) {
       this.releaseDate = releaseDate;

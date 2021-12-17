@@ -67,7 +67,7 @@ export class AddReleaseComponent implements OnInit {
       return dep.id === event.releaseId;
     });
     if (releaseToGetNewRelease) {
-      releaseToGetNewRelease.releases.push(event.newReleaseId);
+      releaseToGetNewRelease.dependencies.push(event.newReleaseId);
       this.versionManagerService
         .updateRelease(releaseToGetNewRelease)
         .subscribe((result: boolean) => {
@@ -77,23 +77,23 @@ export class AddReleaseComponent implements OnInit {
     }
   }
 
-  onDelete(releaseId: number, ReleaseId: number) {
+  onDelete(productId: number, releaseId: number) {
     console.log(
-      `got delete request for release ${releaseId}'s Release ${ReleaseId}`
+      `got delete request for release ${productId}'s Release ${releaseId}`
     );
     const confirmResult = confirm(
       'Are you sure you want to delete the Release?'
     );
     if (confirmResult) {
       const release = this.releases.find((rel) => {
-        return rel.id === releaseId;
+        return rel.id === productId;
       });
       if (release) {
-        const indexOfRelease = release.releases.findIndex((rel) => {
-          return rel === ReleaseId;
+        const indexOfRelease = release.dependencies.findIndex((rel) => {
+          return rel === releaseId;
         });
         if (indexOfRelease >= 0) {
-          release.releases.splice(indexOfRelease, 1);
+          release.dependencies.splice(indexOfRelease, 1);
           this.versionManagerService
             .updateRelease(release)
             .subscribe((result: boolean) => {

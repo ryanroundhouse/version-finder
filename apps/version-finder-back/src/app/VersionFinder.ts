@@ -26,9 +26,9 @@ export class VersionFinder {
 
     allProducts.forEach((product) => {
       const productReleases = this.versionManager.getReleasesByProduct(product);
-      productReleases.forEach((ProductRelease) => {
+      productReleases.forEach((productRelease) => {
         if (
-          ProductRelease.releases.some((ReleaseId) => {
+          productRelease.dependencies.some((ReleaseId) => {
             const release = this.findReleaseById(ReleaseId);
             return (
               searchProducts.find((product) => {
@@ -38,10 +38,10 @@ export class VersionFinder {
           })
         ) {
           if (
-            ProductRelease.supported &&
-            !this.isTooNew(ProductRelease, productsToQuery)
+            productRelease.supported &&
+            !this.isTooNew(productRelease, productsToQuery)
           ) {
-            foundReleases.push(ProductRelease);
+            foundReleases.push(productRelease);
           }
         }
       });
@@ -58,7 +58,7 @@ export class VersionFinder {
 
   isTooNew(productRelease: Release, productsToQuery: Release[]): boolean {
     let isTooNew = false;
-    productRelease.releases.forEach((ProductRelease) => {
+    productRelease.dependencies.forEach((ProductRelease) => {
       const resolvedRelease = this.findReleaseById(ProductRelease);
       const productToQuery = productsToQuery.find((productToQuery) => {
         return resolvedRelease.product === productToQuery.product;
@@ -71,8 +71,8 @@ export class VersionFinder {
   }
 
   findSubReleases(releases: Release[], products: Product[]): Release[] {
-    releases.forEach((Release) => {
-      Release.releases.forEach((subRelease) => {
+    releases.forEach((release) => {
+      release.dependencies.forEach((subRelease) => {
         const resolvedRelease = this.findReleaseById(subRelease);
         if (resolvedRelease.supported) {
           releases.push(resolvedRelease);

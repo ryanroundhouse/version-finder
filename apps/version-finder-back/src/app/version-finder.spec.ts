@@ -16,11 +16,11 @@ describe('get pre-reqs for releases', () => {
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findReleasesFor([release]);
-    expect(result).has.same.members([Release]);
+    expect(result).has.same.members([release]);
   });
   it('should return only the entry when no Release for search exist', () => {
-    const ReleaseProduct = new Product(0, '0th');
-    const release = new Release(Math.random(), ReleaseProduct.id, '', true, []);
+    const releaseProduct = new Product(0, '0th');
+    const release = new Release(Math.random(), releaseProduct.id, '', true, []);
     const unrelatedReleaseProduct = new Product(1, '1st');
     const unrelatedRelease = new Release(
       Math.random(),
@@ -30,14 +30,14 @@ describe('get pre-reqs for releases', () => {
       []
     );
     const versionLoader = new VersionLoaderMemory(
-      [ReleaseProduct, unrelatedReleaseProduct],
+      [releaseProduct, unrelatedReleaseProduct],
       [release, unrelatedRelease]
     );
     const versionManager = new VersionManager(versionLoader);
     const versionFinder = new VersionFinder(versionManager);
 
     const result = versionFinder.findReleasesFor([release]);
-    expect(result).has.same.members([Release]);
+    expect(result).has.same.members([release]);
   });
   it('should return all Release linked by Release', () => {
     const relatedReleaseProduct = new Product(0, '0th');
@@ -79,12 +79,12 @@ describe('get pre-reqs for releases', () => {
       true,
       [secondLevelRelease.id]
     );
-    const ReleaseProduct = new Product(2, '2nd');
-    const release = new Release(Math.random(), ReleaseProduct.id, '', true, [
+    const releaseProduct = new Product(2, '2nd');
+    const release = new Release(Math.random(), releaseProduct.id, '', true, [
       firstLevelRelease.id,
     ]);
     const versionLoader = new VersionLoaderMemory(
-      [secondLevelReleaseProduct, firstLevelReleaseProduct, ReleaseProduct],
+      [secondLevelReleaseProduct, firstLevelReleaseProduct, releaseProduct],
       [release, firstLevelRelease, secondLevelRelease]
     );
     const versionManager = new VersionManager(versionLoader);
@@ -92,7 +92,7 @@ describe('get pre-reqs for releases', () => {
 
     const result = versionFinder.findReleasesFor([release]);
     expect(result).has.same.members([
-      Release,
+      release,
       firstLevelRelease,
       secondLevelRelease,
     ]);
