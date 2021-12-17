@@ -10,6 +10,33 @@ export class VersionLoaderFile implements VersionLoader {
     this.ProductFilePath = ProductFilePath;
     this.ReleaseFilePath = ReleaseFilePath;
   }
+  updateProduct(updatedProduct: Product): boolean {
+    const products = this.getProducts();
+    const productToUpdate = products.find((prod) => {
+      return prod.id === updatedProduct.id;
+    });
+    if (productToUpdate) {
+      productToUpdate.name = updatedProduct.name;
+      this.writeProductsToFile(this.ProductFilePath, products);
+      return true;
+    }
+    return false;
+  }
+  updateRelease(updatedRelease: Release): boolean {
+    const releases = this.getReleases();
+    const releaseToUpdate = releases.find((rel) => {
+      return rel.id === updatedRelease.id;
+    });
+    if (releaseToUpdate) {
+      releaseToUpdate.dependencies = updatedRelease.dependencies;
+      releaseToUpdate.releaseDate = updatedRelease.releaseDate;
+      releaseToUpdate.supported = updatedRelease.supported;
+      releaseToUpdate.version = updatedRelease.version;
+      this.writeReleasesToFile(this.ReleaseFilePath, releases);
+      return true;
+    }
+    return false;
+  }
 
   getReleases(): Release[] {
     return this.loadReleasesFromFile(this.ReleaseFilePath);
@@ -53,6 +80,7 @@ export class VersionLoaderFile implements VersionLoader {
   }
 
   writeProductsToFile(filePath: string, Products: Product[]) {
+    console.log(`attempting to write to ${filePath}`);
     fs.writeFile(filePath, JSON.stringify(Products), (err) => {
       if (err) {
         console.log('File write failed:', err);
@@ -62,6 +90,7 @@ export class VersionLoaderFile implements VersionLoader {
   }
 
   writeReleasesToFile(filePath: string, Releases: Release[]) {
+    console.log(`attempting to write to ${filePath}`);
     fs.writeFile(filePath, JSON.stringify(Releases), (err) => {
       if (err) {
         console.log('File write failed:', err);

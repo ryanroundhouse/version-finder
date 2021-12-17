@@ -58,6 +58,7 @@ export class VersionManager {
     });
     if (matchingProduct) {
       matchingProduct.name = product.name;
+      this.versionLoader.updateProduct(matchingProduct);
       return true;
     } else {
       return false;

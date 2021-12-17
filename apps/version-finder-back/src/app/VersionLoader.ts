@@ -5,4 +5,6 @@ export interface VersionLoader {
   getProducts(): Product[];
   addProduct(newProduct: Product): boolean;
   addRelease(newRelease: Release): boolean;
+  updateProduct(newProduct: Product): boolean;
+  updateRelease(newRelease: Release): boolean;
 }

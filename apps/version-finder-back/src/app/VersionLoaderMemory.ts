@@ -9,6 +9,12 @@ export class VersionLoaderMemory implements VersionLoader {
     this.Releases = Releases;
     this.Products = Products;
   }
+  updateProduct(newProduct: Product): boolean {
+    return true;
+  }
+  updateRelease(newRelease: Release): boolean {
+    return true;
+  }
 
   getReleases(): Release[] {
     return this.Releases;
