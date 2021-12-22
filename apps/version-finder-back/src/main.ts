@@ -11,7 +11,7 @@ const versionFinderApi = new VersionFinderApi();
 const versionManagerApi = new VersionManagerApi();
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(compression());
 
