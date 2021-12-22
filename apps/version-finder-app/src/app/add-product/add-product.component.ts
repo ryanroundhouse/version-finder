@@ -4,8 +4,8 @@ import { VersionManagerService } from '../services/version-manager.service';
 
 @Component({
   selector: 'version-finder-add-product',
-  templateUrl: './add-Product.component.html',
-  styleUrls: ['./add-Product.component.scss'],
+  templateUrl: './add-product.component.html',
+  styleUrls: ['./add-product.component.scss'],
 })
 export class AddProductComponent implements OnInit {
   Releases: Release[] = [];
