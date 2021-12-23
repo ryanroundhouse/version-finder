@@ -75,7 +75,7 @@ app.post('/Releases/update', (req, res) => {
 app.use(express.static(__dirname + '/front'));
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname)));
 
-const port = process.env.port || 80;
+const port = process.env.port || 3000;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/`);
 });
