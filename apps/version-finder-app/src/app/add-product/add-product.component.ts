@@ -8,8 +8,8 @@ import { VersionManagerService } from '../services/version-manager.service';
   styleUrls: ['./add-product.component.scss'],
 })
 export class AddProductComponent implements OnInit {
-  Releases: Release[] = [];
-  Products: Product[] = [];
+  releases: Release[] = [];
+  products: Product[] = [];
   newProductName = '';
 
   constructor(private versionManagerService: VersionManagerService) {}
@@ -18,7 +18,7 @@ export class AddProductComponent implements OnInit {
     this.versionManagerService
       .getAllReleases()
       .subscribe((Releases: Release[]) => {
-        this.Releases = Releases;
+        this.releases = Releases;
       });
     this.refreshProducts();
   }
@@ -27,7 +27,7 @@ export class AddProductComponent implements OnInit {
     this.versionManagerService
       .getAllProducts()
       .subscribe((Products: Product[]) => {
-        this.Products = Products;
+        this.products = Products;
       });
   }
 
@@ -44,7 +44,7 @@ export class AddProductComponent implements OnInit {
 
   updateProduct(ProductName: string, ProductId: string) {
     // update the Product
-    const ProductToUpdate = this.Products.find((fam) => {
+    const ProductToUpdate = this.products.find((fam) => {
       return fam.id === Number(ProductId);
     });
     if (ProductToUpdate) {
