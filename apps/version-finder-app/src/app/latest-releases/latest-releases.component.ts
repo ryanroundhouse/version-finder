@@ -50,10 +50,16 @@ export class LatestReleasesComponent implements OnInit {
   ): Release | undefined {
     let latestRelease: Release | undefined;
     if (ProductId !== undefined) {
-      latestRelease = this.releases.find((dep) => {
+      const releasedReleases = this.releases.filter((dep) => {
         const isReleased = moment(dep.releaseDate) < moment(moment.now());
         return dep.product === ProductId && isReleased;
       });
+      if (releasedReleases) {
+        releasedReleases.sort((first, second) => {
+          return moment(second.releaseDate).diff(first.releaseDate);
+        });
+        latestRelease = releasedReleases[0];
+      }
     }
     return latestRelease;
   }
