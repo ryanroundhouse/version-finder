@@ -8,7 +8,7 @@ import { Release, Product } from '@version-finder/version-finder-lib';
 })
 export class VersionManagerService {
   private readonly port = 80;
-  private readonly baseUrl: string = `http://localhost:3000`;
+  private readonly baseUrl: string = `http://10.101.10.58:${this.port}`;
 
   constructor(private http: HttpClient) {}
 
