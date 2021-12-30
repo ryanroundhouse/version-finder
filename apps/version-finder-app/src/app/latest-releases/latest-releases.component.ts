@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
+import {
+  faQuestionCircle,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 
 @Component({
@@ -11,6 +15,7 @@ import * as moment from 'moment';
 export class LatestReleasesComponent implements OnInit {
   releases: Release[] = [];
   products: Product[] = [];
+  faQuestionCircle: IconDefinition = faQuestionCircle;
 
   constructor(private versionManagerService: VersionManagerService) {}
 

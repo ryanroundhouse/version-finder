@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { AddReleaseComponent } from './add-release/add-release.component';
 import { FindDependenciesComponent } from './find-dependencies/find-dependencies.component';
 import { AddProductComponent } from './add-product/add-product.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

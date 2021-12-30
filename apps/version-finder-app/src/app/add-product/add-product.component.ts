@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
+import {
+  faQuestionCircle,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'version-finder-add-product',
@@ -11,6 +15,7 @@ export class AddProductComponent implements OnInit {
   releases: Release[] = [];
   products: Product[] = [];
   newProductName = '';
+  faQuestionCircle: IconDefinition = faQuestionCircle;
 
   constructor(private versionManagerService: VersionManagerService) {}
 

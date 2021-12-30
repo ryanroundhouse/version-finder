@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Release, Product } from '@version-finder/version-finder-lib';
 import { VersionManagerService } from '../services/version-manager.service';
 import { AddDependencyMessage } from './add-dependency/add-dependency-message';
+import {
+  faQuestionCircle,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'version-finder-add-release',
@@ -11,6 +15,7 @@ import { AddDependencyMessage } from './add-dependency/add-dependency-message';
 export class AddReleaseComponent implements OnInit {
   releases: Release[] = [];
   products: Product[] = [];
+  faQuestionCircle: IconDefinition = faQuestionCircle;
 
   constructor(private versionManagerService: VersionManagerService) {}
 
