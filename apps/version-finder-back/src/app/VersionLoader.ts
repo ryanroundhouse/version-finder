@@ -7,4 +7,6 @@ export interface VersionLoader {
   addRelease(newRelease: Release): boolean;
   updateProduct(newProduct: Product): boolean;
   updateRelease(newRelease: Release): boolean;
+  deleteProduct(productToDelete: Product): boolean;
+  deleteRelease(releaseToDelete: Release): boolean;
 }

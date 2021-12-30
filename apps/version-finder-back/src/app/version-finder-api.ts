@@ -10,8 +10,8 @@ export class VersionFinderApi {
 
   constructor() {
     const versionLoaderFile = new VersionLoaderFile(
-      path.resolve(__dirname, 'assets/sampleProducts.json'),
-      path.resolve(__dirname, 'assets/sampleReleases.json')
+      path.resolve(__dirname, 'assets/Products.json'),
+      path.resolve(__dirname, 'assets/Releases.json')
     );
     this.versionManager = new VersionManager(versionLoaderFile);
     this.versionFinder = new VersionFinder(this.versionManager);

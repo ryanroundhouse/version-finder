@@ -33,7 +33,12 @@
       </div>
     </div>
     <div class="d-flex flex-row-reverse mt-auto">
-      <button class="mt-3 ml-auto ms-auto">Delete</button>
+      <button
+        (click)="deleteProduct(productId.innerText)"
+        class="mt-3 ml-auto ms-auto"
+      >
+        Delete
+      </button>
     </div>
   </article>
 

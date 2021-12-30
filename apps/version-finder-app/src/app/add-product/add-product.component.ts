@@ -47,15 +47,41 @@ export class AddProductComponent implements OnInit {
       });
   }
 
-  updateProduct(ProductName: string, ProductId: string) {
+  deleteProduct(productId: string) {
+    console.log(`got delete request for product ${productId}`);
+    const confirmResult = confirm(
+      'Are you sure you want to delete this Product?'
+    );
+    if (confirmResult) {
+      const productToDelete = this.products.find((prod) => {
+        return prod.id === Number(productId);
+      });
+      if (productToDelete) {
+        const indexOfProductToDelete = this.products.findIndex((prod) => {
+          return prod === productToDelete;
+        });
+        if (indexOfProductToDelete >= 0) {
+          this.products.splice(indexOfProductToDelete, 1);
+          this.versionManagerService
+            .deleteProduct(productToDelete)
+            .subscribe((result: boolean) => {
+              console.log(result);
+              this.refreshProducts();
+            });
+        }
+      }
+    }
+  }
+
+  updateProduct(productName: string, productId: string) {
     // update the Product
-    const ProductToUpdate = this.products.find((fam) => {
-      return fam.id === Number(ProductId);
+    const productToUpdate = this.products.find((fam) => {
+      return fam.id === Number(productId);
     });
-    if (ProductToUpdate) {
-      ProductToUpdate.name = ProductName;
+    if (productToUpdate) {
+      productToUpdate.name = productName;
       this.versionManagerService
-        .updateProduct(ProductToUpdate)
+        .updateProduct(productToUpdate)
         .subscribe((result: boolean) => {
           console.log(result);
           this.refreshProducts();

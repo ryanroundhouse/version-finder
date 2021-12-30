@@ -41,6 +41,12 @@ app.post('/Releases/delete', (req, res) => {
   res.send(result);
 });
 
+app.post('/Products/delete', (req, res) => {
+  const productToDelete: Product = JSON.parse(req.body.Product);
+  const result = versionManagerApi.deleteProduct(productToDelete);
+  res.send(result);
+});
+
 app.post('/Products/update', (req, res) => {
   const newProduct: Product = JSON.parse(req.body.Product);
   const result = versionManagerApi.updateProduct(newProduct);

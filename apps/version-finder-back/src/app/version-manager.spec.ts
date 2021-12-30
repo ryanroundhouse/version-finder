@@ -65,9 +65,20 @@ describe('version manager Product tests', () => {
     const ProductToBeRenamed = new Product(0, '0th');
     const versionLoader = new VersionLoaderMemory([], []);
     const versionManager = new VersionManager(versionLoader);
+
     const result = versionManager.updateProduct(ProductToBeRenamed);
 
     expect(result).to.be.false;
+    expect(versionManager.products.length).equals(0);
+  });
+  it('version manager can delete a product', () => {
+    const productToBeDeleted = new Product(0, '0th');
+    const versionLoader = new VersionLoaderMemory([productToBeDeleted], []);
+    const versionManager = new VersionManager(versionLoader);
+
+    const result = versionManager.deleteProduct(productToBeDeleted);
+
+    expect(result).to.be.true;
     expect(versionManager.products.length).equals(0);
   });
 });

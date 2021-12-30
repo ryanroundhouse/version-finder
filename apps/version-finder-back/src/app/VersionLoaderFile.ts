@@ -10,6 +10,33 @@ export class VersionLoaderFile implements VersionLoader {
     this.ProductFilePath = ProductFilePath;
     this.ReleaseFilePath = ReleaseFilePath;
   }
+
+  deleteRelease(releaseToDelete: Release): boolean {
+    const releases = this.getReleases();
+    const indexOfReleaseToDelete = releases.findIndex((rel) => {
+      return rel.id === releaseToDelete.id;
+    });
+    if (indexOfReleaseToDelete >= 0) {
+      releases.splice(indexOfReleaseToDelete, 1);
+      this.writeReleasesToFile(this.ReleaseFilePath, releases);
+      return true;
+    }
+    return false;
+  }
+
+  deleteProduct(productToDelete: Product): boolean {
+    const products = this.getProducts();
+    const indexOfProductToDelete = products.findIndex((prod) => {
+      return prod.id === productToDelete.id;
+    });
+    if (indexOfProductToDelete >= 0) {
+      products.splice(indexOfProductToDelete, 1);
+      this.writeProductsToFile(this.ProductFilePath, products);
+      return true;
+    }
+    return false;
+  }
+
   updateProduct(updatedProduct: Product): boolean {
     const products = this.getProducts();
     const productToUpdate = products.find((prod) => {

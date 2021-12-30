@@ -7,8 +7,8 @@ export class VersionManagerApi {
   versionManager: VersionManager;
   constructor() {
     const versionLoaderFile = new VersionLoaderFile(
-      path.resolve(__dirname, 'assets/sampleProducts.json'),
-      path.resolve(__dirname, 'assets/sampleReleases.json')
+      path.resolve(__dirname, 'assets/Products.json'),
+      path.resolve(__dirname, 'assets/Releases.json')
     );
     this.versionManager = new VersionManager(versionLoaderFile);
   }
@@ -31,6 +31,10 @@ export class VersionManagerApi {
 
   deleteRelease(releaseToDelete: Release) {
     return this.versionManager.deleteRelease(releaseToDelete);
+  }
+
+  deleteProduct(productToDelete: Product) {
+    return this.versionManager.deleteProduct(productToDelete);
   }
 
   updateProduct(newProduct: Product) {

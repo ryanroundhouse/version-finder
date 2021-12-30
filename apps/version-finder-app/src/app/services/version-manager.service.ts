@@ -8,7 +8,7 @@ import { Release, Product } from '@version-finder/version-finder-lib';
 })
 export class VersionManagerService {
   private readonly port = 80;
-  private readonly baseUrl: string = `http://10.101.10.58:${this.port}`;
+  private readonly baseUrl: string = `http://localhost:3000`;
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +37,13 @@ export class VersionManagerService {
   deleteRelease(releaseToDelete: Release) {
     const result = this.http.post<boolean>(`${this.baseUrl}/Releases/delete`, {
       Release: JSON.stringify(releaseToDelete),
+    });
+    return result;
+  }
+
+  deleteProduct(productToDelete: Product) {
+    const result = this.http.post<boolean>(`${this.baseUrl}/Products/delete`, {
+      Product: JSON.stringify(productToDelete),
     });
     return result;
   }

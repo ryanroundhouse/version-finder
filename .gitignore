@@ -37,3 +37,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Data files
+/apps/version-finder-back/src/assets/Products.json
+/apps/version-finder-back/src/assets/Releases.json

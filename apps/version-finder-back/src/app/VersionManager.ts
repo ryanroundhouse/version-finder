@@ -36,6 +36,20 @@ export class VersionManager {
     });
     if (indexOfRelease >= 0) {
       this.releases.splice(indexOfRelease, 1);
+      this.versionLoader.deleteRelease(releaseToDelete);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  deleteProduct(productToDelete: Product) {
+    const indexOfProductToDelete = this.products.findIndex((prod) => {
+      return prod.id === productToDelete.id;
+    });
+    if (indexOfProductToDelete >= 0) {
+      this.products.splice(indexOfProductToDelete, 1);
+      this.versionLoader.deleteProduct(productToDelete);
       return true;
     } else {
       return false;
