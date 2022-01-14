@@ -8,7 +8,7 @@ import { Release, Product } from '@version-finder/version-finder-lib';
 })
 export class VersionFinderService {
   private readonly port = 443;
-  private readonly baseUrl: string = `https://10.101.10.58:${this.port}`;
+  private readonly baseUrl: string = `https://ns-version.harriscomputer.com`;
 
   constructor(private http: HttpClient) {}
 
