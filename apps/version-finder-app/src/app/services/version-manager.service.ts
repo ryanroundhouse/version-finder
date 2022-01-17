@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Release, Product } from '@version-finder/version-finder-lib';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VersionManagerService {
-  private readonly port = 443;
-  private readonly baseUrl: string = `https://ns-version.harriscomputer.com`;
+  private readonly baseUrl: string = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
 
