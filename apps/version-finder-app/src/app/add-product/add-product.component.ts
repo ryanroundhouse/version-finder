@@ -5,6 +5,7 @@ import {
   faQuestionCircle,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'version-finder-add-product',
@@ -45,6 +46,9 @@ export class AddProductComponent implements OnInit {
         console.log(result);
         this.refreshProducts();
       });
+      const productNameTextBox = document.getElementById('productNameInputBox');
+      console.log((<HTMLInputElement>productNameTextBox).value);
+      (<HTMLInputElement>productNameTextBox).value = "";
   }
 
   deleteProduct(productId: string) {
