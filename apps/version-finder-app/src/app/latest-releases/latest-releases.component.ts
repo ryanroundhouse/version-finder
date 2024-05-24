@@ -69,6 +69,22 @@ export class LatestReleasesComponent implements OnInit {
     return latestRelease;
   }
 
+  getCISProducts(): Product[] {
+    return this.products.filter((prod) => [0, 4, 9, 7].includes(prod.id));
+  }
+
+  getNSBLProducts(): Product[] {
+    return this.products.filter((prod) => [5, 6].includes(prod.id));
+  }
+
+  get7Products(): Product[] {
+    return this.products.filter((prod) => [10, 11].includes(prod.id));
+  }
+
+  getAddonProducts(): Product[] {
+    return this.products.filter((prod) => [1, 2, 3, 8].includes(prod.id));
+  }
+
   getReleasesForRelease(Releases: number[] | undefined): Release[] {
     const foundReleases: Release[] = [];
     if (Releases) {
