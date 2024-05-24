@@ -1,0 +1,82 @@
+<article class="m-3">
+    <div class="article-header-rectangle">
+        <label class="mx-3 header">{{ product.name }}</label>
+    </div>
+    <div class="release-list d-flex flex-column mt-1">
+        <label class="mx-3 subheader">
+            {{ release?.version }}
+        </label>
+        <label class="mx-3 text">
+            {{
+                getFriendlyDate(release?.releaseDate)
+            }}
+        </label>
+        <!-- <div
+            *ngIf="getReleasesForRelease(release?.dependencies).length > 0"
+        > -->
+            <label class="mx-3 subheader">Dependencies:</label>
+            <ul class="dependency-list">
+                <li
+                    *ngFor="
+                    let release of getOtherReleases(release?.dependencies)"
+                    class="green"
+                >
+                    <label class="text">
+                    {{ getProductNameById(release.product) }} v{{ release.version }}
+                    </label>
+                </li>
+            </ul>
+            <label
+            class="mx-3 subheader"
+            *ngIf="
+                getOtherReleases(
+                release?.dependencies
+                ).length > 0 &&
+                get64Releases(release?.dependencies)
+                .length > 0
+            "
+            >
+            AND
+            </label>
+            <ul class="dependency-list">
+            <li
+                *ngFor="
+                let release of get64Releases(
+                    release?.dependencies
+                )
+                "
+                class="orange"
+            >
+                <label class="text">
+                {{ getProductNameById(release.product) }} v{{ release.version }}
+                </label>
+            </li>
+            </ul>
+            <label
+            class="mx-3 subheader"
+            *ngIf="
+                get64Releases(release?.dependencies)
+                .length > 0 &&
+                get66Releases(release?.dependencies)
+                .length > 0
+            "
+            >
+            OR
+            </label>
+            <ul class="dependency-list">
+            <li
+                *ngFor="
+                let release of get66Releases(
+                    release?.dependencies
+                )
+                "
+                class="blue"
+            >
+                <label class="text">
+                {{ getProductNameById(release.product) }} v{{ release.version }}
+                </label>
+            </li>
+            </ul>
+        <!-- </div> -->
+    </div>
+</article>

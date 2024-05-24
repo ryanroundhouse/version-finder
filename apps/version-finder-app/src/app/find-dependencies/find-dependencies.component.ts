@@ -61,22 +61,34 @@ export class FindDependenciesComponent implements OnInit {
     return product;
   }
 
+  getReleaseFromProductIdAndReleaseName(
+    productId: number,
+    releaseName: string
+  ): Release | undefined {
+    const result = this.releases.find(
+      (rel) => rel.version === releaseName && rel.product === productId
+    );
+    return result;
+  }
+
   onSearch(event: any) {
-    console.log(`selected version: ${this.selectedVersion}`);
-    const depToSearchFor = this.releases.find((dep) => {
-      return (
-        dep.product === this.selectedProduct.id &&
-        dep.version === this.selectedVersion
-      );
-    });
-    console.log(`searching for ${JSON.stringify(depToSearchFor)}`);
-    if (depToSearchFor) {
-      this.versionFinderService
-        .findReleases([depToSearchFor])
-        .subscribe((foundReleases: Release[]) => {
-          this.foundReleases = foundReleases;
-          console.log('found: ' + JSON.stringify(this.foundReleases));
-        });
-    }
+    // console.log(
+    //   `selected version: ${this.selectedVersion} of product ${this.selectedProduct.name}`
+    // );
+    // const depToSearchFor = this.releases.find((dep) => {
+    //   return (
+    //     dep.product === this.selectedProduct.id &&
+    //     dep.version === this.selectedVersion
+    //   );
+    // });
+    // console.log(`searching for ${JSON.stringify(depToSearchFor)}`);
+    // if (depToSearchFor) {
+    //   this.versionFinderService
+    //     .findReleases([depToSearchFor])
+    //     .subscribe((foundReleases: Release[]) => {
+    //       this.foundReleases = foundReleases;
+    //       console.log('found: ' + JSON.stringify(this.foundReleases));
+    //     });
+    // }
   }
 }

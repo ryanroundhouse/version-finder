@@ -12,6 +12,7 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { LatestReleasesComponent } from './latest-releases/latest-releases.component';
 import { TestComponentComponent } from './test-component/test-component.component';
 import { AddDependencyComponent } from './add-release/add-dependency/add-dependency.component';
+import { ReleasePanelComponent } from './release-panel/release-panel.component';
 
 const routes: Routes = [
   { path: 'add-release', component: AddReleaseComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
     LatestReleasesComponent,
     TestComponentComponent,
     FindDependenciesComponent,
+    ReleasePanelComponent,
   ],
   imports: [
     BrowserModule,
