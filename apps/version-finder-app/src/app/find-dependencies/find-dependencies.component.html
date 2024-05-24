@@ -18,9 +18,6 @@
       </option>
     </select>
   </div>
-  <button *ngIf="selectedVersion && selectedProduct" (click)="onSearch($event)">
-    search
-  </button>
 
   <div *ngIf="foundReleases.length > 0">
     <h1>That means I need at least</h1>
