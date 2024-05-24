@@ -42,14 +42,13 @@ export class ReleasePanelComponent {
     if (Releases) {
       const foundReleases = this.releases.filter((dep) => {
         return (
-          ![0, 4, 5, 6, 7].includes(dep.product) && Releases.includes(dep.id)
+          ![0, 4, 5, 6, 7, 9].includes(dep.product) && Releases.includes(dep.id)
         );
       });
       foundReleases.forEach((dep) => {
         non6466Products.push(dep);
       });
     }
-    console.log(`found non 64/66 releases: ${JSON.stringify(non6466Products)}`);
     return non6466Products;
   }
 
@@ -58,6 +57,19 @@ export class ReleasePanelComponent {
       return fam.id === ProductId;
     });
     return Product?.name;
+  }
+
+  get67Releases(Releases: number[] | undefined): Release[] {
+    const stream67Products: Release[] = [];
+    if (Releases) {
+      const foundReleases = this.releases.filter((dep) => {
+        return [9].includes(dep.product) && Releases.includes(dep.id);
+      });
+      foundReleases.forEach((dep) => {
+        stream67Products.push(dep);
+      });
+    }
+    return stream67Products;
   }
 
   get64Releases(Releases: number[] | undefined): Release[] {
@@ -70,7 +82,6 @@ export class ReleasePanelComponent {
         stream64Products.push(dep);
       });
     }
-    console.log(`found 64 releases: ${JSON.stringify(stream64Products)}`);
     return stream64Products;
   }
 
@@ -84,7 +95,6 @@ export class ReleasePanelComponent {
         stream66Products.push(dep);
       });
     }
-    console.log(`found 66 releases: ${JSON.stringify(stream66Products)}`);
     return stream66Products;
   }
 }
