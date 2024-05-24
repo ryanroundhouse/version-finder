@@ -1,32 +1,29 @@
 <main>
-  <h1>If I want</h1>
-  <select
-    [(ngModel)]="selectedProduct"
-    (ngModelChange)="onChangeProductSelection($event)"
-  >
-    <option *ngFor="let product of products" [ngValue]="product">
-      {{ product.name }}
-    </option>
-  </select>
-  <div *ngIf="selectedVersion">
-    <select
-      [(ngModel)]="selectedVersion"
-      (ngModelChange)="onChangeVersionSelection($event)"
-    >
-      <option *ngFor="let version of versions" [ngValue]="version">
-        {{ version }}
-      </option>
-    </select>
+    <div>
+      <label class="page-header m-3">Release Lookup</label>
+      <div class="page-header-rectangle ms-3"></div>
+    </div>
+    <div class="m-3">
+      <label class="me-3">Product: </label>
+      <select
+        [(ngModel)]="selectedProduct"
+        (ngModelChange)="onChangeProductSelection($event)"
+      >
+        <option *ngFor="let product of products" [ngValue]="product">
+          {{ product.name }}
+        </option>
+      </select>
+      <div *ngIf="selectedVersion">
+        <label class="me-3">Release: </label>
+        <select
+          [(ngModel)]="selectedVersion"
+          (ngModelChange)="onChangeVersionSelection($event)"
+        >
+          <option *ngFor="let version of versions" [ngValue]="version">
+            {{ version }}
+          </option>
+        </select>
+      </div>
+      <version-finder-release-panel [release]="getReleaseFromProductIdAndReleaseName(selectedProduct.id, selectedVersion)" [product]="selectedProduct" [products]="products" [releases]="releases"></version-finder-release-panel>
   </div>
-
-  <div *ngIf="foundReleases.length > 0">
-    <h1>That means I need at least</h1>
-    <ul class="release-list">
-      <li *ngFor="let release of foundReleases" class="release-item">
-        <h3 class="mx-3">{{ getProductFromId(release.product)?.name }}</h3>
-        <p class="mx-3">{{ release.version }}</p>
-      </li>
-    </ul>
-  </div>
-  <version-finder-release-panel [release]="getReleaseFromProductIdAndReleaseName(selectedProduct.id, selectedVersion)" [product]="selectedProduct" [products]="products" [releases]="releases"></version-finder-release-panel>
 </main>
