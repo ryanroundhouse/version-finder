@@ -51,7 +51,6 @@ export class FindDependenciesComponent implements OnInit {
 
   onChangeVersionSelection(value: string) {
     this.foundReleases = [];
-    console.log(value);
     this.onSearch(value);
   }
 
@@ -63,6 +62,7 @@ export class FindDependenciesComponent implements OnInit {
   }
 
   onSearch(event: any) {
+    console.log(`selected version: ${this.selectedVersion}`);
     const depToSearchFor = this.releases.find((dep) => {
       return (
         dep.product === this.selectedProduct.id &&

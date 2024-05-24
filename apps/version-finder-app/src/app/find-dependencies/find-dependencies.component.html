@@ -13,7 +13,7 @@
       [(ngModel)]="selectedVersion"
       (ngModelChange)="onChangeVersionSelection($event)"
     >
-      <option *ngFor="let version of versions" [ngValue]="selectedVersion">
+      <option *ngFor="let version of versions" [ngValue]="version">
         {{ version }}
       </option>
     </select>
