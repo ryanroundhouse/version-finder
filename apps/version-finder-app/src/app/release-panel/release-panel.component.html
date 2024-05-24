@@ -11,95 +11,97 @@
                 getFriendlyDate(release?.releaseDate)
             }}
         </label>
-        <label class="mx-3 subheader">Dependencies:</label>
-        <ul class="dependency-list">
+        <div *ngIf="release?.dependencies?.length">
+            <label class="mx-3 subheader">Dependencies:</label>
+            <ul class="dependency-list">
+                <li
+                    *ngFor="
+                    let release of getOtherReleases(release?.dependencies)"
+                    class="green"
+                >
+                    <label class="text">
+                    {{ getProductNameById(release.product) }} v{{ release.version }}
+                    </label>
+                </li>
+            </ul>
+            <label
+            class="mx-3 subheader"
+            *ngIf="
+                getOtherReleases(
+                release?.dependencies
+                ).length > 0 &&
+                get64Releases(release?.dependencies)
+                .length > 0
+            "
+            >
+            AND
+            </label>
+            <ul class="dependency-list">
             <li
                 *ngFor="
-                let release of getOtherReleases(release?.dependencies)"
-                class="green"
+                let release of get64Releases(
+                    release?.dependencies
+                )
+                "
+                class="orange"
             >
                 <label class="text">
                 {{ getProductNameById(release.product) }} v{{ release.version }}
                 </label>
             </li>
-        </ul>
-        <label
-        class="mx-3 subheader"
-        *ngIf="
-            getOtherReleases(
-            release?.dependencies
-            ).length > 0 &&
-            get64Releases(release?.dependencies)
-            .length > 0
-        "
-        >
-        AND
-        </label>
-        <ul class="dependency-list">
-        <li
-            *ngFor="
-            let release of get64Releases(
-                release?.dependencies
-            )
+            </ul>
+            <label
+            class="mx-3 subheader"
+            *ngIf="
+                get64Releases(release?.dependencies)
+                .length > 0 &&
+                get66Releases(release?.dependencies)
+                .length > 0
             "
-            class="orange"
-        >
-            <label class="text">
-            {{ getProductNameById(release.product) }} v{{ release.version }}
+            >
+            OR
             </label>
-        </li>
-        </ul>
-        <label
-        class="mx-3 subheader"
-        *ngIf="
-            get64Releases(release?.dependencies)
-            .length > 0 &&
-            get66Releases(release?.dependencies)
-            .length > 0
-        "
-        >
-        OR
-        </label>
-        <ul class="dependency-list">
-        <li
-            *ngFor="
-            let release of get66Releases(
-                release?.dependencies
-            )
+            <ul class="dependency-list">
+            <li
+                *ngFor="
+                let release of get66Releases(
+                    release?.dependencies
+                )
+                "
+                class="blue"
+            >
+                <label class="text">
+                {{ getProductNameById(release.product) }} v{{ release.version }}
+                </label>
+            </li>
+            </ul>
+            <label
+            class="mx-3 subheader"
+            *ngIf="
+                (get64Releases(release?.dependencies)
+                .length > 0 ||
+                get66Releases(release?.dependencies)
+                .length > 0 ) && 
+                get67Releases(release?.dependencies)
+                .length > 0
             "
-            class="blue"
-        >
-            <label class="text">
-            {{ getProductNameById(release.product) }} v{{ release.version }}
+            >
+            OR
             </label>
-        </li>
-        </ul>
-        <label
-        class="mx-3 subheader"
-        *ngIf="
-            (get64Releases(release?.dependencies)
-            .length > 0 ||
-            get66Releases(release?.dependencies)
-            .length > 0 ) && 
-            get67Releases(release?.dependencies)
-            .length > 0
-        "
-        >
-        OR
-        </label>
-        <ul class="dependency-list">
-        <li
-            *ngFor="
-            let release of get67Releases(
-                release?.dependencies
-            )
-            "
-            class="pink"
-        >
-            <label class="text">
-            {{ getProductNameById(release.product) }} v{{ release.version }}
-            </label>
-        </li>
-        </ul>
+            <ul class="dependency-list">
+            <li
+                *ngFor="
+                let release of get67Releases(
+                    release?.dependencies
+                )
+                "
+                class="pink"
+            >
+                <label class="text">
+                {{ getProductNameById(release.product) }} v{{ release.version }}
+                </label>
+            </li>
+            </ul>
+        </div>
     </div>
 </article>
