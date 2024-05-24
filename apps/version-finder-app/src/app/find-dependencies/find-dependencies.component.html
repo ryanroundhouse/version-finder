@@ -17,7 +17,6 @@
         <label class="me-3">Release: </label>
         <select
           [(ngModel)]="selectedVersion"
-          (ngModelChange)="onChangeVersionSelection($event)"
         >
           <option *ngFor="let version of versions" [ngValue]="version">
             {{ version }}

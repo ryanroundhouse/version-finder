@@ -14,7 +14,6 @@ export class FindDependenciesComponent implements OnInit {
   selectedProduct: Product = this.products[0];
   versions: string[] = [];
   selectedVersion = '';
-  foundReleases: Release[] = [];
 
   constructor(
     private versionFinderService: VersionFinderService,
@@ -45,13 +44,7 @@ export class FindDependenciesComponent implements OnInit {
       });
     this.versions = versionsOfProduct;
     this.selectedVersion = versionsOfProduct[0];
-    this.foundReleases = [];
     console.log('found versions for this Product: ' + versionsOfProduct);
-  }
-
-  onChangeVersionSelection(value: string) {
-    this.foundReleases = [];
-    this.onSearch(value);
   }
 
   getProductFromId(productId: number): Product | undefined {
@@ -69,26 +62,5 @@ export class FindDependenciesComponent implements OnInit {
       (rel) => rel.version === releaseName && rel.product === productId
     );
     return result;
-  }
-
-  onSearch(event: any) {
-    // console.log(
-    //   `selected version: ${this.selectedVersion} of product ${this.selectedProduct.name}`
-    // );
-    // const depToSearchFor = this.releases.find((dep) => {
-    //   return (
-    //     dep.product === this.selectedProduct.id &&
-    //     dep.version === this.selectedVersion
-    //   );
-    // });
-    // console.log(`searching for ${JSON.stringify(depToSearchFor)}`);
-    // if (depToSearchFor) {
-    //   this.versionFinderService
-    //     .findReleases([depToSearchFor])
-    //     .subscribe((foundReleases: Release[]) => {
-    //       this.foundReleases = foundReleases;
-    //       console.log('found: ' + JSON.stringify(this.foundReleases));
-    //     });
-    // }
   }
 }
