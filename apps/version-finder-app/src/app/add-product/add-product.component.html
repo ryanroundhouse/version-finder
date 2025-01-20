@@ -28,7 +28,7 @@
           #productName
         />
         <label class="subheader mx-3">Product Type: </label>
-        <select #productType class="me-3">
+        <select #productType class="me-3" [value]="product.productType">
           <option value="CIS Releases">CIS Releases</option>
           <option value="7 Module Releases">7 Module Releases</option>
           <option value="Addon Releases">Addon Releases</option>

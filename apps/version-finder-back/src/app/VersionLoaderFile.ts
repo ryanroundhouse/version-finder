@@ -44,6 +44,7 @@ export class VersionLoaderFile implements VersionLoader {
     });
     if (productToUpdate) {
       productToUpdate.name = updatedProduct.name;
+      productToUpdate.productType = updatedProduct.productType;
       this.writeProductsToFile(this.ProductFilePath, products);
       return true;
     }
