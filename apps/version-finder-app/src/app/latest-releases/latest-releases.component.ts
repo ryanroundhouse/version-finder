@@ -70,7 +70,7 @@ export class LatestReleasesComponent implements OnInit {
   }
 
   getCISProducts(): Product[] {
-    return this.products.filter((prod) => [0, 4, 9, 7].includes(prod.id));
+    return this.products.filter((prod) => [0, 4, 7, 11].includes(prod.id));
   }
 
   getNSBLProducts(): Product[] {
@@ -78,7 +78,7 @@ export class LatestReleasesComponent implements OnInit {
   }
 
   get7Products(): Product[] {
-    return this.products.filter((prod) => [10, 11].includes(prod.id));
+    return this.products.filter((prod) => [9, 10, 12].includes(prod.id));
   }
 
   getAddonProducts(): Product[] {
