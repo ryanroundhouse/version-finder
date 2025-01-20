@@ -37,18 +37,26 @@ export class AddProductComponent implements OnInit {
       });
   }
 
-  addProduct(newProductName: string) {
+  addProduct(newProductName: string, productType: string) {
     console.log('got it ');
-    const newProduct = new Product(-1, newProductName);
+    const newProduct = new Product(
+      -1,
+      newProductName,
+      productType as
+        | 'CIS Releases'
+        | '7 Module Releases'
+        | 'Addon Releases'
+        | 'NSBL Releases'
+    );
     this.versionManagerService
       .addProduct(newProduct)
       .subscribe((result: boolean) => {
         console.log(result);
         this.refreshProducts();
       });
-      const productNameTextBox = document.getElementById('productNameInputBox');
-      console.log((<HTMLInputElement>productNameTextBox).value);
-      (<HTMLInputElement>productNameTextBox).value = "";
+    const productNameTextBox = document.getElementById('productNameInputBox');
+    console.log((<HTMLInputElement>productNameTextBox).value);
+    (<HTMLInputElement>productNameTextBox).value = '';
   }
 
   deleteProduct(productId: string) {
@@ -77,13 +85,17 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  updateProduct(productName: string, productId: string) {
-    // update the Product
+  updateProduct(productName: string, productId: string, productType: string) {
     const productToUpdate = this.products.find((fam) => {
       return fam.id === Number(productId);
     });
     if (productToUpdate) {
       productToUpdate.name = productName;
+      productToUpdate.productType = productType as
+        | 'CIS Releases'
+        | '7 Module Releases'
+        | 'Addon Releases'
+        | 'NSBL Releases';
       this.versionManagerService
         .updateProduct(productToUpdate)
         .subscribe((result: boolean) => {

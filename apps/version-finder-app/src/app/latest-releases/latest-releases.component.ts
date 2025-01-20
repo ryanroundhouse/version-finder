@@ -70,19 +70,23 @@ export class LatestReleasesComponent implements OnInit {
   }
 
   getCISProducts(): Product[] {
-    return this.products.filter((prod) => [0, 4, 7, 11].includes(prod.id));
+    return this.products.filter((prod) => prod.productType === 'CIS Releases');
   }
 
   getNSBLProducts(): Product[] {
-    return this.products.filter((prod) => [5, 6].includes(prod.id));
+    return this.products.filter((prod) => prod.productType === 'NSBL Releases');
   }
 
   get7Products(): Product[] {
-    return this.products.filter((prod) => [9, 10, 12].includes(prod.id));
+    return this.products.filter(
+      (prod) => prod.productType === '7 Module Releases'
+    );
   }
 
   getAddonProducts(): Product[] {
-    return this.products.filter((prod) => [1, 2, 3, 8].includes(prod.id));
+    return this.products.filter(
+      (prod) => prod.productType === 'Addon Releases'
+    );
   }
 
   getReleasesForRelease(Releases: number[] | undefined): Release[] {

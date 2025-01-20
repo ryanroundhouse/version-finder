@@ -1,10 +1,47 @@
 [
-  { "id": 0, "name": "CIS 6.4" },
-  { "id": 1, "name": "mCare" },
-  { "id": 2, "name": "CC6" },
-  { "id": 3, "name": "SilverBlaze" },
-  { "id": 4, "name": "CIS 6.6" },
-  { "id": 5, "name": "nsBL 6.6" },
-  { "id": 6, "name": "nsBL 6.4" },
-  { "id": 7, "name": "CIS 6.4m" }
+  {
+    "id": 0,
+    "name": "CIS 6.4",
+    "productType": "CIS Releases"
+  },
+  {
+    "id": 1,
+    "name": "mCare",
+    "productType": "Addon Releases"
+  },
+  {
+    "id": 2,
+    "name": "CC6",
+    "productType": "Addon Releases"
+  },
+  {
+    "id": 3,
+    "name": "SilverBlaze",
+    "productType": "Addon Releases"
+  },
+  {
+    "id": 4,
+    "name": "CIS 6.6",
+    "productType": "CIS Releases"
+  },
+  {
+    "id": 5,
+    "name": "nsBL 6.6",
+    "productType": "NSBL Releases"
+  },
+  {
+    "id": 6,
+    "name": "nsBL 6.4",
+    "productType": "NSBL Releases"
+  },
+  {
+    "id": 7,
+    "name": "CIS 6.4m",
+    "productType": "CIS Releases"
+  },
+  {
+    "id": 8,
+    "name": "CIS 7",
+    "productType": "7 Module Releases"
+  }
 ]
