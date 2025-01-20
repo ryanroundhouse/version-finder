@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class VersionFinderService {
-  private readonly baseUrl: string = environment.baseUrl;
+  private readonly baseUrl: string = `${environment.baseUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
